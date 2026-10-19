@@ -8,7 +8,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.css">
 
 <style>
 :root {
@@ -82,31 +81,6 @@ section.active {display:block}
 .callout {border-right:3px solid var(--blue)}
 code,.mono {font-family:monospace; background:#1a1a1a; padding:2px 6px; border-radius:4px; color:#00ff41;}
 
-/* Terminal */
-.terminal-box {
-  background:#000;border:1px solid var(--green);border-radius:10px;
-  overflow:hidden;box-shadow:0 0 25px #00ff4115;
-}
-.terminal-bar {
-  display:flex;justify-content:space-between;align-items:center;gap:8px;
-  padding:10px 12px;background:#101010;border-bottom:1px solid #262626;
-}
-.terminal-dots {display:flex;gap:6px}
-.terminal-dots i {width:9px;height:9px;border-radius:50%;background:#555}
-.terminal-dots i:first-child {background:#ff5f57}
-.terminal-dots i:nth-child(2) {background:#febc2e}
-.terminal-dots i:nth-child(3) {background:#28c840}
-.terminal-status {font:12px monospace;color:var(--green)}
-#terminal {
-  height:360px;
-  padding:8px;
-  direction:ltr;
-  text-align:left;
-  background:#000;
-}
-.terminal-actions {display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.note {font-size:.9rem;color:var(--muted);line-height:1.9;margin:12px 0}
-
 /* Quizzes */
 .quiz-question {padding:16px 0;border-bottom:1px solid #282828}
 .quiz-question p {font-weight:700;margin-bottom:10px}
@@ -139,7 +113,6 @@ footer {
   nav .btn {flex:1;padding:8px 6px;font-size:.85rem}
   main {padding:15px 12px 40px}
   .hero {padding-top:40px}
-  #terminal {height:330px}
 }
 </style>
 </head>
@@ -156,7 +129,6 @@ footer {
     <button class="btn" data-go="web">أمن الويب</button>
     <button class="btn" data-go="crypto">التشفير</button>
     <button class="btn" data-go="hacking">الاختراق الأخلاقي</button>
-    <button class="btn" data-go="terminal">Terminal</button>
   </nav>
 </header>
 
@@ -175,7 +147,6 @@ footer {
     <div class="card path-card" data-go="web"><div class="symbol">⌘</div><h3>أمن الويب</h3><p>الثغرات الشائعة وطرق الوقاية</p></div>
     <div class="card path-card" data-go="crypto"><div class="symbol">🔐</div><h3>التشفير</h3><p>الهاش والمفاتيح والتشفير</p></div>
     <div class="card path-card" data-go="hacking"><div class="symbol">⌁</div><h3>الاختراق الأخلاقي</h3><p>اختبار الأنظمة بإذن أصحابها</p></div>
-    <div class="card path-card" data-go="terminal"><div class="symbol">&gt;_</div><h3>معمل الأوامر</h3><p>تجربة أوامر Shell داخل المتصفح</p></div>
   </div>
 </section>
 
@@ -362,49 +333,19 @@ footer {
   </div>
 </section>
 
-<!-- Terminal -->
-<section id="terminal">
-  <div class="page-title"><h1>معمل الأوامر</h1><p>Browser Terminal Lab</p></div>
-  <div class="card lesson callout">
-    <h2>قبل البداية</h2>
-    <p>التيرمينال ده بيستخدم بيئة WebContainer داخل المتصفح، وده مش تيرمينال أندرويد أو Kali Linux كامل. يحتاج متصفحًا متوافقًا واتصالًا مناسبًا، ويعمل أفضل عبر HTTPS أو localhost.</p>
-    <p>جرّب الأوامر التعليمية: <code>help</code>، <code>pwd</code>، <code>ls</code>، <code>echo Hello</code>، <code>mkdir test</code>.</p>
-  </div>
-  <div class="terminal-box">
-    <div class="terminal-bar">
-      <div class="terminal-dots"><i></i><i></i><i></i></div>
-      <span class="terminal-status" id="terminal-status">WAITING</span>
-      <button class="btn" id="clear-terminal">مسح الشاشة</button>
-    </div>
-    <div id="terminal"></div>
-  </div>
-  <div class="terminal-actions">
-    <button class="btn" data-command="help">help</button>
-    <button class="btn" data-command="pwd">pwd</button>
-    <button class="btn" data-command="ls">ls</button>
-    <button class="btn" data-command="echo Hello CyberAcademy">echo Hello</button>
-    <button class="btn" id="restart-terminal">إعادة تشغيل البيئة</button>
-  </div>
-  <p class="note">لو البيئة الحقيقية غير مدعومة على جهازك، هتظهر رسالة واضحة بدل الشاشة السوداء. الأوامر السريعة بتوضح أمثلة تعليمية، وليست وصولًا إلى نظام هاتفك.</p>
-</section>
-
 <!-- صفحة سياسة الخصوصية -->
 <section id="privacy">
   <div class="page-title"><h1>سياسة الخصوصية</h1><p>Privacy Policy</p></div>
   <div class="card lesson">
     <h2>1. المعلومات التي نجمعها</h2>
-    <p>نحن نجمع البريد الإلكتروني الخاص بك عند إنشاء حساب أو تسجيل الدخول، بهدف إنشاء حسابك وتخصيص تجربتك التعليمية على المنصة.</p>
+    <p>نحن لا نجمع أي بيانات شخصية. المنصة تعمل بالكامل داخل متصفحك.</p>
   </div>
   <div class="card lesson">
     <h2>2. كيف نستخدم معلوماتك</h2>
-    <p>نستخدم بريدك الإلكتروني لتسجيل الدخول، واستعادة كلمة المرور، وإرسال إشعارات هامة متعلقة بالمنصة (إن لزم الأمر). نحن <b>لا نبيع</b> بياناتك لأي طرف ثالث.</p>
+    <p>نحن لا نستخدم أو نبيع أي بيانات، حيث لا يوجد نظام حسابات حالياً.</p>
   </div>
   <div class="card lesson">
-    <h2>3. أمان التيرمينال والبيانات</h2>
-    <p>بيئة التيرمينال (Terminal) تعمل محليًا داخل متصفحك (WebContainer) ولا يتم تسجيل أو حفظ الأوامر التي تكتبها على سيرفراتنا.</p>
-  </div>
-  <div class="card lesson">
-    <h2>4. التواصل معنا</h2>
+    <h2>3. التواصل معنا</h2>
     <p>لأي استفسارات بخصوص الخصوصية، يمكنك التواصل معنا عبر:</p>
     <ul>
       <li>البريد الإلكتروني: <a href="mailto:krevenkreven18@gmail.com">krevenkreven18@gmail.com</a></li>
@@ -428,15 +369,7 @@ footer {
     <p>يُمنع منعًا باتًا استخدام ما تتعلمه في المنصة لاختراق أو الإضرار بأي أنظمة أو شبكات لا تملك إذنًا صريحًا ومكتوبًا باختبارها. أنت وحدك المسؤول قانونيًا عن أي سوء استخدام.</p>
   </div>
   <div class="card lesson">
-    <h2>3. حساب المستخدم</h2>
-    <p>أنت مسؤول عن الحفاظ على سرية كلمة المرور الخاصة بحسابك، وعن جميع الأنشطة التي تحدث تحت حسابك.</p>
-  </div>
-  <div class="card lesson">
-    <h2>4. إخلاء المسؤولية</h2>
-    <p>المنصة وأدواتها مقدمة "كما هي" دون أي ضمانات. نحن غير مسؤولين عن أي أضرار مباشرة أو غير مباشرة قد تنتج عن استخدام المنصة.</p>
-  </div>
-  <div class="card lesson">
-    <h2>5. التواصل</h2>
+    <h2>3. التواصل</h2>
     <p>لأي استفسارات قانونية، يمكنك التواصل معنا:</p>
     <ul>
       <li>البريد الإلكتروني: <a href="mailto:krevenkreven18@gmail.com">krevenkreven18@gmail.com</a></li>
@@ -466,20 +399,10 @@ footer {
   <div>© 2026 CyberAcademy</div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.js"></script>
-
 <script>
 (() => {
   const $ = id => document.getElementById(id);
   const mainSections = [...document.querySelectorAll('main section')];
-
-  // 1. إنشاء أو جلب ID الجهاز (عشان نحفظ نتايج الامتحانات)
-  let deviceId = localStorage.getItem('cyberDeviceId');
-  if (!deviceId) {
-    deviceId = 'dev-' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
-    localStorage.setItem('cyberDeviceId', deviceId);
-  }
 
   // فتح المنصة فوراً
   showSection('home');
@@ -493,13 +416,6 @@ footer {
       b.classList.toggle('active', b.dataset.go === id)
     );
     window.scrollTo({top:0,behavior:'smooth'});
-
-    if (id === 'terminal') {
-      setTimeout(() => {
-        fitTerminal();
-        startTerminal();
-      }, 180);
-    }
   }
 
   document.addEventListener('click', e => {
@@ -606,195 +522,9 @@ footer {
       } else {
         result.textContent = `نتيجتك: ${score}/${questions.length} — ${score === questions.length ? 'ممتاز! كل إجاباتك صحيحة.' : 'راجع الإجابات الصحيحة باللون الأخضر.'}`;
         result.classList.add(score === questions.length ? 'success' : 'error');
-
-        // حفظ النتيجة في الداتابيز عن طريق الباك إند
-        fetch('https://cyber-academy-backend.vercel.app/api/quiz/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ deviceId, subject, score, total: questions.length })
-        }).then(res => res.json()).then(data => {
-            console.log('Result saved:', data);
-        }).catch(err => {
-            console.error('Error saving result:', err);
-        });
       }
     });
   });
-
-  // ---------- Terminal ----------
-  let term = null;
-  let fitAddon = null;
-  let webcontainer = null;
-  let shellProcess = null;
-  let terminalReady = false;
-  let booting = false;
-  let inputWriter = null;
-
-  function setTerminalStatus(message) {
-    $('terminal-status').textContent = message;
-  }
-
-  function fitTerminal() {
-    if (!term || !fitAddon) return;
-    try { fitAddon.fit(); } catch (_) {}
-  }
-
-  function terminalMessage(text) {
-    if (term) term.writeln(text);
-  }
-
-  function createTerminal() {
-    if (term) return;
-    if (typeof Terminal === 'undefined') {
-      setTerminalStatus('LIBRARY ERROR');
-      $('terminal').innerHTML =
-        '<div style="padding:16px;color:#00ff41;font:14px monospace;line-height:2;direction:ltr;text-align:left">' +
-        'CyberAcademy Terminal<br>ERROR: xterm.js library could not load.<br>' +
-        'Check your internet connection and reload the page.</div>';
-      return;
-    }
-
-    term = new Terminal({
-      cursorBlink:true,
-      convertEol:true,
-      scrollback:1500,
-      fontFamily:'monospace',
-      fontSize:14,
-      theme:{
-        background:'#000000',
-        foreground:'#00ff41',
-        cursor:'#00ff41',
-        selectionBackground:'#174d25'
-      }
-    });
-
-    try {
-      fitAddon = new FitAddon.FitAddon();
-      term.loadAddon(fitAddon);
-    } catch (_) {}
-
-    term.open($('terminal'));
-    fitTerminal();
-
-    term.writeln('\x1b[1;32mCyberAcademy Terminal v1.0\x1b[0m');
-    term.writeln('Educational browser shell — authorized learning only.');
-    term.writeln('Loading terminal environment...');
-    term.writeln('');
-
-    term.onData(data => {
-      if (inputWriter && terminalReady) {
-        inputWriter.write(data).catch(err => {
-          terminalMessage('\r\nInput error: ' + err.message);
-        });
-      }
-    });
-  }
-
-  async function startTerminal() {
-    createTerminal();
-    if (!term || terminalReady || booting) return;
-    booting = true;
-    setTerminalStatus('STARTING...');
-
-    try {
-      if (!window.isSecureContext) {
-        throw new Error('Secure context required: open this page via HTTPS or localhost.');
-      }
-
-      const module = await import('https://esm.sh/@webcontainer/api@1.5.0');
-      if (!webcontainer) webcontainer = await module.WebContainer.boot();
-
-      await webcontainer.mount({
-        'package.json': {
-          file: {contents: JSON.stringify({
-            name:'cyberacademy-lab',
-            version:'1.0.0',
-            type:'module'
-          }, null, 2)}
-        },
-        'README.md': {
-          file:{contents:'Welcome to the CyberAcademy learning lab.\n'}
-        }
-      });
-
-      shellProcess = await webcontainer.spawn('jsh', {
-        terminal: { cols: term.cols, rows: term.rows }
-      });
-
-      const writer = shellProcess.input.getWriter();
-      inputWriter = writer;
-
-      shellProcess.output.pipeTo(new WritableStream({
-        write(data) { term.write(data); }
-      })).catch(err => {
-        terminalMessage('\r\nOutput stream ended: ' + err.message);
-      });
-
-      terminalReady = true;
-      setTerminalStatus('READY');
-      terminalMessage('\r\nEnvironment ready. Try: pwd, ls, echo Hello');
-      term.focus();
-    } catch (error) {
-      setTerminalStatus('ENVIRONMENT UNAVAILABLE');
-      terminalMessage('\r\n\x1b[1;31mEnvironment unavailable:\x1b[0m');
-      terminalMessage(String(error && error.message || error));
-      terminalMessage('Try a compatible desktop browser over HTTPS, or use the demo commands below.');
-    } finally {
-      booting = false;
-      fitTerminal();
-    }
-  }
-
-  function runDemoCommand(command) {
-    createTerminal();
-    if (!term) return;
-
-    if (terminalReady && inputWriter) {
-      inputWriter.write(command + '\n').catch(err => terminalMessage('Input error: ' + err.message));
-      return;
-    }
-
-    term.writeln('\r\n\x1b[1;32mstudent@cyberacademy:~$ \x1b[0m' + command);
-    const cmd = command.trim();
-    if (cmd === 'help') {
-      term.writeln('Available demo commands: help, pwd, ls, echo <text>, clear');
-    } else if (cmd === 'pwd') {
-      term.writeln('/home/student');
-    } else if (cmd === 'ls') {
-      term.writeln('README.md  package.json');
-    } else if (cmd.startsWith('echo ')) {
-      term.writeln(cmd.slice(5));
-    } else if (cmd === 'clear') {
-      term.clear();
-    } else {
-      term.writeln('Demo mode: command not executed because the real shell is unavailable.');
-      term.writeln('Use help to see supported demo commands.');
-    }
-  }
-
-  document.querySelectorAll('[data-command]').forEach(button => {
-    button.addEventListener('click', () => runDemoCommand(button.dataset.command));
-  });
-
-  $('clear-terminal').addEventListener('click', () => {
-    createTerminal();
-    if (term) term.clear();
-  });
-
-  $('restart-terminal').addEventListener('click', async () => {
-    if (term) {
-      term.clear();
-      term.writeln('\x1b[1;32mCyberAcademy Terminal\x1b[0m');
-      term.writeln('Restarting environment...');
-    }
-    if (webcontainer) {
-      terminalMessage('A WebContainer session is already running; reload the page to fully reset it.');
-      return;
-    }
-    await startTerminal();
-  });
-
-  window.addEventListener('resize', fitTerminal);
 })();
 </script>
 </body>
