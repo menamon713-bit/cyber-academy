@@ -580,36 +580,102 @@ footer {
     openApp();
   }
 
-  $('auth-form').addEventListener('submit', e => {
+  // 1. تسجيل الدخول (مربوط بالباك إند)
+  $('auth-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = $('login-id').value.trim();
     const password = $('login-password').value;
 
-    if (password.length < 6) {
-      alert('كلمة المرور لازم تكون 6 أحرف على الأقل.');
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.textContent = 'جاري الدخول...';
+    submitBtn.disabled = true;
+
+    try {
+      const response = await fetch('https://cyber-academy-backend.vercel.app/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('cyberAcademyAuth', 'true');
+        localStorage.setItem('cyberAcademyToken', data.token);
+        localStorage.setItem('cyberAcademyUserName', data.user.name);
+        openApp();
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert('مشكلة في الاتصال بالسيرفر. تأكد من الإنترنت أو حاول لاحقاً.');
+    } finally {
+      submitBtn.textContent = 'دخول للمنصة';
+      submitBtn.disabled = false;
+    }
+  });
+
+  // 2. إنشاء حساب جديد (مربوط بالباك إند)
+  $('create-account').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const name = prompt('أدخل اسمك:');
+    if (!name) return;
+    const email = prompt('أدخل بريدك الإلكتروني:');
+    if (!email) return;
+    const password = prompt('أدخل كلمة المرور (6 أحرف على الأقل):');
+    if (!password || password.length < 6) {
+      alert('كلمة المرور قصيرة جداً.');
       return;
     }
-    
-    localStorage.setItem('cyberAcademyAuth', 'true');
-    openApp();
+
+    try {
+      const response = await fetch('https://cyber-academy-backend.vercel.app/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+      
+      const data = await response.json();
+      if (response.ok) {
+        alert('تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.');
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      alert('مشكلة في الاتصال بالسيرفر.');
+    }
   });
 
+  // 3. نسيت كلمة المرور (مربوط بالباك إند)
+  $('forgot-password').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = prompt('أدخل بريدك الإلكتروني لاستعادة كلمة المرور:');
+    if (!email) return;
+
+    try {
+      const response = await fetch('https://cyber-academy-backend.vercel.app/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      
+      const data = await response.json();
+      alert(data.message);
+    } catch (error) {
+      alert('مشكلة في الاتصال بالسيرفر.');
+    }
+  });
+
+  // 4. الدخول بجوجل (هيتفعل بعدين)
   $('google-login').addEventListener('click', () => {
-    alert('سيتم ربط الدخول بحساب جوجل (Google OAuth) هنا بعد بناء الـ Backend.');
+    alert('سيتم ربط الدخول بحساب جوجل (Google OAuth) قريباً.');
   });
 
-  $('forgot-password').addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('سيتم تحويلك لصفحة استعادة كلمة المرور بعد بناء الـ Backend.');
-  });
-
-  $('create-account').addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('سيتم تحويلك لصفحة إنشاء الحساب (Sign Up) بعد بناء الـ Backend.');
-  });
-
+  // 5. الخروج
   $('logout').addEventListener('click', () => {
     localStorage.removeItem('cyberAcademyAuth');
+    localStorage.removeItem('cyberAcademyToken');
+    localStorage.removeItem('cyberAcademyUserName');
     location.reload();
   });
 
@@ -697,7 +763,6 @@ footer {
     }
   });
 
-  // Clear error state on change
   window.clearError = (subject, i) => {
     const qDiv = $(`q-${subject}-${i}`);
     if(!qDiv) return;
@@ -705,7 +770,6 @@ footer {
     $(`result-${subject}`).classList.add('hidden');
   };
 
-  // Check Answers
   document.querySelectorAll('[data-quiz]').forEach(button => {
     button.addEventListener('click', () => {
       const subject = button.dataset.quiz;
@@ -717,7 +781,6 @@ footer {
         const chosen = document.querySelector(`input[name="${subject}-${i}"]:checked`);
         const qDiv = $(`q-${subject}-${i}`);
         
-        // Reset colors
         qDiv.querySelectorAll('.option').forEach(opt => opt.classList.remove('wrong', 'correct'));
 
         if (!chosen) {
@@ -730,7 +793,7 @@ footer {
           } else {
             hasError = true;
             $(`opt-${subject}-${i}-${chosenVal}`).classList.add('wrong');
-            $(`opt-${subject}-${i}-${q.a}`).classList.add('correct'); // Show correct answer
+            $(`opt-${subject}-${i}-${q.a}`).classList.add('correct');
           }
         }
       });
