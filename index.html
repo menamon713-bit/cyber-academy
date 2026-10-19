@@ -474,7 +474,14 @@ footer {
   const $ = id => document.getElementById(id);
   const mainSections = [...document.querySelectorAll('main section')];
 
-  // فتح المنصة فوراً بدون تسجيل دخول
+  // 1. إنشاء أو جلب ID الجهاز (عشان نحفظ نتايج الامتحانات)
+  let deviceId = localStorage.getItem('cyberDeviceId');
+  if (!deviceId) {
+    deviceId = 'dev-' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+    localStorage.setItem('cyberDeviceId', deviceId);
+  }
+
+  // فتح المنصة فوراً
   showSection('home');
 
   // ---------- Navigation ----------
@@ -599,6 +606,17 @@ footer {
       } else {
         result.textContent = `نتيجتك: ${score}/${questions.length} — ${score === questions.length ? 'ممتاز! كل إجاباتك صحيحة.' : 'راجع الإجابات الصحيحة باللون الأخضر.'}`;
         result.classList.add(score === questions.length ? 'success' : 'error');
+
+        // حفظ النتيجة في الداتابيز عن طريق الباك إند
+        fetch('https://cyber-academy-backend.vercel.app/api/quiz/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ deviceId, subject, score, total: questions.length })
+        }).then(res => res.json()).then(data => {
+            console.log('Result saved:', data);
+        }).catch(err => {
+            console.error('Error saving result:', err);
+        });
       }
     });
   });
