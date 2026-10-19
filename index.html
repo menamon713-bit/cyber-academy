@@ -26,6 +26,8 @@ body {
   color:#fff;
   font-family:Cairo,sans-serif;
   min-height:100vh;
+  display: flex;
+  flex-direction: column;
 }
 button,input {font:inherit}
 button {cursor:pointer}
@@ -51,7 +53,7 @@ nav {display:flex;gap:8px;flex-wrap:wrap}
 .btn.green {background:var(--green);color:#000;border-color:var(--green);font-weight:900}
 .btn.red {border-color:var(--red);color:var(--red)}
 
-main {max-width:1100px;margin:auto;padding:24px 16px 60px}
+main {max-width:1100px;margin:auto;padding:24px 16px 60px; flex: 1; width: 100%;}
 section {display:none;animation:fade .25s ease}
 section.active {display:block}
 @keyframes fade {from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
@@ -79,7 +81,9 @@ section.active {display:block}
 .lesson p,.lesson li {line-height:2;color:#ddd}
 .lesson ul {padding-right:20px}
 .callout {border-right:3px solid var(--blue)}
-code,.mono {font-family:monospace}
+code,.mono {font-family:monospace; background:#1a1a1a; padding:2px 6px; border-radius:4px; color:#00ff41;}
+
+/* Terminal */
 .terminal-box {
   background:#000;border:1px solid var(--green);border-radius:10px;
   overflow:hidden;box-shadow:0 0 25px #00ff4115;
@@ -103,15 +107,31 @@ code,.mono {font-family:monospace}
 }
 .terminal-actions {display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .note {font-size:.9rem;color:var(--muted);line-height:1.9;margin:12px 0}
+
+/* Quizzes */
 .quiz-question {padding:16px 0;border-bottom:1px solid #282828}
 .quiz-question p {font-weight:700;margin-bottom:10px}
-.option {display:block;background:#191919;border:1px solid #303030;border-radius:6px;padding:10px;margin:7px 0;cursor:pointer}
-.option:has(input:checked) {border-color:var(--green)}
+.option {display:block;background:#191919;border:1px solid #303030;border-radius:6px;padding:10px;margin:7px 0;cursor:pointer;transition:0.2s}
+.option:hover {background:#222}
+.option.correct {border-color:var(--green); background:rgba(0,255,65,0.1);}
+.option.wrong {border-color:var(--red); background:rgba(255,69,69,0.1);}
 .option input {accent-color:var(--green);margin-left:8px}
-.result {padding:14px;margin-top:12px;border:1px solid var(--border);border-radius:7px}
-footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:#888;line-height:2}
+.result {padding:14px;margin-top:12px;border:1px solid var(--border);border-radius:7px; font-weight:bold;}
+.result.success {border-color:var(--green); color:var(--green);}
+.result.error {border-color:var(--red); color:var(--red);}
 
-/* ---------- Auth Styles ---------- */
+/* Footer */
+footer {
+  text-align:center;border-top:1px solid var(--border);padding:25px;color:#888;line-height:2;
+  background: var(--bg);
+}
+.footer-links { margin: 10px 0; }
+.footer-links a { margin: 0 10px; color: var(--muted); transition: 0.2s; }
+.footer-links a:hover { color: var(--green); }
+.contact-info { font-size: 0.9rem; margin-bottom: 10px; }
+.contact-info a { color: var(--blue); }
+
+/* Auth Styles */
 #auth {
   position:fixed;inset:0;z-index:100;
   background:#050505;display:flex;align-items:center;justify-content:center;
@@ -120,7 +140,7 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
 .auth-card {width:100%;max-width:420px}
 .auth-card h1 {text-align:center;margin-bottom:8px}
 .auth-card h1 span {color:var(--green)}
-.auth-card p {text-align:center;color:var(--muted);margin-bottom:22px}
+.auth-card > p {text-align:center;color:var(--muted);margin-bottom:22px}
 .auth-card input[type=text],.auth-card input[type=email],.auth-card input[type=password] {
   width:100%;padding:13px;margin:7px 0 12px;
   background:#111;color:white;border:1px solid #333;border-radius:6px;
@@ -160,6 +180,13 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
 }
 .auth-footer a { color: var(--green); font-weight: bold; text-decoration: none; }
 .auth-footer a:hover { text-decoration: underline; }
+
+.auth-terms {
+  text-align: center; margin-top: 15px; font-size: 0.8rem; color: #777; line-height: 1.6;
+}
+.auth-terms a { color: var(--blue); }
+
+.back-btn-container { text-align: center; margin-top: 20px; }
 
 @media(max-width:600px) {
   header {align-items:flex-start;flex-direction:column}
@@ -204,6 +231,12 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
       <span>ليس لديك حساب؟ </span>
       <a href="#" id="create-account">إنشاء حساب جديد</a>
     </div>
+
+    <div class="auth-terms">
+      باستخدامك للمنصة، أنت توافق على 
+      <a href="#" data-go="terms">شروط الاستخدام</a> و 
+      <a href="#" data-go="privacy">سياسة الخصوصية</a>.
+    </div>
   </div>
 </div>
 
@@ -223,6 +256,7 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
 </header>
 
 <main>
+<!-- الرئيسية -->
 <section id="home" class="active">
   <div class="hero">
     <h1>أهلاً بك في <span class="green-text">CyberAcademy</span></h1>
@@ -240,94 +274,190 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
   </div>
 </section>
 
+<!-- 1. الأساسيات -->
 <section id="fundamentals">
   <div class="page-title"><h1>أساسيات الأمن السيبراني</h1><p>Cybersecurity Fundamentals</p></div>
+  
   <div class="card lesson">
-    <h2>يعني إيه أمن سيبراني؟</h2>
-    <p>هو حماية الأجهزة والشبكات والتطبيقات والبيانات من الوصول غير المصرح به أو التعديل أو التعطيل.</p>
+    <h2>1. يعني إيه أمن سيبراني؟</h2>
+    <p>هو مجموعة من الممارسات والتقنيات المصممة لحماية الأجهزة والشبكات والبيانات من الوصول غير المصرح به، أو التعديل، أو التدمير. الهدف الأساسي هو الحفاظ على أمان المعلومات في العالم الرقمي.</p>
   </div>
+
   <div class="card lesson">
-    <h2>ثالوث CIA</h2>
+    <h2>2. ثالوث CIA (أهم مبدأ في الأمن)</h2>
+    <p>أي نظام أمني ناجح لازم يوفر 3 حاجات أساسية:</p>
     <ul>
-      <li><b>Confidentiality — السرية:</b> البيانات يشوفها الأشخاص المصرح لهم فقط.</li>
-      <li><b>Integrity — سلامة البيانات:</b> البيانات تفضل صحيحة وغير معدلة دون إذن.</li>
-      <li><b>Availability — التوافر:</b> الأنظمة تكون متاحة وقت الحاجة.</li>
+      <li><b>Confidentiality (السرية):</b> البيانات متشوفهاش غير للأشخاص المصرح لهم فقط. (زي إن حسابك البنكي ميبقاش مكشوف للكل).</li>
+      <li><b>Integrity (سلامة البيانات):</b> البيانات متتعدلش أو تتغير من غير إذن. (زي إن حد ميقدرش يغير درجة امتحانك).</li>
+      <li><b>Availability (التوافر):</b> النظام أو البيانات تكون متاحة وقت ما تحتاجها. (زي إن السيرفر ميقعش وقت الامتحانات).</li>
     </ul>
   </div>
+
   <div class="card lesson">
-    <h2>خطوات الحماية</h2>
-    <ul><li>استخدم كلمة مرور قوية وفريدة.</li><li>فعّل المصادقة الثنائية.</li><li>حدّث البرامج ونظام التشغيل.</li><li>راجع الروابط والمرفقات قبل فتحها.</li><li>احتفظ بنسخة احتياطية من الملفات المهمة.</li></ul>
+    <h2>3. المصادقة (Authentication) مقابل التصريح (Authorization)</h2>
+    <ul>
+      <li><b>Authentication:</b> بتثبت مين إنت (زي كتابة الباسورد).</li>
+      <li><b>Authorization:</b> بتحدد إنت مسموحلك تعمل إيه (زي إن الأدمن بس اللي يقدر يمسح مستخدمين).</li>
+    </ul>
+  </div>
+
+  <div class="card lesson">
+    <h2>4. أنواع البرمجيات الخبيثة (Malware)</h2>
+    <ul>
+      <li><b>Virus:</b> برنامج بيلزق في ملفات تانية وبيشتغل لما تفتح الملف.</li>
+      <li><b>Worm (دودة):</b> بينتشر لوحده في الشبكة من غير ما تحتاج تفتح حاجة.</li>
+      <li><b>Trojan (حصان طروادة):</b> بيبان كبرنامج مفيد بس جواه برنامج خبيث.</li>
+      <li><b>Ransomware (فدية):</b> بيشفّر ملفاتك ويطلب منك فلوس (فدية) عشان يفكها.</li>
+    </ul>
+  </div>
+
+  <div class="card lesson">
+    <h2>5. اختبار سريع</h2>
+    <div id="quiz-fundamentals"></div>
+    <button class="btn green" data-quiz="fundamentals">تصحيح الإجابات</button>
+    <div id="result-fundamentals" class="result hidden"></div>
   </div>
 </section>
 
+<!-- 2. الشبكات -->
 <section id="network">
   <div class="page-title"><h1>أمن الشبكات</h1><p>Network Security</p></div>
+  
   <div class="card lesson">
-    <h2>مفاهيم مهمة</h2>
+    <h2>1. ازاي البيانات بتتنقل؟ (TCP vs UDP)</h2>
     <ul>
-      <li><b>IP:</b> عنوان منطقي لجهاز على الشبكة.</li>
-      <li><b>MAC:</b> عنوان واجهة الشبكة.</li>
-      <li><b>DNS:</b> يحوّل أسماء النطاقات إلى عناوين IP.</li>
-      <li><b>TCP:</b> اتصال موثوق يرتب البيانات ويتابع وصولها.</li>
-      <li><b>UDP:</b> يرسل البيانات دون ضمان تسليمها.</li>
-      <li><b>HTTP:</b> غالبًا المنفذ 80.</li>
-      <li><b>HTTPS:</b> غالبًا المنفذ 443.</li>
-      <li><b>SSH:</b> غالبًا المنفذ 22.</li>
+      <li><b>TCP (موثوق):</b> بيفصل البيانات لقطع (Packets)، وبيتأكد إن كل قطعة وصلت بالترتيب الصح. بيستخدم في تصفح الويب والإيميل.</li>
+      <li><b>UDP (سريع):</b> بيرمي البيانات وخلاص من غير ما يتأكد إنها وصلت. أسرع بس أقل أماناً في التسليم. بيستخدم في الألعاب والفيديو المباشر.</li>
     </ul>
   </div>
+
   <div class="card lesson">
-    <h2>حماية الشبكة</h2>
-    <ul><li>فعّل WPA2-AES أو WPA3 للواي فاي.</li><li>غيّر كلمة مرور إدارة الراوتر الافتراضية.</li><li>حدّث نظام الراوتر.</li><li>افحص أجهزتك وشبكتك فقط، أو أي شبكة لديك إذن واضح لاختبارها.</li></ul>
+    <h2>2. العناوين والمنافذ (IP & Ports)</h2>
+    <p>عشان جهازين يتكلموا، محتاجين <b>IP</b> (عنوان الجهاز) و <b>Port</b> (رقم الخدمة اللي بتشتغل).</p>
+    <ul>
+      <li><b>HTTP:</b> المنفذ 80 (غير مشفر).</li>
+      <li><b>HTTPS:</b> المنفذ 443 (مشفر وآمن).</li>
+      <li><b>SSH:</b> المنفذ 22 (للتحكم في السيرفرات عن بعد).</li>
+      <li><b>FTP:</b> المنفذ 21 (نقل الملفات).</li>
+      <li><b>DNS:</b> المنفذ 53 (بيحول اسم الموقع لعنوان IP).</li>
+    </ul>
   </div>
-  <div class="card lesson"><h2>اختبار سريع</h2><div id="quiz-network"></div><button class="btn green" data-quiz="network">تصحيح الإجابات</button><div id="result-network" class="result hidden"></div></div>
+
+  <div class="card lesson">
+    <h2>3. أدوات حماية الشبكة</h2>
+    <ul>
+      <li><b>Firewall (جدار الحماية):</b> بيفلتر الترافيك ويمنع الاتصالات الغريبة.</li>
+      <li><b>VPN (الشبكة الافتراضية):</b> بيشفّر اتصالك ويخفي الـ IP بتاعك الحقيقي.</li>
+    </ul>
+  </div>
+
+  <div class="card lesson">
+    <h2>4. اختبار سريع</h2>
+    <div id="quiz-network"></div>
+    <button class="btn green" data-quiz="network">تصحيح الإجابات</button>
+    <div id="result-network" class="result hidden"></div>
+  </div>
 </section>
 
+<!-- 3. أمن الويب -->
 <section id="web">
   <div class="page-title"><h1>أمن تطبيقات الويب</h1><p>Web Application Security</p></div>
+  
   <div class="card lesson">
-    <h2>ثغرات شائعة</h2>
-    <ul>
-      <li><b>SQL Injection:</b> تلاعب باستعلامات قاعدة البيانات؛ الوقاية باستخدام الاستعلامات المعلّمة Prepared Statements.</li>
-      <li><b>XSS:</b> تنفيذ محتوى غير موثوق في المتصفح؛ الوقاية بترميز المخرجات والتحقق من المدخلات.</li>
-      <li><b>CSRF:</b> خداع متصفح المستخدم لإرسال طلب غير مرغوب؛ من وسائل الوقاية CSRF Tokens وSameSite Cookies.</li>
-      <li><b>HTTPS:</b> يحمي البيانات أثناء انتقالها بين المتصفح والخادم.</li>
-    </ul>
+    <h2>1. ثغرة SQL Injection</h2>
+    <p>بتحصل لما المبرمج ياخد مدخلات من المستخدم (زي اسم المستخدم) ويحطها في استعلام قاعدة البيانات من غير تأمين. الهاكر يقدر يكتب كود SQL يخليه يسحب بيانات كل المستخدمين أو يمسحها.</p>
+    <p><b>الوقاية:</b> استخدام الاستعلامات المعلّمة (Prepared Statements) عشان نفصل بين الكود والبيانات.</p>
   </div>
-  <div class="card lesson"><h2>نصائح للمطورين</h2><ul><li>لا تخزن كلمات المرور كنص صريح.</li><li>تحقق من صلاحيات المستخدم على الخادم.</li><li>لا تضع مفاتيح API السرية في كود الواجهة.</li><li>استخدم رسائل أخطاء لا تكشف تفاصيل حساسة.</li></ul></div>
-  <div class="card lesson"><h2>اختبار سريع</h2><div id="quiz-web"></div><button class="btn green" data-quiz="web">تصحيح الإجابات</button><div id="result-web" class="result hidden"></div></div>
+
+  <div class="card lesson">
+    <h2>2. ثغرة XSS (Cross-Site Scripting)</h2>
+    <p>بتحصل لما الهاكر يحقن كود JavaScript خبيث في صفحة ويب. لما المستخدم التاني يفتح الصفحة، الكود ده بيشتغل في متصفحه ويسرق الكوكيز أو يحوله لموقع مزيف.</p>
+    <p><b>الوقاية:</b> ترميز المخرجات (Output Encoding) وتنقية المدخلات (Sanitization) عشان نمنع تنفيذ أي أكواد غريبة.</p>
+  </div>
+
+  <div class="card lesson">
+    <h2>3. ثغرة CSRF (Cross-Site Request Forgery)</h2>
+    <p>الهاكر بيخدع متصفح المستخدم عشان يبعت طلب غير مرغوب فيه لموقع تاني المستخدم مسجل فيه دخول بالفعل (زي تحويل بنكي).</p>
+    <p><b>الوقاية:</b> استخدام CSRF Tokens (توكن عشوائي مع كل فورم) وخصائص SameSite في الكوكيز.</p>
+  </div>
+
+  <div class="card lesson">
+    <h2>4. اختبار سريع</h2>
+    <div id="quiz-web"></div>
+    <button class="btn green" data-quiz="web">تصحيح الإجابات</button>
+    <div id="result-web" class="result hidden"></div>
+  </div>
 </section>
 
+<!-- 4. التشفير -->
 <section id="crypto">
   <div class="page-title"><h1>التشفير</h1><p>Cryptography</p></div>
+  
   <div class="card lesson">
-    <h2>أنواع أساسية</h2>
-    <ul>
-      <li><b>AES:</b> تشفير متماثل يستخدم المفتاح نفسه للتشفير وفك التشفير.</li>
-      <li><b>RSA:</b> خوارزمية مفتاح عام ومفتاح خاص.</li>
-      <li><b>SHA-256:</b> دالة Hash لإنتاج بصمة للبيانات وليست تشفيرًا قابلًا للفك.</li>
-      <li><b>Password Hashing:</b> يفضل استخدام Argon2id أو bcrypt أو scrypt لتخزين كلمات المرور.</li>
-    </ul>
+    <h2>1. التشفير المتماثل (Symmetric Encryption)</h2>
+    <p>بيستخدم <b>مفتاح واحد</b> (سر) للتشفير وفك التشفير. سريع جداً ومناسب للملفات الكبيرة، بس مشكلته إنك لازم توصل المفتاح للطرف التاني بطريقة آمنة.</p>
+    <p><b>مثال:</b> AES (المعيار الحالي والأقوى).</p>
   </div>
-  <div class="card lesson"><h2>ممارسات آمنة</h2><ul><li>لا تخترع خوارزمية تشفير بنفسك.</li><li>استخدم مكتبات موثوقة ومحدثة.</li><li>احمِ المفاتيح السرية ولا تضعها داخل المستودعات العامة.</li></ul></div>
-  <div class="card lesson"><h2>اختبار سريع</h2><div id="quiz-crypto"></div><button class="btn green" data-quiz="crypto">تصحيح الإجابات</button><div id="result-crypto" class="result hidden"></div></div>
+
+  <div class="card lesson">
+    <h2>2. التشفير غير المتماثل (Asymmetric Encryption)</h2>
+    <p>بيستخدم <b>مفتاحين</b>: مفتاح عام (Public) بيوزع للكل، ومفتاح خاص (Private) بيفضل معاك. اللي بيتشفر بالمفتاح العام بيتفك بالمفتاح الخاص والعكس.</p>
+    <p><b>مثال:</b> RSA. (بيستخدم في تأمين الاتصالات وتوقيع الملفات).</p>
+  </div>
+
+  <div class="card lesson">
+    <h2>3. الهاش (Hashing)</h2>
+    <p>دالة رياضية بتحول أي بيانات لنص ثابت الطول (بصمة). الهاش <b>اتجاه واحد</b>، يعني مستحيل ترجع النص الأصلي من الهاش. بنستخدمه لتخزين كلمات المرور وللتأكد من سلامة الملفات.</p>
+    <p><b>مثال:</b> SHA-256.</p>
+    <p><b>الملح (Salt):</b> نص عشوائي بنضيفه لكلمة المرور قبل الهاش عشان نمنع الهاكر من استخدام الجداول الجاهزة (Rainbow Tables).</p>
+  </div>
+
+  <div class="card lesson">
+    <h2>4. اختبار سريع</h2>
+    <div id="quiz-crypto"></div>
+    <button class="btn green" data-quiz="crypto">تصحيح الإجابات</button>
+    <div id="result-crypto" class="result hidden"></div>
+  </div>
 </section>
 
+<!-- 5. الاختراق الأخلاقي -->
 <section id="hacking">
   <div class="page-title"><h1>الاختراق الأخلاقي</h1><p>Ethical Hacking</p></div>
+  
   <div class="card lesson">
-    <h2>المبدأ الأساسي</h2>
-    <p>اختبار أمان الأنظمة بموافقة صاحبها وضمن نطاق واضح ومحدد. وجود إذن لاختبار جهاز لا يعني وجود إذن لاختبار أجهزة أخرى على الشبكة.</p>
+    <h2>1. مين هو الهاكر الأخلاقي؟</h2>
+    <p>هو شخص بيمتلك مهارات الاختراق، بس بيستخدمها في <b>إطار قانوني وبإذن مسبق</b> من صاحب النظام، بهدف اكتشاف الثغرات وإصلاحها قبل ما يستغلها الهاكرز الحقيقيين. (بنسميه White Hat Hacker).</p>
   </div>
+
   <div class="card lesson">
-    <h2>مراحل العمل</h2>
-    <ul><li>تحديد النطاق والإذن.</li><li>جمع المعلومات المسموح بها.</li><li>فحص الإعدادات والخدمات.</li><li>التحقق الآمن من النتائج.</li><li>توثيق الثغرات واقتراح الإصلاحات.</li></ul>
+    <h2>2. مراحل الاختراق الأخلاقي</h2>
+    <ul>
+      <li><b>1. جمع المعلومات (Reconnaissance):</b> البحث عن أي معلومات متاحة عن الهدف.</li>
+      <li><b>2. الفحص (Scanning):</b> استخدام أدوات لمعرفة المنافذ المفتوحة والخدمات الشغالة.</li>
+      <li><b>3. الوصول (Gaining Access):</b> محاولة استغلال الثغرات للدخول للنظام.</li>
+      <li><b>4. الحفاظ على الوصول (Maintaining Access):</b> عمل باب خلفي (Backdoor) للتأكد من القدرة على الدخول تاني.</li>
+      <li><b>5. إخفاء الأثر (Covering Tracks):</b> مسح السجلات (Logs) عشان محدش يعرف إن فيه اختراق حصل.</li>
+    </ul>
   </div>
+
   <div class="card lesson">
-    <h2>أدوات تتعلمها</h2>
-    <ul><li>Nmap: استكشاف الشبكات التي تملك إذنًا بفحصها.</li><li>Wireshark: تحليل حركة الشبكة.</li><li>Burp Suite: اختبار تطبيقات الويب المصرح بها.</li><li>Linux: تعلم سطر الأوامر وإدارة الملفات.</li></ul>
+    <h2>3. أنواع الاختبار (Pentest Types)</h2>
+    <ul>
+      <li><b>Black Box (الصندوق الأسود):</b> الهاكر ميعرفش أي حاجة عن النظام (زي الهاكر الخارجي).</li>
+      <li><b>White Box (الصندوق الأبيض):</b> الهاكر عنده كل المعلومات والكود المصدري (زي المطور في الشركة).</li>
+      <li><b>Grey Box (الصندوق الرمادي):</b> عنده معلومات جزئية.</li>
+    </ul>
+  </div>
+
+  <div class="card lesson">
+    <h2>4. اختبار سريع</h2>
+    <div id="quiz-hacking"></div>
+    <button class="btn green" data-quiz="hacking">تصحيح الإجابات</button>
+    <div id="result-hacking" class="result hidden"></div>
   </div>
 </section>
 
+<!-- Terminal -->
 <section id="terminal">
   <div class="page-title"><h1>معمل الأوامر</h1><p>Browser Terminal Lab</p></div>
   <div class="card lesson callout">
@@ -352,11 +482,82 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
   </div>
   <p class="note">لو البيئة الحقيقية غير مدعومة على جهازك، هتظهر رسالة واضحة بدل الشاشة السوداء. الأوامر السريعة بتوضح أمثلة تعليمية، وليست وصولًا إلى نظام هاتفك.</p>
 </section>
+
+<!-- صفحة سياسة الخصوصية -->
+<section id="privacy">
+  <div class="page-title"><h1>سياسة الخصوصية</h1><p>Privacy Policy</p></div>
+  <div class="card lesson">
+    <h2>1. المعلومات التي نجمعها</h2>
+    <p>نحن نجمع البريد الإلكتروني الخاص بك عند إنشاء حساب أو تسجيل الدخول، بهدف إنشاء حسابك وتخصيص تجربتك التعليمية على المنصة.</p>
+  </div>
+  <div class="card lesson">
+    <h2>2. كيف نستخدم معلوماتك</h2>
+    <p>نستخدم بريدك الإلكتروني لتسجيل الدخول، واستعادة كلمة المرور، وإرسال إشعارات هامة متعلقة بالمنصة (إن لزم الأمر). نحن <b>لا نبيع</b> بياناتك لأي طرف ثالث.</p>
+  </div>
+  <div class="card lesson">
+    <h2>3. أمان التيرمينال والبيانات</h2>
+    <p>بيئة التيرمينال (Terminal) تعمل محليًا داخل متصفحك (WebContainer) ولا يتم تسجيل أو حفظ الأوامر التي تكتبها على سيرفراتنا.</p>
+  </div>
+  <div class="card lesson">
+    <h2>4. التواصل معنا</h2>
+    <p>لأي استفسارات بخصوص الخصوصية، يمكنك التواصل معنا عبر:</p>
+    <ul>
+      <li>البريد الإلكتروني: <a href="mailto:krevenkreven18@gmail.com">krevenkreven18@gmail.com</a></li>
+      <li>الهاتف: <a href="tel:01554416094">01554416094</a></li>
+    </ul>
+  </div>
+  <div class="back-btn-container">
+    <button class="btn green back-btn">رجوع</button>
+  </div>
+</section>
+
+<!-- صفحة شروط الاستخدام -->
+<section id="terms">
+  <div class="page-title"><h1>شروط الاستخدام</h1><p>Terms of Service</p></div>
+  <div class="card lesson">
+    <h2>1. الاستخدام التعليمي فقط</h2>
+    <p>منصة CyberAcademy هي منصة تعليمية تهدف لنشر الوعي بالأمن السيبراني. يجب استخدام كافة الأدوات والمعلومات المتاحة هنا للأغراض التعليمية والقانونية فقط.</p>
+  </div>
+  <div class="card lesson">
+    <h2>2. الاختراق الأخلاقي</h2>
+    <p>يُمنع منعًا باتًا استخدام ما تتعلمه في المنصة لاختراق أو الإضرار بأي أنظمة أو شبكات لا تملك إذنًا صريحًا ومكتوبًا باختبارها. أنت وحدك المسؤول قانونيًا عن أي سوء استخدام.</p>
+  </div>
+  <div class="card lesson">
+    <h2>3. حساب المستخدم</h2>
+    <p>أنت مسؤول عن الحفاظ على سرية كلمة المرور الخاصة بحسابك، وعن جميع الأنشطة التي تحدث تحت حسابك.</p>
+  </div>
+  <div class="card lesson">
+    <h2>4. إخلاء المسؤولية</h2>
+    <p>المنصة وأدواتها مقدمة "كما هي" دون أي ضمانات. نحن غير مسؤولين عن أي أضرار مباشرة أو غير مباشرة قد تنتج عن استخدام المنصة.</p>
+  </div>
+  <div class="card lesson">
+    <h2>5. التواصل</h2>
+    <p>لأي استفسارات قانونية، يمكنك التواصل معنا:</p>
+    <ul>
+      <li>البريد الإلكتروني: <a href="mailto:krevenkreven18@gmail.com">krevenkreven18@gmail.com</a></li>
+      <li>الهاتف: <a href="tel:01554416094">01554416094</a></li>
+    </ul>
+  </div>
+  <div class="back-btn-container">
+    <button class="btn green back-btn">رجوع</button>
+  </div>
+</section>
+
 </main>
 
 <footer>
   <div>_CyberAcademy — منصة عربية لتعلم الأمن السيبراني</div>
   <div>التعلم والاختبار يجب أن يكونا بإذن قانوني فقط.</div>
+  
+  <div class="footer-links">
+    <a href="#" data-go="privacy">سياسة الخصوصية</a> | 
+    <a href="#" data-go="terms">شروط الاستخدام</a>
+  </div>
+  
+  <div class="contact-info">
+    للتواصل: <a href="mailto:krevenkreven18@gmail.com">krevenkreven18@gmail.com</a> | <a href="tel:01554416094">01554416094</a>
+  </div>
+  
   <div>© 2026 CyberAcademy</div>
 </footer>
 
@@ -375,12 +576,10 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
     showSection('home');
   }
 
-  // التحقق من تسجيل الدخول
   if (localStorage.getItem('cyberAcademyAuth') === 'true') {
     openApp();
   }
 
-  // الدخول بالبريد
   $('auth-form').addEventListener('submit', e => {
     e.preventDefault();
     const email = $('login-id').value.trim();
@@ -391,29 +590,24 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
       return;
     }
     
-    // هنا هتحط كود الـ Backend بعدين (fetch API)
     localStorage.setItem('cyberAcademyAuth', 'true');
     openApp();
   });
 
-  // زرار جوجل
   $('google-login').addEventListener('click', () => {
     alert('سيتم ربط الدخول بحساب جوجل (Google OAuth) هنا بعد بناء الـ Backend.');
   });
 
-  // زرار نسيت كلمة السر
   $('forgot-password').addEventListener('click', (e) => {
     e.preventDefault();
     alert('سيتم تحويلك لصفحة استعادة كلمة المرور بعد بناء الـ Backend.');
   });
 
-  // زرار إنشاء حساب
   $('create-account').addEventListener('click', (e) => {
     e.preventDefault();
     alert('سيتم تحويلك لصفحة إنشاء الحساب (Sign Up) بعد بناء الـ Backend.');
   });
 
-  // الخروج
   $('logout').addEventListener('click', () => {
     localStorage.removeItem('cyberAcademyAuth');
     location.reload();
@@ -422,13 +616,14 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
   // ---------- Navigation ----------
   function showSection(id) {
     if (!$(id)) return;
+    if (id !== 'auth') { auth.classList.add('hidden'); }
+
     mainSections.forEach(s => s.classList.toggle('active', s.id === id));
     document.querySelectorAll('nav [data-go]').forEach(b =>
       b.classList.toggle('active', b.dataset.go === id)
     );
     window.scrollTo({top:0,behavior:'smooth'});
 
-    // تشغيل التيرمينال فقط عند فتح السكشن
     if (id === 'terminal') {
       setTimeout(() => {
         fitTerminal();
@@ -439,53 +634,117 @@ footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:
 
   document.addEventListener('click', e => {
     const target = e.target.closest('[data-go]');
-    if (target) showSection(target.dataset.go);
+    if (target) {
+      e.preventDefault();
+      showSection(target.dataset.go);
+    }
   });
 
-  // ---------- Quizzes ----------
+  document.querySelectorAll('.back-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (localStorage.getItem('cyberAcademyAuth') === 'true') {
+        showSection('home');
+      } else {
+        mainSections.forEach(s => s.classList.remove('active'));
+        auth.classList.remove('hidden');
+      }
+    });
+  });
+
+  // ---------- Quizzes Data ----------
   const quizData = {
+    fundamentals: [
+      {q:'ما هو المبدأ الذي يضمن أن البيانات لا يتم تعديلها بدون إذن؟',o:['السرية (Confidentiality)','سلامة البيانات (Integrity)','التوافر (Availability)','المصادقة (Authentication)'],a:1},
+      {q:'برنامج خبيث يبدو كبرنامج مفيد ولكنه يخفي كوداً ضاراً بداخله، ما هو؟',o:['فيروس (Virus)','دودة (Worm)','حصان طروادة (Trojan)','فدية (Ransomware)'],a:2},
+      {q:'التحقق من هوية المستخدم (مثلاً بكتابة كلمة المرور) يسمى:',o:['Authorization','Authentication','Hashing','Firewall'],a:1}
+    ],
     network: [
-      {q:'ما المنفذ الافتراضي لـ HTTPS؟',o:['21','22','80','443'],a:3},
-      {q:'أي بروتوكول يحوّل أسماء النطاقات إلى IP؟',o:['DNS','FTP','SSH','SMTP'],a:0},
-      {q:'ما البروتوكول الذي يضمن ترتيب ووصول البيانات؟',o:['UDP','TCP','ARP','ICMP'],a:1}
+      {q:'ما المنفذ الافتراضي لبروتوكول HTTPS؟',o:['21','22','80','443'],a:3},
+      {q:'أي بروتوكول يقوم بتحويل أسماء النطاقات (مثل google.com) إلى عناوين IP؟',o:['DNS','FTP','SSH','SMTP'],a:0},
+      {q:'ما هو البروتوكول الذي يضمن ترتيب ووصول البيانات ويعتبر موثوقاً؟',o:['UDP','TCP','ARP','ICMP'],a:1},
+      {q:'ما هي وظيفة الـ Firewall (جدار الحماية)؟',o:['تشفير الملفات','تصفح الإنترنت بشكل مجهول','فلترة الترافيك ومنع الاتصالات غير المصرح بها','زيادة سرعة الإنترنت'],a:2}
     ],
     web: [
-      {q:'ما أفضل طريقة أساسية للوقاية من SQL Injection؟',o:['Prepared Statements','إخفاء اسم الموقع','تغيير لون الصفحة','تعطيل CSS'],a:0},
-      {q:'HTTPS يساعد على حماية البيانات أثناء:',o:['النقل','الطباعة','حذف الملفات','تغيير الصور'],a:0},
-      {q:'XSS يرتبط غالبًا بتنفيذ محتوى غير موثوق في:',o:['المتصفح','الراوتر فقط','لوحة المفاتيح','الشاشة نفسها'],a:0}
+      {q:'ما هي أفضل طريقة للوقاية من ثغرة SQL Injection؟',o:['استخدام الاستعلامات المعلّمة (Prepared Statements)','إخفاء اسم الموقع','تغيير لون الصفحة','تعطيل لغة JavaScript'],a:0},
+      {q:'ما هي الثغرة التي يتم فيها حقن كود JavaScript خبيث ليتم تنفيذه في متصفح الضحية؟',o:['SQL Injection','XSS','CSRF','DDoS'],a:1},
+      {q:'ما هي الثغرة التي تستغل ثقة المتصفح في موقع معين لإرسال طلب غير مرغوب فيه (مثل تحويل بنكي)؟',o:['XSS','SQLi','CSRF','Phishing'],a:2}
     ],
     crypto: [
-      {q:'أي مما يلي دالة Hash؟',o:['SHA-256','AES','FTP','HTTP'],a:0},
-      {q:'أي خوارزمية تشفير متماثل؟',o:['RSA','AES','DNS','SSH'],a:1},
-      {q:'هل الـ Hash هو نفسه التشفير القابل للفك؟',o:['نعم دائمًا','لا','فقط مع HTTP','فقط على الهاتف'],a:1}
+      {q:'أي من الخوارزميات التالية تعتبر دالة هاش (Hash)؟',o:['SHA-256','AES','RSA','FTP'],a:0},
+      {q:'ما هي الخوارزمية التي تستخدم مفتاحاً واحداً للتشفير وفك التشفير؟',o:['RSA','AES','DNS','SSH'],a:1},
+      {q:'الـ Hash هو نفس التشفير القابل للفك (True/False)؟',o:['صحيح، يمكن فكه دائماً','خطأ، الـ Hash اتجاه واحد ولا يمكن فكه','صحيح فقط مع HTTP','صحيح فقط على الهواتف'],a:1},
+      {q:'ما هو الـ Salt في تخزين كلمات المرور؟',o:['نوع من الفيروسات','نص عشوائي يضاف لكلمة المرور قبل عمل الهاش','بروتوكول شبكات','منفذ من منافذ الاتصال'],a:1}
+    ],
+    hacking: [
+      {q:'ما هي المرحلة الأولى في الاختراق الأخلاقي؟',o:['الحفاظ على الوصول','جمع المعلومات (Reconnaissance)','إخفاء الأثر','استغلال الثغرة'],a:1},
+      {q:'ما هو نوع الاختبار (Pentest) الذي يكون فيه الهاكر على علم كامل بالمعلومات والكود المصدري للهدف؟',o:['Black Box','Grey Box','White Box','Red Box'],a:2},
+      {q:'الهاكر الأخلاقي يجب أن يقوم بكل ما يلي ما عدا:',o:['الحصول على إذن مسبق','توثيق الثغرات','إخفاء الأثر لعدم اكتشافه','إصلاح الثغرات'],a:2}
     ]
   };
 
+  // Render Quizzes
   Object.entries(quizData).forEach(([subject,questions]) => {
     const host = $('quiz-' + subject);
-    host.innerHTML = questions.map((q,i) =>
-      `<div class="quiz-question"><p>${i+1}. ${q.q}</p>` +
-      q.o.map((option,j) =>
-        `<label class="option"><input type="radio" name="${subject}-${i}" value="${j}"> ${option}</label>`
-      ).join('') + '</div>'
-    ).join('');
+    if(host) {
+      host.innerHTML = questions.map((q,i) =>
+        `<div class="quiz-question" id="q-${subject}-${i}"><p>${i+1}. ${q.q}</p>` +
+        q.o.map((option,j) =>
+          `<label class="option" id="opt-${subject}-${i}-${j}">
+             <input type="radio" name="${subject}-${i}" value="${j}" onchange="clearError('${subject}',${i})"> ${option}
+           </label>`
+        ).join('') + '</div>'
+      ).join('');
+    }
   });
 
+  // Clear error state on change
+  window.clearError = (subject, i) => {
+    const qDiv = $(`q-${subject}-${i}`);
+    if(!qDiv) return;
+    qDiv.querySelectorAll('.option').forEach(opt => opt.classList.remove('wrong', 'correct'));
+    $(`result-${subject}`).classList.add('hidden');
+  };
+
+  // Check Answers
   document.querySelectorAll('[data-quiz]').forEach(button => {
     button.addEventListener('click', () => {
       const subject = button.dataset.quiz;
       const questions = quizData[subject];
       let score = 0, missing = false;
+      let hasError = false;
+
       questions.forEach((q,i) => {
         const chosen = document.querySelector(`input[name="${subject}-${i}"]:checked`);
-        if (!chosen) missing = true;
-        else if (Number(chosen.value) === q.a) score++;
+        const qDiv = $(`q-${subject}-${i}`);
+        
+        // Reset colors
+        qDiv.querySelectorAll('.option').forEach(opt => opt.classList.remove('wrong', 'correct'));
+
+        if (!chosen) {
+          missing = true;
+        } else {
+          const chosenVal = Number(chosen.value);
+          if (chosenVal === q.a) {
+            score++;
+            $(`opt-${subject}-${i}-${chosenVal}`).classList.add('correct');
+          } else {
+            hasError = true;
+            $(`opt-${subject}-${i}-${chosenVal}`).classList.add('wrong');
+            $(`opt-${subject}-${i}-${q.a}`).classList.add('correct'); // Show correct answer
+          }
+        }
       });
-      const result = $('result-' + subject);
-      result.classList.remove('hidden');
-      result.textContent = missing
-        ? `جاوب على كل الأسئلة الأول. نتيجتك الحالية: ${score}/${questions.length}`
-        : `نتيجتك: ${score}/${questions.length} — ${score === questions.length ? 'ممتاز! كل إجاباتك صحيحة.' : 'راجع الدرس وحاول مرة تانية.'}`;
+
+      const result = $(`result-${subject}`);
+      result.classList.remove('hidden', 'success', 'error');
+      
+      if (missing) {
+        result.textContent = `جاوب على كل الأسئلة الأول. نتيجتك الحالية: ${score}/${questions.length}`;
+        result.classList.add('error');
+      } else {
+        result.textContent = `نتيجتك: ${score}/${questions.length} — ${score === questions.length ? 'ممتاز! كل إجاباتك صحيحة.' : 'راجع الإجابات الصحيحة باللون الأخضر.'}`;
+        result.classList.add(score === questions.length ? 'success' : 'error');
+      }
     });
   });
 
