@@ -580,7 +580,7 @@ footer {
     openApp();
   }
 
-  // 1. تسجيل الدخول (مربوط بالباك إند)
+  // 1. تسجيل الدخول
   $('auth-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = $('login-id').value.trim();
@@ -605,17 +605,18 @@ footer {
         localStorage.setItem('cyberAcademyUserName', data.user.name);
         openApp();
       } else {
-        alert(data.message);
+        // تعديل عشان يظهر الخطأ الحقيقي
+        alert('خطأ: ' + data.message + (data.error ? '\nالتفاصيل: ' + data.error : ''));
       }
     } catch (error) {
-      alert('مشكلة في الاتصال بالسيرفر. تأكد من الإنترنت أو حاول لاحقاً.');
+      alert('مشكلة في الاتصال بالسيرفر: ' + error.message);
     } finally {
       submitBtn.textContent = 'دخول للمنصة';
       submitBtn.disabled = false;
     }
   });
 
-  // 2. إنشاء حساب جديد (مربوط بالباك إند)
+  // 2. إنشاء حساب جديد
   $('create-account').addEventListener('click', async (e) => {
     e.preventDefault();
     const name = prompt('أدخل اسمك:');
@@ -639,14 +640,15 @@ footer {
       if (response.ok) {
         alert('تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.');
       } else {
-        alert(data.message);
+        // تعديل عشان يظهر الخطأ الحقيقي
+        alert('خطأ: ' + data.message + (data.error ? '\nالتفاصيل: ' + data.error : ''));
       }
     } catch (error) {
-      alert('مشكلة في الاتصال بالسيرفر.');
+      alert('مشكلة في الاتصال بالسيرفر: ' + error.message);
     }
   });
 
-  // 3. نسيت كلمة المرور (مربوط بالباك إند)
+  // 3. نسيت كلمة المرور
   $('forgot-password').addEventListener('click', async (e) => {
     e.preventDefault();
     const email = prompt('أدخل بريدك الإلكتروني لاستعادة كلمة المرور:');
@@ -662,11 +664,11 @@ footer {
       const data = await response.json();
       alert(data.message);
     } catch (error) {
-      alert('مشكلة في الاتصال بالسيرفر.');
+      alert('مشكلة في الاتصال بالسيرفر: ' + error.message);
     }
   });
 
-  // 4. الدخول بجوجل (هيتفعل بعدين)
+  // 4. الدخول بجوجل
   $('google-login').addEventListener('click', () => {
     alert('سيتم ربط الدخول بحساب جوجل (Google OAuth) قريباً.');
   });
