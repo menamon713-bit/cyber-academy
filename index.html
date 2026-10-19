@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>CyberAcademy | أكاديمية الأمن السيبراني</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/css/xterm.css">
+
+<style>
+:root {
+  --green:#00ff41;
+  --blue:#00bfff;
+  --bg:#050505;
+  --card:#101010;
+  --border:#292929;
+  --muted:#aaa;
+  --red:#ff4545;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+body {
+  background:var(--bg);
+  color:#fff;
+  font-family:Cairo,sans-serif;
+  min-height:100vh;
+}
+button,input {font:inherit}
+button {cursor:pointer}
+a {color:var(--green);text-decoration:none}
+.hidden {display:none!important}
+
+header {
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:13px 18px;
+  background:rgba(5,5,5,.96);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.logo {font-size:1.2rem;font-weight:900}
+.logo span {color:var(--green);text-shadow:0 0 12px #00ff4170}
+nav {display:flex;gap:8px;flex-wrap:wrap}
+.btn {
+  background:#101010;color:white;border:1px solid #383838;
+  padding:9px 14px;border-radius:7px;transition:.2s;
+}
+.btn:hover,.btn.active {border-color:var(--green);color:var(--green)}
+.btn.green {background:var(--green);color:#000;border-color:var(--green);font-weight:900}
+.btn.red {border-color:var(--red);color:var(--red)}
+
+main {max-width:1100px;margin:auto;padding:24px 16px 60px}
+section {display:none;animation:fade .25s ease}
+section.active {display:block}
+@keyframes fade {from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+
+.hero {text-align:center;padding:65px 10px 40px}
+.hero h1 {font-size:clamp(1.8rem,5vw,3.2rem);line-height:1.5}
+.green-text {color:var(--green);text-shadow:0 0 18px #00ff4140}
+.hero p {color:var(--muted);line-height:2;margin:14px auto 22px;max-width:650px}
+.section-title {text-align:center;font-size:1.7rem;margin:20px 0 25px}
+.grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.card {
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:22px;transition:.2s;
+}
+.path-card {cursor:pointer;text-align:center;min-height:135px}
+.path-card:hover {border-color:var(--green);transform:translateY(-3px)}
+.path-card .symbol {font-size:1.9rem;color:var(--green);margin-bottom:8px}
+.card h3 {margin-bottom:9px}
+.card p,.muted {color:var(--muted);line-height:1.9}
+.page-title {text-align:center;padding:22px 0 28px}
+.page-title h1 {font-size:clamp(1.5rem,4vw,2.4rem)}
+.page-title p {color:var(--muted)}
+.lesson {margin-bottom:15px}
+.lesson h2 {color:var(--green);font-size:1.2rem;margin-bottom:12px}
+.lesson p,.lesson li {line-height:2;color:#ddd}
+.lesson ul {padding-right:20px}
+.callout {border-right:3px solid var(--blue)}
+code,.mono {font-family:monospace}
+.terminal-box {
+  background:#000;border:1px solid var(--green);border-radius:10px;
+  overflow:hidden;box-shadow:0 0 25px #00ff4115;
+}
+.terminal-bar {
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  padding:10px 12px;background:#101010;border-bottom:1px solid #262626;
+}
+.terminal-dots {display:flex;gap:6px}
+.terminal-dots i {width:9px;height:9px;border-radius:50%;background:#555}
+.terminal-dots i:first-child {background:#ff5f57}
+.terminal-dots i:nth-child(2) {background:#febc2e}
+.terminal-dots i:nth-child(3) {background:#28c840}
+.terminal-status {font:12px monospace;color:var(--green)}
+#terminal {
+  height:360px;
+  padding:8px;
+  direction:ltr;
+  text-align:left;
+  background:#000;
+}
+.terminal-actions {display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.note {font-size:.9rem;color:var(--muted);line-height:1.9;margin:12px 0}
+.quiz-question {padding:16px 0;border-bottom:1px solid #282828}
+.quiz-question p {font-weight:700;margin-bottom:10px}
+.option {display:block;background:#191919;border:1px solid #303030;border-radius:6px;padding:10px;margin:7px 0;cursor:pointer}
+.option:has(input:checked) {border-color:var(--green)}
+.option input {accent-color:var(--green);margin-left:8px}
+.result {padding:14px;margin-top:12px;border:1px solid var(--border);border-radius:7px}
+footer {text-align:center;border-top:1px solid var(--border);padding:25px;color:#888;line-height:2}
+
+/* ---------- Auth Styles ---------- */
+#auth {
+  position:fixed;inset:0;z-index:100;
+  background:#050505;display:flex;align-items:center;justify-content:center;
+  padding:18px;
+}
+.auth-card {width:100%;max-width:420px}
+.auth-card h1 {text-align:center;margin-bottom:8px}
+.auth-card h1 span {color:var(--green)}
+.auth-card p {text-align:center;color:var(--muted);margin-bottom:22px}
+.auth-card input[type=text],.auth-card input[type=email],.auth-card input[type=password] {
+  width:100%;padding:13px;margin:7px 0 12px;
+  background:#111;color:white;border:1px solid #333;border-radius:6px;
+}
+.auth-card input:focus {outline:1px solid var(--green)}
+.auth-card label {font-size:.88rem;color:#bbb;line-height:2}
+.auth-card .btn {width:100%;margin-top:14px}
+#auth-error {color:var(--red);font-size:.9rem;margin-top:10px}
+
+.password-label-row {
+  display: flex; justify-content: space-between; align-items: center; margin-top: 8px;
+}
+.small-link {
+  font-size: 0.85rem; color: var(--blue); text-decoration: none;
+}
+.small-link:hover { text-decoration: underline; }
+
+.divider {
+  display: flex; align-items: center; text-align: center; margin: 20px 0; color: #666;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; border-bottom: 1px solid #333;
+}
+.divider span { padding: 0 10px; font-size: 0.9rem; }
+
+.google-btn {
+  background: #fff; color: #333; border: 1px solid #ddd;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-weight: 600; width: 100%; padding: 11px; transition: 0.2s;
+  border-radius:7px;
+}
+.google-btn:hover { background: #f1f1f1; color: #000; border-color: #ccc; }
+.google-btn svg { width: 20px; height: 20px; }
+
+.auth-footer {
+  text-align: center; margin-top: 22px; font-size: 0.95rem; color: var(--muted);
+}
+.auth-footer a { color: var(--green); font-weight: bold; text-decoration: none; }
+.auth-footer a:hover { text-decoration: underline; }
+
+@media(max-width:600px) {
+  header {align-items:flex-start;flex-direction:column}
+  nav {width:100%}
+  nav .btn {flex:1;padding:8px 6px;font-size:.85rem}
+  main {padding:15px 12px 40px}
+  .hero {padding-top:40px}
+  #terminal {height:330px}
+}
+</style>
+</head>
+
+<body>
+
+<!-- شاشة الدخول -->
+<div id="auth">
+  <div class="card auth-card">
+    <h1>_Cyber<span>Academy</span></h1>
+    <p>منصتك العربية لتعلم الأمن السيبراني</p>
+    
+    <form id="auth-form">
+      <label for="login-id">البريد الإلكتروني</label>
+      <input id="login-id" type="email" required placeholder="أدخل بريدك الإلكتروني">
+      
+      <div class="password-label-row">
+        <label for="login-password">كلمة المرور</label>
+        <a href="#" class="small-link" id="forgot-password">نسيت كلمة السر؟</a>
+      </div>
+      <input id="login-password" type="password" required minlength="6" placeholder="أدخل كلمة المرور">
+      
+      <button class="btn green" type="submit">دخول للمنصة</button>
+    </form>
+
+    <div class="divider"><span>أو</span></div>
+
+    <button class="btn google-btn" id="google-login">
+      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      الدخول بحساب جوجل
+    </button>
+
+    <div class="auth-footer">
+      <span>ليس لديك حساب؟ </span>
+      <a href="#" id="create-account">إنشاء حساب جديد</a>
+    </div>
+  </div>
+</div>
+
+<!-- الهيدر -->
+<header>
+  <div class="logo">_Cyber<span>Academy</span></div>
+  <nav>
+    <button class="btn active" data-go="home">الرئيسية</button>
+    <button class="btn" data-go="fundamentals">الأساسيات</button>
+    <button class="btn" data-go="network">الشبكات</button>
+    <button class="btn" data-go="web">أمن الويب</button>
+    <button class="btn" data-go="crypto">التشفير</button>
+    <button class="btn" data-go="hacking">الاختراق الأخلاقي</button>
+    <button class="btn" data-go="terminal">Terminal</button>
+    <button class="btn red" id="logout">خروج</button>
+  </nav>
+</header>
+
+<main>
+<section id="home" class="active">
+  <div class="hero">
+    <h1>أهلاً بك في <span class="green-text">CyberAcademy</span></h1>
+    <p>اتعلم الأمن السيبراني خطوة بخطوة، من أساسيات الشبكات والتشفير إلى اختبار الاختراق الأخلاقي، داخل بيئة تعليمية.</p>
+    <button class="btn green" data-go="fundamentals">ابدأ التعلم الآن</button>
+  </div>
+  <h2 class="section-title">اختار <span class="green-text">مسارك</span></h2>
+  <div class="grid">
+    <div class="card path-card" data-go="fundamentals"><div class="symbol">🛡</div><h3>أساسيات الأمن</h3><p>مبادئ الحماية والأمان الرقمي</p></div>
+    <div class="card path-card" data-go="network"><div class="symbol">🌐</div><h3>أمن الشبكات</h3><p>البروتوكولات والمنافذ وعناوين IP</p></div>
+    <div class="card path-card" data-go="web"><div class="symbol">⌘</div><h3>أمن الويب</h3><p>الثغرات الشائعة وطرق الوقاية</p></div>
+    <div class="card path-card" data-go="crypto"><div class="symbol">🔐</div><h3>التشفير</h3><p>الهاش والمفاتيح والتشفير</p></div>
+    <div class="card path-card" data-go="hacking"><div class="symbol">⌁</div><h3>الاختراق الأخلاقي</h3><p>اختبار الأنظمة بإذن أصحابها</p></div>
+    <div class="card path-card" data-go="terminal"><div class="symbol">&gt;_</div><h3>معمل الأوامر</h3><p>تجربة أوامر Shell داخل المتصفح</p></div>
+  </div>
+</section>
+
+<section id="fundamentals">
+  <div class="page-title"><h1>أساسيات الأمن السيبراني</h1><p>Cybersecurity Fundamentals</p></div>
+  <div class="card lesson">
+    <h2>يعني إيه أمن سيبراني؟</h2>
+    <p>هو حماية الأجهزة والشبكات والتطبيقات والبيانات من الوصول غير المصرح به أو التعديل أو التعطيل.</p>
+  </div>
+  <div class="card lesson">
+    <h2>ثالوث CIA</h2>
+    <ul>
+      <li><b>Confidentiality — السرية:</b> البيانات يشوفها الأشخاص المصرح لهم فقط.</li>
+      <li><b>Integrity — سلامة البيانات:</b> البيانات تفضل صحيحة وغير معدلة دون إذن.</li>
+      <li><b>Availability — التوافر:</b> الأنظمة تكون متاحة وقت الحاجة.</li>
+    </ul>
+  </div>
+  <div class="card lesson">
+    <h2>خطوات الحماية</h2>
+    <ul><li>استخدم كلمة مرور قوية وفريدة.</li><li>فعّل المصادقة الثنائية.</li><li>حدّث البرامج ونظام التشغيل.</li><li>راجع الروابط والمرفقات قبل فتحها.</li><li>احتفظ بنسخة احتياطية من الملفات المهمة.</li></ul>
+  </div>
+</section>
+
+<section id="network">
+  <div class="page-title"><h1>أمن الشبكات</h1><p>Network Security</p></div>
+  <div class="card lesson">
+    <h2>مفاهيم مهمة</h2>
+    <ul>
+      <li><b>IP:</b> عنوان منطقي لجهاز على الشبكة.</li>
+      <li><b>MAC:</b> عنوان واجهة الشبكة.</li>
+      <li><b>DNS:</b> يحوّل أسماء النطاقات إلى عناوين IP.</li>
+      <li><b>TCP:</b> اتصال موثوق يرتب البيانات ويتابع وصولها.</li>
+      <li><b>UDP:</b> يرسل البيانات دون ضمان تسليمها.</li>
+      <li><b>HTTP:</b> غالبًا المنفذ 80.</li>
+      <li><b>HTTPS:</b> غالبًا المنفذ 443.</li>
+      <li><b>SSH:</b> غالبًا المنفذ 22.</li>
+    </ul>
+  </div>
+  <div class="card lesson">
+    <h2>حماية الشبكة</h2>
+    <ul><li>فعّل WPA2-AES أو WPA3 للواي فاي.</li><li>غيّر كلمة مرور إدارة الراوتر الافتراضية.</li><li>حدّث نظام الراوتر.</li><li>افحص أجهزتك وشبكتك فقط، أو أي شبكة لديك إذن واضح لاختبارها.</li></ul>
+  </div>
+  <div class="card lesson"><h2>اختبار سريع</h2><div id="quiz-network"></div><button class="btn green" data-quiz="network">تصحيح الإجابات</button><div id="result-network" class="result hidden"></div></div>
+</section>
+
+<section id="web">
+  <div class="page-title"><h1>أمن تطبيقات الويب</h1><p>Web Application Security</p></div>
+  <div class="card lesson">
+    <h2>ثغرات شائعة</h2>
+    <ul>
+      <li><b>SQL Injection:</b> تلاعب باستعلامات قاعدة البيانات؛ الوقاية باستخدام الاستعلامات المعلّمة Prepared Statements.</li>
+      <li><b>XSS:</b> تنفيذ محتوى غير موثوق في المتصفح؛ الوقاية بترميز المخرجات والتحقق من المدخلات.</li>
+      <li><b>CSRF:</b> خداع متصفح المستخدم لإرسال طلب غير مرغوب؛ من وسائل الوقاية CSRF Tokens وSameSite Cookies.</li>
+      <li><b>HTTPS:</b> يحمي البيانات أثناء انتقالها بين المتصفح والخادم.</li>
+    </ul>
+  </div>
+  <div class="card lesson"><h2>نصائح للمطورين</h2><ul><li>لا تخزن كلمات المرور كنص صريح.</li><li>تحقق من صلاحيات المستخدم على الخادم.</li><li>لا تضع مفاتيح API السرية في كود الواجهة.</li><li>استخدم رسائل أخطاء لا تكشف تفاصيل حساسة.</li></ul></div>
+  <div class="card lesson"><h2>اختبار سريع</h2><div id="quiz-web"></div><button class="btn green" data-quiz="web">تصحيح الإجابات</button><div id="result-web" class="result hidden"></div></div>
+</section>
+
+<section id="crypto">
+  <div class="page-title"><h1>التشفير</h1><p>Cryptography</p></div>
+  <div class="card lesson">
+    <h2>أنواع أساسية</h2>
+    <ul>
+      <li><b>AES:</b> تشفير متماثل يستخدم المفتاح نفسه للتشفير وفك التشفير.</li>
+      <li><b>RSA:</b> خوارزمية مفتاح عام ومفتاح خاص.</li>
+      <li><b>SHA-256:</b> دالة Hash لإنتاج بصمة للبيانات وليست تشفيرًا قابلًا للفك.</li>
+      <li><b>Password Hashing:</b> يفضل استخدام Argon2id أو bcrypt أو scrypt لتخزين كلمات المرور.</li>
+    </ul>
+  </div>
+  <div class="card lesson"><h2>ممارسات آمنة</h2><ul><li>لا تخترع خوارزمية تشفير بنفسك.</li><li>استخدم مكتبات موثوقة ومحدثة.</li><li>احمِ المفاتيح السرية ولا تضعها داخل المستودعات العامة.</li></ul></div>
+  <div class="card lesson"><h2>اختبار سريع</h2><div id="quiz-crypto"></div><button class="btn green" data-quiz="crypto">تصحيح الإجابات</button><div id="result-crypto" class="result hidden"></div></div>
+</section>
+
+<section id="hacking">
+  <div class="page-title"><h1>الاختراق الأخلاقي</h1><p>Ethical Hacking</p></div>
+  <div class="card lesson">
+    <h2>المبدأ الأساسي</h2>
+    <p>اختبار أمان الأنظمة بموافقة صاحبها وضمن نطاق واضح ومحدد. وجود إذن لاختبار جهاز لا يعني وجود إذن لاختبار أجهزة أخرى على الشبكة.</p>
+  </div>
+  <div class="card lesson">
+    <h2>مراحل العمل</h2>
+    <ul><li>تحديد النطاق والإذن.</li><li>جمع المعلومات المسموح بها.</li><li>فحص الإعدادات والخدمات.</li><li>التحقق الآمن من النتائج.</li><li>توثيق الثغرات واقتراح الإصلاحات.</li></ul>
+  </div>
+  <div class="card lesson">
+    <h2>أدوات تتعلمها</h2>
+    <ul><li>Nmap: استكشاف الشبكات التي تملك إذنًا بفحصها.</li><li>Wireshark: تحليل حركة الشبكة.</li><li>Burp Suite: اختبار تطبيقات الويب المصرح بها.</li><li>Linux: تعلم سطر الأوامر وإدارة الملفات.</li></ul>
+  </div>
+</section>
+
+<section id="terminal">
+  <div class="page-title"><h1>معمل الأوامر</h1><p>Browser Terminal Lab</p></div>
+  <div class="card lesson callout">
+    <h2>قبل البداية</h2>
+    <p>التيرمينال ده بيستخدم بيئة WebContainer داخل المتصفح، وده مش تيرمينال أندرويد أو Kali Linux كامل. يحتاج متصفحًا متوافقًا واتصالًا مناسبًا، ويعمل أفضل عبر HTTPS أو localhost.</p>
+    <p>جرّب الأوامر التعليمية: <code>help</code>، <code>pwd</code>، <code>ls</code>، <code>echo Hello</code>، <code>mkdir test</code>.</p>
+  </div>
+  <div class="terminal-box">
+    <div class="terminal-bar">
+      <div class="terminal-dots"><i></i><i></i><i></i></div>
+      <span class="terminal-status" id="terminal-status">WAITING</span>
+      <button class="btn" id="clear-terminal">مسح الشاشة</button>
+    </div>
+    <div id="terminal"></div>
+  </div>
+  <div class="terminal-actions">
+    <button class="btn" data-command="help">help</button>
+    <button class="btn" data-command="pwd">pwd</button>
+    <button class="btn" data-command="ls">ls</button>
+    <button class="btn" data-command="echo Hello CyberAcademy">echo Hello</button>
+    <button class="btn" id="restart-terminal">إعادة تشغيل البيئة</button>
+  </div>
+  <p class="note">لو البيئة الحقيقية غير مدعومة على جهازك، هتظهر رسالة واضحة بدل الشاشة السوداء. الأوامر السريعة بتوضح أمثلة تعليمية، وليست وصولًا إلى نظام هاتفك.</p>
+</section>
+</main>
+
+<footer>
+  <div>_CyberAcademy — منصة عربية لتعلم الأمن السيبراني</div>
+  <div>التعلم والاختبار يجب أن يكونا بإذن قانوني فقط.</div>
+  <div>© 2026 CyberAcademy</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@xterm/xterm@5.5.0/lib/xterm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit@0.10.0/lib/addon-fit.js"></script>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const auth = $('auth');
+  const mainSections = [...document.querySelectorAll('main section')];
+
+  // ---------- Auth ----------
+  function openApp() {
+    auth.classList.add('hidden');
+    showSection('home');
+  }
+
+  // التحقق من تسجيل الدخول
+  if (localStorage.getItem('cyberAcademyAuth') === 'true') {
+    openApp();
+  }
+
+  // الدخول بالبريد
+  $('auth-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const email = $('login-id').value.trim();
+    const password = $('login-password').value;
+
+    if (password.length < 6) {
+      alert('كلمة المرور لازم تكون 6 أحرف على الأقل.');
+      return;
+    }
+    
+    // هنا هتحط كود الـ Backend بعدين (fetch API)
+    localStorage.setItem('cyberAcademyAuth', 'true');
+    openApp();
+  });
+
+  // زرار جوجل
+  $('google-login').addEventListener('click', () => {
+    alert('سيتم ربط الدخول بحساب جوجل (Google OAuth) هنا بعد بناء الـ Backend.');
+  });
+
+  // زرار نسيت كلمة السر
+  $('forgot-password').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('سيتم تحويلك لصفحة استعادة كلمة المرور بعد بناء الـ Backend.');
+  });
+
+  // زرار إنشاء حساب
+  $('create-account').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('سيتم تحويلك لصفحة إنشاء الحساب (Sign Up) بعد بناء الـ Backend.');
+  });
+
+  // الخروج
+  $('logout').addEventListener('click', () => {
+    localStorage.removeItem('cyberAcademyAuth');
+    location.reload();
+  });
+
+  // ---------- Navigation ----------
+  function showSection(id) {
+    if (!$(id)) return;
+    mainSections.forEach(s => s.classList.toggle('active', s.id === id));
+    document.querySelectorAll('nav [data-go]').forEach(b =>
+      b.classList.toggle('active', b.dataset.go === id)
+    );
+    window.scrollTo({top:0,behavior:'smooth'});
+
+    // تشغيل التيرمينال فقط عند فتح السكشن
+    if (id === 'terminal') {
+      setTimeout(() => {
+        fitTerminal();
+        startTerminal();
+      }, 180);
+    }
+  }
+
+  document.addEventListener('click', e => {
+    const target = e.target.closest('[data-go]');
+    if (target) showSection(target.dataset.go);
+  });
+
+  // ---------- Quizzes ----------
+  const quizData = {
+    network: [
+      {q:'ما المنفذ الافتراضي لـ HTTPS؟',o:['21','22','80','443'],a:3},
+      {q:'أي بروتوكول يحوّل أسماء النطاقات إلى IP؟',o:['DNS','FTP','SSH','SMTP'],a:0},
+      {q:'ما البروتوكول الذي يضمن ترتيب ووصول البيانات؟',o:['UDP','TCP','ARP','ICMP'],a:1}
+    ],
+    web: [
+      {q:'ما أفضل طريقة أساسية للوقاية من SQL Injection؟',o:['Prepared Statements','إخفاء اسم الموقع','تغيير لون الصفحة','تعطيل CSS'],a:0},
+      {q:'HTTPS يساعد على حماية البيانات أثناء:',o:['النقل','الطباعة','حذف الملفات','تغيير الصور'],a:0},
+      {q:'XSS يرتبط غالبًا بتنفيذ محتوى غير موثوق في:',o:['المتصفح','الراوتر فقط','لوحة المفاتيح','الشاشة نفسها'],a:0}
+    ],
+    crypto: [
+      {q:'أي مما يلي دالة Hash؟',o:['SHA-256','AES','FTP','HTTP'],a:0},
+      {q:'أي خوارزمية تشفير متماثل؟',o:['RSA','AES','DNS','SSH'],a:1},
+      {q:'هل الـ Hash هو نفسه التشفير القابل للفك؟',o:['نعم دائمًا','لا','فقط مع HTTP','فقط على الهاتف'],a:1}
+    ]
+  };
+
+  Object.entries(quizData).forEach(([subject,questions]) => {
+    const host = $('quiz-' + subject);
+    host.innerHTML = questions.map((q,i) =>
+      `<div class="quiz-question"><p>${i+1}. ${q.q}</p>` +
+      q.o.map((option,j) =>
+        `<label class="option"><input type="radio" name="${subject}-${i}" value="${j}"> ${option}</label>`
+      ).join('') + '</div>'
+    ).join('');
+  });
+
+  document.querySelectorAll('[data-quiz]').forEach(button => {
+    button.addEventListener('click', () => {
+      const subject = button.dataset.quiz;
+      const questions = quizData[subject];
+      let score = 0, missing = false;
+      questions.forEach((q,i) => {
+        const chosen = document.querySelector(`input[name="${subject}-${i}"]:checked`);
+        if (!chosen) missing = true;
+        else if (Number(chosen.value) === q.a) score++;
+      });
+      const result = $('result-' + subject);
+      result.classList.remove('hidden');
+      result.textContent = missing
+        ? `جاوب على كل الأسئلة الأول. نتيجتك الحالية: ${score}/${questions.length}`
+        : `نتيجتك: ${score}/${questions.length} — ${score === questions.length ? 'ممتاز! كل إجاباتك صحيحة.' : 'راجع الدرس وحاول مرة تانية.'}`;
+    });
+  });
+
+  // ---------- Terminal ----------
+  let term = null;
+  let fitAddon = null;
+  let webcontainer = null;
+  let shellProcess = null;
+  let terminalReady = false;
+  let booting = false;
+  let inputWriter = null;
+
+  function setTerminalStatus(message) {
+    $('terminal-status').textContent = message;
+  }
+
+  function fitTerminal() {
+    if (!term || !fitAddon) return;
+    try { fitAddon.fit(); } catch (_) {}
+  }
+
+  function terminalMessage(text) {
+    if (term) term.writeln(text);
+  }
+
+  function createTerminal() {
+    if (term) return;
+    if (typeof Terminal === 'undefined') {
+      setTerminalStatus('LIBRARY ERROR');
+      $('terminal').innerHTML =
+        '<div style="padding:16px;color:#00ff41;font:14px monospace;line-height:2;direction:ltr;text-align:left">' +
+        'CyberAcademy Terminal<br>ERROR: xterm.js library could not load.<br>' +
+        'Check your internet connection and reload the page.</div>';
+      return;
+    }
+
+    term = new Terminal({
+      cursorBlink:true,
+      convertEol:true,
+      scrollback:1500,
+      fontFamily:'monospace',
+      fontSize:14,
+      theme:{
+        background:'#000000',
+        foreground:'#00ff41',
+        cursor:'#00ff41',
+        selectionBackground:'#174d25'
+      }
+    });
+
+    try {
+      fitAddon = new FitAddon.FitAddon();
+      term.loadAddon(fitAddon);
+    } catch (_) {}
+
+    term.open($('terminal'));
+    fitTerminal();
+
+    term.writeln('\x1b[1;32mCyberAcademy Terminal v1.0\x1b[0m');
+    term.writeln('Educational browser shell — authorized learning only.');
+    term.writeln('Loading terminal environment...');
+    term.writeln('');
+
+    term.onData(data => {
+      if (inputWriter && terminalReady) {
+        inputWriter.write(data).catch(err => {
+          terminalMessage('\r\nInput error: ' + err.message);
+        });
+      }
+    });
+  }
+
+  async function startTerminal() {
+    createTerminal();
+    if (!term || terminalReady || booting) return;
+    booting = true;
+    setTerminalStatus('STARTING...');
+
+    try {
+      if (!window.isSecureContext) {
+        throw new Error('Secure context required: open this page via HTTPS or localhost.');
+      }
+
+      const module = await import('https://esm.sh/@webcontainer/api@1.5.0');
+      if (!webcontainer) webcontainer = await module.WebContainer.boot();
+
+      await webcontainer.mount({
+        'package.json': {
+          file: {contents: JSON.stringify({
+            name:'cyberacademy-lab',
+            version:'1.0.0',
+            type:'module'
+          }, null, 2)}
+        },
+        'README.md': {
+          file:{contents:'Welcome to the CyberAcademy learning lab.\n'}
+        }
+      });
+
+      shellProcess = await webcontainer.spawn('jsh', {
+        terminal: { cols: term.cols, rows: term.rows }
+      });
+
+      const writer = shellProcess.input.getWriter();
+      inputWriter = writer;
+
+      shellProcess.output.pipeTo(new WritableStream({
+        write(data) { term.write(data); }
+      })).catch(err => {
+        terminalMessage('\r\nOutput stream ended: ' + err.message);
+      });
+
+      terminalReady = true;
+      setTerminalStatus('READY');
+      terminalMessage('\r\nEnvironment ready. Try: pwd, ls, echo Hello');
+      term.focus();
+    } catch (error) {
+      setTerminalStatus('ENVIRONMENT UNAVAILABLE');
+      terminalMessage('\r\n\x1b[1;31mEnvironment unavailable:\x1b[0m');
+      terminalMessage(String(error && error.message || error));
+      terminalMessage('Try a compatible desktop browser over HTTPS, or use the demo commands below.');
+    } finally {
+      booting = false;
+      fitTerminal();
+    }
+  }
+
+  function runDemoCommand(command) {
+    createTerminal();
+    if (!term) return;
+
+    if (terminalReady && inputWriter) {
+      inputWriter.write(command + '\n').catch(err => terminalMessage('Input error: ' + err.message));
+      return;
+    }
+
+    term.writeln('\r\n\x1b[1;32mstudent@cyberacademy:~$ \x1b[0m' + command);
+    const cmd = command.trim();
+    if (cmd === 'help') {
+      term.writeln('Available demo commands: help, pwd, ls, echo <text>, clear');
+    } else if (cmd === 'pwd') {
+      term.writeln('/home/student');
+    } else if (cmd === 'ls') {
+      term.writeln('README.md  package.json');
+    } else if (cmd.startsWith('echo ')) {
+      term.writeln(cmd.slice(5));
+    } else if (cmd === 'clear') {
+      term.clear();
+    } else {
+      term.writeln('Demo mode: command not executed because the real shell is unavailable.');
+      term.writeln('Use help to see supported demo commands.');
+    }
+  }
+
+  document.querySelectorAll('[data-command]').forEach(button => {
+    button.addEventListener('click', () => runDemoCommand(button.dataset.command));
+  });
+
+  $('clear-terminal').addEventListener('click', () => {
+    createTerminal();
+    if (term) term.clear();
+  });
+
+  $('restart-terminal').addEventListener('click', async () => {
+    if (term) {
+      term.clear();
+      term.writeln('\x1b[1;32mCyberAcademy Terminal\x1b[0m');
+      term.writeln('Restarting environment...');
+    }
+    if (webcontainer) {
+      terminalMessage('A WebContainer session is already running; reload the page to fully reset it.');
+      return;
+    }
+    await startTerminal();
+  });
+
+  window.addEventListener('resize', fitTerminal);
+})();
+</script>
+</body>
+</html>
