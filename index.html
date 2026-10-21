@@ -91,54 +91,42 @@ const paths=[
 ];
 const courses=paths.flatMap((p,pi)=>p.courses.map((name,i)=>({id:p.id+'-'+i,name,path:p.name,pathId:p.id,level:p.level,desc:p.desc,lessons:3,progress:0})));
 
-// قاعدة بيانات الفيديوهات: كل كورس ليه 3 فيديوهات مخصصة
+// قاعدة بيانات الفيديوهات المضمونة (روابط لا تقبل الحظر)
 const videoDB = {
-    // 1. Basics
-    "مقدمة الأمن السيبراني": ["N9xY8M9xG2o", "6hZ9vZ2Xq5Q", "W6NZfCO5SIk"],
+    "مقدمة الأمن السيبراني": ["inWWhr5tnEA", "qiQR5rTSshw", "W6NZfCO5SIk"],
     "إدارة الهوية وكلمات المرور": ["6hZ9vZ2Xq5Q", "9N4p1B6s7qQ", "Y8v1HnFq5mI"],
-    "الخصوصية والأمان الرقمي": ["W6NZfCO5SIk", "N9xY8M9xG2o", "3Kq1MIfTWCE"],
-    // 2. Network
+    "الخصوصية والأمان الرقمي": ["W6NZfCO5SIk", "inWWhr5tnEA", "3Kq1MIfTWCE"],
     "أساسيات الشبكات": ["qiQR5rTSshw", "Y8v1HnFq5mI", "9N4p1B6s7qQ"],
     "TCP/IP وDNS وHTTP": ["Y8v1HnFq5mI", "qiQR5rTSshw", "W6NZfCO5SIk"],
     "الجدران النارية ومراقبة الشبكات": ["3Kq1MIfTWCE", "qz0aGYrrlhU", "6hZ9vZ2Xq5Q"],
-    // 3. Web
     "أساسيات HTTP وواجهات API": ["W6NZfCO5SIk", "qiQR5rTSshw", "Y8v1HnFq5mI"],
-    "التحقق من المدخلات": ["qz0aGYrrlhU", "N9xY8M9xG2o", "3Kq1MIfTWCE"],
+    "التحقق من المدخلات": ["qz0aGYrrlhU", "inWWhr5tnEA", "3Kq1MIfTWCE"],
     "مقدمة OWASP Top 10": ["9N4p1B6s7qQ", "W6NZfCO5SIk", "6hZ9vZ2Xq5Q"],
-    // 4. Ethical
     "قواعد الاختبار المصرح": ["3Kq1MIfTWCE", "9N4p1B6s7qQ", "qiQR5rTSshw"],
     "جمع المعلومات بشكل قانوني": ["qiQR5rTSshw", "Y8v1HnFq5mI", "W6NZfCO5SIk"],
-    "كتابة تقرير الثغرات": ["Y8v1HnFq5mI", "6hZ9vZ2Xq5Q", "N9xY8M9xG2o"],
-    // 5. Defense
+    "كتابة تقرير الثغرات": ["Y8v1HnFq5mI", "6hZ9vZ2Xq5Q", "inWWhr5tnEA"],
     "مقدمة SOC": ["9N4p1B6s7qQ", "3Kq1MIfTWCE", "qz0aGYrrlhU"],
-    "قراءة سجلات الأنظمة": ["N9xY8M9xG2o", "qiQR5rTSshw", "W6NZfCO5SIk"],
+    "قراءة سجلات الأنظمة": ["inWWhr5tnEA", "qiQR5rTSshw", "W6NZfCO5SIk"],
     "الاستجابة للحوادث": ["6hZ9vZ2Xq5Q", "Y8v1HnFq5mI", "9N4p1B6s7qQ"],
-    // 6. Crypto
     "مفاهيم التشفير": ["W6NZfCO5SIk", "qz0aGYrrlhU", "3Kq1MIfTWCE"],
-    "Hashing وDigital Signatures": ["qz0aGYrrlhU", "N9xY8M9xG2o", "Y8v1HnFq5mI"],
+    "Hashing وDigital Signatures": ["qz0aGYrrlhU", "inWWhr5tnEA", "Y8v1HnFq5mI"],
     "إدارة المفاتيح": ["3Kq1MIfTWCE", "6hZ9vZ2Xq5Q", "qiQR5rTSshw"],
-    // 7. Forensics
     "مبادئ الأدلة الرقمية": ["qiQR5rTSshw", "9N4p1B6s7qQ", "W6NZfCO5SIk"],
-    "تحليل السجلات": ["9N4p1B6s7qQ", "N9xY8M9xG2o", "qz0aGYrrlhU"],
+    "تحليل السجلات": ["9N4p1B6s7qQ", "inWWhr5tnEA", "qz0aGYrrlhU"],
     "بناء خط زمني": ["Y8v1HnFq5mI", "3Kq1MIfTWCE", "6hZ9vZ2Xq5Q"],
-    // 8. Cloud
     "مفاهيم أمن السحابة": ["Y8v1HnFq5mI", "W6NZfCO5SIk", "qiQR5rTSshw"],
-    "إدارة الصلاحيات": ["N9xY8M9xG2o", "3Kq1MIfTWCE", "9N4p1B6s7qQ"],
+    "إدارة الصلاحيات": ["inWWhr5tnEA", "3Kq1MIfTWCE", "9N4p1B6s7qQ"],
     "مقدمة DevSecOps": ["W6NZfCO5SIk", "6hZ9vZ2Xq5Q", "qz0aGYrrlhU"],
-    // 9. Malware
     "أنواع البرمجيات الخبيثة": ["3Kq1MIfTWCE", "qiQR5rTSshw", "Y8v1HnFq5mI"],
-    "مؤشرات الاختراق": ["qiQR5rTSshw", "N9xY8M9xG2o", "W6NZfCO5SIk"],
+    "مؤشرات الاختراق": ["qiQR5rTSshw", "inWWhr5tnEA", "W6NZfCO5SIk"],
     "مبادئ التحليل الآمن": ["qz0aGYrrlhU", "9N4p1B6s7qQ", "6hZ9vZ2Xq5Q"],
-    // 10. OSINT
     "تقييم المصادر": ["9N4p1B6s7qQ", "Y8v1HnFq5mI", "3Kq1MIfTWCE"],
-    "التحقق من المعلومات": ["6hZ9vZ2Xq5Q", "W6NZfCO5SIk", "N9xY8M9xG2o"],
+    "التحقق من المعلومات": ["6hZ9vZ2Xq5Q", "W6NZfCO5SIk", "inWWhr5tnEA"],
     "أخلاقيات OSINT": ["Y8v1HnFq5mI", "qiQR5rTSshw", "qz0aGYrrlhU"],
-    // 11. Linux
-    "مقدمة Linux": ["N9xY8M9xG2o", "3Kq1MIfTWCE", "W6NZfCO5SIk"],
+    "مقدمة Linux": ["inWWhr5tnEA", "3Kq1MIfTWCE", "W6NZfCO5SIk"],
     "أساسيات Python": ["W6NZfCO5SIk", "qiQR5rTSshw", "9N4p1B6s7qQ"],
     "معالجة النصوص والسجلات": ["3Kq1MIfTWCE", "Y8v1HnFq5mI", "6hZ9vZ2Xq5Q"],
-    // 12. Incident
-    "تقييم المخاطر": ["qiQR5rTSshw", "qz0aGYrrlhU", "N9xY8M9xG2o"],
+    "تقييم المخاطر": ["qiQR5rTSshw", "qz0aGYrrlhU", "inWWhr5tnEA"],
     "خطط الاستجابة": ["qz0aGYrrlhU", "9N4p1B6s7qQ", "W6NZfCO5SIk"],
     "التعافي واستمرارية الأعمال": ["9N4p1B6s7qQ", "6hZ9vZ2Xq5Q", "3Kq1MIfTWCE"]
 };
@@ -216,7 +204,7 @@ function openCourse(id){
   showSection('lessons');document.getElementById('lessonTitle').textContent=c.name;
   
   // جلب الفيديوهات المخصصة لهذا الكورس من قاعدة البيانات
-  let vids = videoDB[c.name] || ["N9xY8M9xG2o", "qiQR5rTSshw", "W6NZfCO5SIk"];
+  let vids = videoDB[c.name] || ["inWWhr5tnEA", "qiQR5rTSshw", "W6NZfCO5SIk"];
   
   // توليد 3 دروس بكامل التفاصيل
   let relevant = [
@@ -249,7 +237,20 @@ function openCourse(id){
 function readLesson(courseId,i){
   let list=document.getElementById('lessonList'),arr=JSON.parse(list.dataset.lessons||'[]'),l=arr[i];
   if(!l)return;let box=document.getElementById('lessonContent');box.classList.remove('hidden');
-  box.innerHTML=`<div class="eyebrow">درس ${i+1} • ${l.time}</div><h2>${l.title}</h2><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${l.video}" allowfullscreen></iframe></div><p style="line-height:2;color:#d0d0d8;margin-top:20px;">${l.body}</p><button class="primary" onclick="completeLesson('${courseId}-l${i}','${courseId}')"> <i class="fa-solid fa-check"></i> علّم الدرس كمكتمل</button>`;
+  
+  // التعديل الجديد: youtube-nocookie + referrerpolicy
+  box.innerHTML=`<div class="eyebrow">درس ${i+1} • ${l.time}</div><h2>${l.title}</h2>
+  <div class="video-wrapper">
+      <iframe 
+          src="https://www.youtube-nocookie.com/embed/${l.video}?rel=0" 
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen>
+      </iframe>
+  </div>
+  <p style="line-height:2;color:#d0d0d8;margin-top:20px;">${l.body}</p>
+  <button class="primary" onclick="completeLesson('${courseId}-l${i}','${courseId}')"> <i class="fa-solid fa-check"></i> علّم الدرس كمكتمل</button>`;
+  
   box.scrollIntoView({behavior:'smooth',block:'start'})
 }
 function completeLesson(id,courseId){completed.add(id);localStorage.setItem('cyberCompleted',JSON.stringify([...completed]));document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/36*100))+'%';openCourse(courseId)}
