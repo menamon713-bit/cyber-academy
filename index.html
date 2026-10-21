@@ -1,478 +1,160 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Academy | المنصة الشاملة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { --neon: #00ff41; --dark: #050505; --glass: rgba(20, 20, 20, 0.85); }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background-color: var(--dark); color: white; min-height: 100vh; }
-        body::before { content: ""; position: fixed; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(0,255,65,0.08), transparent 70%); z-index: -1; }
-        body::after { content: ""; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px); background-size: 40px 40px; z-index: -1; pointer-events: none; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 4%; background: var(--glass); border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 8px; }
-        .logo { font-size: 1.3rem; font-weight: 900; }
-        .logo span { color: var(--neon); }
-        nav { display: flex; gap: 5px; flex-wrap: wrap; }
-        nav a { color: #ccc; text-decoration: none; cursor: pointer; padding: 5px 8px; border-radius: 5px; font-size: 0.75rem; font-weight: 700; transition: 0.3s; }
-        nav a:hover, nav a.active { color: var(--neon); background: rgba(0,255,65,0.1); }
-        main { padding: 30px 4%; max-width: 1000px; margin: auto; }
-        .section-box { display: none; animation: fadeIn 0.3s ease; }
-        .section-box.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .glass-box { background: var(--glass); border: 1px solid #333; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { color: var(--neon); margin-bottom: 8px; font-size: 1.6rem; }
-        h3 { color: white; margin-bottom: 10px; font-size: 1.2rem; }
-        p { line-height: 1.9; color: #ccc; margin-bottom: 12px; }
-        .accordion { background-color: #111; color: #fff; cursor: pointer; padding: 18px; width: 100%; border: none; text-align: right; outline: none; font-size: 1.1rem; font-weight: bold; transition: 0.4s; border-radius: 8px; margin-top: 10px; border-right: 3px solid transparent; }
-        .active-acc, .accordion:hover { border-right-color: var(--neon); background-color: #1a1a1a; }
-        .panel { padding: 0 18px; display: none; background-color: #0a0a0a; overflow: hidden; border-radius: 0 0 8px 8px; margin-bottom: 10px; border: 1px solid #222; border-top: none; }
-        .panel p { margin-top: 15px; }
-        iframe { width: 100%; height: 350px; border-radius: 10px; border: none; margin-top: 10px; }
-        .question { margin-bottom: 20px; background: #111; padding: 15px; border-radius: 8px; border-right: 3px solid var(--neon); }
-        .question p { font-weight: bold; color: white; margin-bottom: 10px; }
-        label { display: block; margin: 5px 0; padding: 10px; background: #222; border-radius: 5px; cursor: pointer; transition: 0.2s; }
-        label:hover { background: #333; }
-        input[type="radio"] { margin-left: 10px; accent-color: var(--neon); }
-        .btn { background: var(--neon); color: black; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 15px; width: 100%; transition: 0.3s; }
-        .btn:hover { box-shadow: 0 0 20px var(--neon); }
-        .result { margin-top: 15px; color: var(--neon); font-weight: bold; font-size: 1.2rem; text-align: center; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#09090c">
+<title>Cyber Academy | أكاديمية سايبر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--bg:#08090d;--panel:#101116;--panel2:#15161d;--line:#282a34;--text:#f5f5f7;--muted:#9a9ba8;--red:#ff304b;--red2:#b90e2a;--white:#fff;--green:#45d483;--radius:18px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#301019 0,transparent 35%),var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.hidden{display:none!important}
+.topbar{height:72px;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:0 5%;background:#09090deF;backdrop-filter:blur(16px);border-bottom:1px solid #292a33}.brand{font-size:22px;font-weight:900;direction:ltr;white-space:nowrap}.brand b{color:var(--red)}.brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:2px;text-align:right}.navlinks{display:flex;gap:7px;align-items:center}.navlinks button,.iconbtn{border:1px solid transparent;background:transparent;color:#c9c9d2;padding:10px 13px;border-radius:10px}.navlinks button:hover,.navlinks button.active{background:#211117;color:white;border-color:#54212c}.top-actions{display:flex;gap:9px;align-items:center}.primary,.secondary{border:0;border-radius:11px;padding:11px 17px;font-weight:800}.primary{background:linear-gradient(135deg,var(--red),#c50e31);color:white;box-shadow:0 7px 25px #ff304b28}.secondary{background:#1b1c24;color:#eee;border:1px solid var(--line)}.iconbtn{font-size:19px;display:none}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1500px;margin:auto;min-height:calc(100vh - 72px)}.sidebar{border-left:1px solid var(--line);padding:25px 17px;position:sticky;top:72px;height:calc(100vh - 72px);overflow:auto;background:#0b0c11}.profile{padding:16px;background:linear-gradient(140deg,#241019,#12131a);border:1px solid #49202b;border-radius:16px;margin-bottom:23px}.avatar{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#ff304b,#821127);display:grid;place-items:center;font-size:20px;margin-bottom:9px}.profile strong{display:block}.profile span{font-size:12px;color:var(--muted)}.side-label{font-size:11px;color:#777986;font-weight:800;margin:20px 12px 8px}.side-link{width:100%;display:flex;align-items:center;gap:12px;text-align:right;color:#b9bac4;background:transparent;border:1px solid transparent;padding:12px 13px;border-radius:11px;margin:3px 0}.side-link i{width:19px;text-align:center;color:#92939f}.side-link:hover,.side-link.active{background:#241117;color:white;border-color:#49202b}.side-link.active i{color:var(--red)}.main{padding:30px clamp(16px,3vw,42px) 55px;min-width:0}.welcome{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:clamp(22px,4vw,45px);border:1px solid #49202b;border-radius:24px;background:radial-gradient(circle at 15% 15%,#5a1024 0,transparent 45%),linear-gradient(120deg,#1a0d13,#111219 70%);position:relative;overflow:hidden}.welcome:after{content:"</>";position:absolute;left:4%;bottom:-28px;font-size:125px;font-weight:900;color:#ffffff08;direction:ltr}.eyebrow{color:#ff7485;font-size:12px;font-weight:800;letter-spacing:1px}.welcome h1{font-size:clamp(25px,4vw,43px);line-height:1.35;margin:12px 0}.welcome h1 span{color:var(--red)}.welcome p{color:#b5b5c0;max-width:650px;line-height:1.9;margin:0 0 22px}.hero-art{font-size:clamp(70px,10vw,130px);color:#ff304b;filter:drop-shadow(0 0 28px #ff304b55);padding:10px 25px}.section{margin-top:35px;scroll-margin-top:95px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:17px}.section-head h2{margin:0;font-size:22px}.section-head p{color:var(--muted);margin:5px 0 0;font-size:13px}.textlink{background:transparent;border:0;color:#ff687b}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:20px}.stat,.card{background:linear-gradient(145deg,#14151c,#101116);border:1px solid var(--line);border-radius:var(--radius)}.stat{padding:17px;display:flex;gap:13px;align-items:center}.stat-icon{width:43px;height:43px;display:grid;place-items:center;background:#28121a;color:#ff5268;border-radius:13px;font-size:18px}.stat strong{display:block;font-size:22px}.stat span{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.card{padding:20px;transition:.2s;min-width:0}.card:hover{transform:translateY(-3px);border-color:#71303d}.course-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:#29121a;color:#ff5268;font-size:21px;margin-bottom:14px}.card h3{font-size:16px;margin:0 0 8px}.card p{font-size:13px;color:var(--muted);line-height:1.8;margin:0 0 16px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}.chip{font-size:11px;color:#c9c9d2;background:#20212a;padding:5px 9px;border-radius:7px}.card .secondary,.card .primary{width:100%;padding:9px}.progress{height:6px;background:#2a2b34;border-radius:99px;overflow:hidden;margin:12px 0}.progress span{height:100%;display:block;background:linear-gradient(90deg,var(--red2),var(--red));border-radius:99px}.path-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.path-card{padding:18px 14px;border:1px solid var(--line);background:#121319;border-radius:15px;text-align:center;cursor:pointer;transition:.2s}.path-card:hover{border-color:var(--red);background:#211117;transform:translateY(-3px)}.path-card i{font-size:27px;color:var(--red);margin-bottom:12px}.path-card b{display:block;font-size:13px}.path-card small{display:block;color:var(--muted);margin-top:7px}.searchbox{width:min(100%,330px);position:relative}.searchbox i{position:absolute;right:13px;top:14px;color:var(--muted)}.searchbox input{width:100%;background:#121319;border:1px solid var(--line);border-radius:11px;padding:10px 38px 10px 12px;color:white;outline:none}.searchbox input:focus{border-color:#a52a40}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);background:#13141a;color:#bdbdc7;border-radius:9px;padding:8px 13px;font-size:12px}.tab.active{background:#32131c;border-color:#7b2636;color:white}.lesson-list{display:grid;gap:10px}.lesson{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--line);background:#121319;border-radius:13px}.lesson-num{width:38px;height:38px;display:grid;place-items:center;background:#25121a;color:#ff5a70;border-radius:10px;flex-shrink:0}.lesson div:nth-child(2){flex:1}.lesson p{margin:3px 0 0;color:var(--muted);font-size:12px}.lesson button{background:#20212a;border:1px solid #333540;color:white;border-radius:9px;padding:7px 11px}.terminal{background:#080a0c;border:1px solid #30323a;border-radius:15px;overflow:hidden}.term-head{padding:12px 15px;background:#171820;border-bottom:1px solid #30323a;display:flex;gap:7px;align-items:center}.dot{width:9px;height:9px;border-radius:50%;background:#ff5268}.dot:nth-child(2){background:#ffc45c}.dot:nth-child(3){background:#45d483}.term-title{margin-right:auto;color:#a5a6b1;font-size:12px;direction:ltr}.term-output{padding:18px;height:260px;overflow:auto;color:#d3d3da;font:13px/1.9 monospace;direction:ltr;text-align:left;white-space:pre-wrap}.term-output .red{color:#ff536c}.term-output .green{color:#5de39b}.term-input{display:flex;gap:8px;padding:12px;border-top:1px solid #292b33;direction:ltr}.term-input span{color:#ff5268;padding-top:8px}.term-input input{flex:1;min-width:0;background:#111219;border:1px solid #30323a;color:white;border-radius:8px;padding:9px;outline:none;direction:ltr}.term-input button{background:#d91e3d;border:0;border-radius:8px;color:white;padding:8px 14px}.quiz-question{font-size:18px;font-weight:800;line-height:1.8}.answers{display:grid;gap:10px;margin:20px 0}.answer{padding:13px 15px;border:1px solid var(--line);border-radius:11px;background:#15161d;color:#eee;text-align:right}.answer:hover{border-color:#a12a40}.answer.correct{border-color:#2eaa70;background:#10251b}.answer.wrong{border-color:#d6324a;background:#2b1118}.feedback{padding:12px;border-radius:10px;background:#171820;color:#ddd;font-size:13px;line-height:1.8}.footer{border-top:1px solid var(--line);margin-top:45px;padding:22px 0;color:#777986;text-align:center;font-size:12px}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #343540;border-radius:13px;grid-column:1/-1}.notice{padding:13px 15px;border:1px solid #53313a;background:#211218;color:#e4c5cb;border-radius:12px;font-size:12px;line-height:1.8;margin-top:16px}
+@media(max-width:1050px){.layout{grid-template-columns:210px minmax(0,1fr)}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-art{display:none}}
+@media(max-width:720px){.topbar{height:62px;padding:0 14px}.navlinks{display:none}.iconbtn{display:block}.top-actions .primary{padding:8px 11px;font-size:12px}.brand{font-size:18px}.layout{display:block}.sidebar{position:fixed;top:62px;right:0;bottom:0;height:auto;width:260px;z-index:30;transform:translateX(105%);transition:.25s;box-shadow:-20px 0 60px #0008}.sidebar.open{transform:translateX(0)}.main{padding:18px 13px 40px}.welcome{padding:23px 19px}.welcome h1{font-size:27px}.stats{gap:9px}.stat{padding:12px;gap:9px}.stat strong{font-size:19px}.stat-icon{width:36px;height:36px}.grid{grid-template-columns:1fr}.path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{align-items:start;flex-direction:column}.searchbox{width:100%}.lesson{align-items:flex-start;flex-wrap:wrap}.lesson button{margin-right:auto}.section{margin-top:28px}}
+</style>
 </head>
 <body>
+<header class="topbar">
+  <button class="iconbtn" onclick="toggleMenu()" aria-label="فتح القائمة"><i class="fa-solid fa-bars"></i></button>
+  <a class="brand" href="#" onclick="showSection('home');return false">_Cyber<b>Academy</b><small>LEARN • PRACTICE • DEFEND</small></a>
+  <nav class="navlinks">
+    <button class="active" data-nav="home" onclick="showSection('home')">الرئيسية</button>
+    <button data-nav="paths" onclick="showSection('paths')">المسارات</button>
+    <button data-nav="courses" onclick="showSection('courses')">الكورسات</button>
+    <button data-nav="labs" onclick="showSection('labs')">المعامل</button>
+  </nav>
+  <div class="top-actions"><button class="secondary" onclick="showSection('quiz')"><i class="fa-solid fa-bolt"></i> اختبر نفسك</button></div>
+</header>
+<div class="layout">
+<aside class="sidebar" id="sidebar">
+  <div class="profile"><div class="avatar"><i class="fa-solid fa-user-secret"></i></div><strong>متعلم سايبر</strong><span>وضع تجريبي محلي</span></div>
+  <div class="side-label">مساحة التعلم</div>
+  <button class="side-link active" data-section="home" onclick="showSection('home')"><i class="fa-solid fa-house"></i> لوحة التحكم</button>
+  <button class="side-link" data-section="paths" onclick="showSection('paths')"><i class="fa-solid fa-route"></i> مسارات التعلم</button>
+  <button class="side-link" data-section="courses" onclick="showSection('courses')"><i class="fa-solid fa-book-open"></i> مكتبة الكورسات</button>
+  <button class="side-link" data-section="lessons" onclick="showSection('lessons')"><i class="fa-solid fa-list-check"></i> الدروس</button>
+  <button class="side-link" data-section="quiz" onclick="showSection('quiz')"><i class="fa-solid fa-circle-question"></i> الاختبارات</button>
+  <div class="side-label">التدريب العملي</div>
+  <button class="side-link" data-section="labs" onclick="showSection('labs')"><i class="fa-solid fa-terminal"></i> المعمل الطرفي</button>
+  <button class="side-link" data-section="challenges" onclick="showSection('challenges')"><i class="fa-solid fa-flag"></i> تحديات CTF</button>
+  <button class="side-link" data-section="glossary" onclick="showSection('glossary')"><i class="fa-solid fa-book"></i> قاموس المصطلحات</button>
+  <div class="side-label">المعلومات</div>
+  <button class="side-link" data-section="roadmap" onclick="showSection('roadmap')"><i class="fa-solid fa-map"></i> خريطة الطريق</button>
+  <button class="side-link" data-section="about" onclick="showSection('about')"><i class="fa-solid fa-shield-halved"></i> عن الأكاديمية</button>
+</aside>
+<main class="main">
+<section id="home" class="view">
+ <div class="welcome"><div><div class="eyebrow">من الصفر إلى الممارسة الآمنة</div><h1>أهلاً بك في <span>أكاديمية سايبر</span></h1><p>اتعلم الأمن السيبراني خطوة بخطوة: افهم الشبكات، أمّن التطبيقات، تدرب داخل معامل تعليمية، واختبر معلوماتك في بيئة آمنة.</p><button class="primary" onclick="showSection('paths')">ابدأ رحلة التعلم <i class="fa-solid fa-arrow-left"></i></button> <button class="secondary" onclick="showSection('courses')">استكشف الكورسات</button></div><div class="hero-art"><i class="fa-solid fa-shield-halved"></i></div></div>
+ <div class="stats">
+  <div class="stat"><div class="stat-icon"><i class="fa-solid fa-book-open"></i></div><div><strong id="statCourses">12</strong><span>مسار وكورس تجريبي</span></div></div>
+  <div class="stat"><div class="stat-icon"><i class="fa-solid fa-list-check"></i></div><div><strong id="statLessons">24</strong><span>موضوع تعليمي</span></div></div>
+  <div class="stat"><div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div><div><strong id="statScore">0</strong><span>إجابات صحيحة</span></div></div>
+  <div class="stat"><div class="stat-icon"><i class="fa-solid fa-fire"></i></div><div><strong id="statDone">0%</strong><span>تقدمك المحلي</span></div></div>
+ </div>
+ <div class="section"><div class="section-head"><div><h2>ابدأ من هنا</h2><p>مسارات مرتبة من الأساسيات إلى التخصص.</p></div><button class="textlink" onclick="showSection('paths')">كل المسارات ←</button></div><div class="path-grid" id="homePaths"></div></div>
+ <div class="section"><div class="section-head"><div><h2>كورسات مقترحة</h2><p>محتوى تجريبي داخل الواجهة قابل للتطوير.</p></div><button class="textlink" onclick="showSection('courses')">عرض المكتبة ←</button></div><div class="grid" id="featuredCourses"></div></div>
+ <div class="notice"><i class="fa-solid fa-circle-info"></i> النسخة الحالية واجهة تعليمية تجريبية. التقدم محفوظ على هذا الجهاز فقط، ولا يوجد اتصال بخادم أو حسابات حقيقية حتى الآن.</div>
+</section>
+<section id="paths" class="view hidden"><div class="section-head"><div><h2>مسارات التعلم</h2><p>اختار التخصص المناسب لمستواك وابدأ بالترتيب المقترح.</p></div></div><div class="path-grid" id="allPaths"></div><div id="pathDetails" class="section"></div></section>
+<section id="courses" class="view hidden"><div class="section-head"><div><h2>مكتبة الكورسات</h2><p>ابحث في موضوعات الأمن السيبراني المتاحة.</p></div><div class="searchbox"><i class="fa-solid fa-magnifying-glass"></i><input id="courseSearch" placeholder="ابحث عن كورس..." oninput="renderCourses()"></div></div><div class="tabs" id="courseTabs"></div><div class="grid" id="courseGrid"></div></section>
+<section id="lessons" class="view hidden"><div class="section-head"><div><h2 id="lessonTitle">الدروس التعليمية</h2><p>افتح الدرس لقراءة الشرح المختصر ثم علّمه كمكتمل.</p></div></div><div class="lesson-list" id="lessonList"></div><div id="lessonContent" class="card section hidden"></div></section>
+<section id="quiz" class="view hidden"><div class="section-head"><div><h2>اختبر معلوماتك</h2><p>أسئلة أساسية مع تصحيح وشرح فوري.</p></div></div><div class="card" id="quizBox"></div></section>
+<section id="labs" class="view hidden"><div class="section-head"><div><h2>المعمل الطرفي التجريبي</h2><p>محاكاة تعليمية لأوامر آمنة — لا تنفذ أوامر نظام حقيقية.</p></div></div><div class="terminal"><div class="term-head"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="term-title">cyber-lab — safe simulator</span></div><div class="term-output" id="termOutput"><span class="green">Cyber Academy Safe Lab v1.0</span>
+اكتب help لعرض الأوامر المتاحة.
+هذا الطرفي محاكاة داخل المتصفح وليس جهازًا حقيقيًا.
 
-    <header>
-        <div class="logo">Cyber<span>Academy</span></div>
-        <nav>
-            <a class="nav-link active" onclick="showPage('home', this)">الرئيسية</a>
-            <a class="nav-link" onclick="showPage('foundations', this)">الأساسيات</a>
-            <a class="nav-link" onclick="showPage('network', this)">أمن الشبكات</a>
-            <a class="nav-link" onclick="showPage('appsec', this)">أمن التطبيقات</a>
-            <a class="nav-link" onclick="showPage('iam', this)">الهوية والوصول</a>
-            <a class="nav-link" onclick="showPage('soc', this)">العمليات الأمنية</a>
-            <a class="nav-link" onclick="showPage('offensive', this)">الاختراق الأخلاقي</a>
-            <a class="nav-link" onclick="showPage('grc', this)">الحوكمة</a>
-            <a class="nav-link" onclick="showPage('cloud', this)">الأمن السحابي</a>
-            <a class="nav-link" onclick="showPage('endpoint', this)">أنظمة التشغيل</a>
-            <a class="nav-link" onclick="showPage('emerging', this)">التقنيات الحديثة</a>
-        </nav>
-    </header>
-
-    <main>
-        <div id="home" class="section-box active">
-            <div class="glass-box" style="text-align:center;">
-                <h2>مرحباً بك في CyberAcademy</h2>
-                <p>المنصة الشاملة لتعلم الأمن السيبراني. جميع الأقسام جاهزة.</p>
-            </div>
-        </div>
-
-        <!-- 1. الأساسيات -->
-        <div id="foundations" class="section-box">
-            <h2>1. أساسيات الأمن السيبراني</h2>
-            <div class="glass-box">
-                <button class="accordion">1. ما هو الأمن السيبراني؟</button>
-                <div class="panel"><p>هو حماية الأنظمة والشبكات والبرامج والبيانات من الهجمات الرقمية. الهدف هو تقليل المخاطر وحماية المعلومات الحساسة من الوصول غير المصرح به.</p></div>
-                <button class="accordion">2. ثالوث CIA</button>
-                <div class="panel"><p><b>السرية:</b> منع الوصول غير المصرح به.<br><b>السلامة:</b> منع التعديل غير المصرح به.<br><b>التوافر:</b> ضمان توفر البيانات وقت الحاجة.</p></div>
-                <button class="accordion">3. المصادقة والتفويض</button>
-                <div class="panel"><p><b>المصادقة:</b> إثبات هوية المستخدم.<br><b>التفويض:</b> تحديد الصلاحيات.</p></div>
-                <button class="accordion">4. البرمجيات الخبيثة</button>
-                <div class="panel"><p>تشمل الفيروسات، الديدان، أحصنة طروادة، وبرامج الفدية.</p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/qz0aGYrrlhU" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان الأساسيات (40 سؤال)</h3>
-                <div id="quiz-foundations"></div>
-                <button class="btn" onclick="checkQuiz('foundations')">تصحيح</button>
-                <div class="result" id="result-foundations"></div>
-            </div>
-        </div>
-
-        <!-- 2. الشبكات -->
-        <div id="network" class="section-box">
-            <h2>2. أمن الشبكات</h2>
-            <div class="glass-box">
-                <button class="accordion">1. ما هي الشبكة؟</button>
-                <div class="panel"><p>اتصال أجهزة متعددة لتبادل البيانات والموارد.</p></div>
-                <button class="accordion">2. بروتوكولات TCP و UDP</button>
-                <div class="panel"><p><b>TCP:</b> موثوق.<br><b>UDP:</b> سريع.</p></div>
-                <button class="accordion">3. العناوين والمنافذ</button>
-                <div class="panel"><p><b>IP:</b> عنوان الجهاز.<br><b>Port:</b> رقم الخدمة.</p></div>
-                <button class="accordion">4. أدوات الحماية</button>
-                <div class="panel"><p><b>Firewall, IDS, IPS, VPN.</b></p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/qiQR5rTSshw" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان الشبكات (40 سؤال)</h3>
-                <div id="quiz-network"></div>
-                <button class="btn" onclick="checkQuiz('network')">تصحيح</button>
-                <div class="result" id="result-network"></div>
-            </div>
-        </div>
-
-        <!-- 3. التطبيقات -->
-        <div id="appsec" class="section-box">
-            <h2>3. أمن الويب والتطبيقات</h2>
-            <div class="glass-box">
-                <button class="accordion">1. ثغرة SQL Injection</button>
-                <div class="panel"><p>حقن أوامر SQL خبيثة.</p></div>
-                <button class="accordion">2. ثغرة XSS</button>
-                <div class="panel"><p>حقن كود JavaScript خبيث.</p></div>
-                <button class="accordion">3. ثغرة CSRF</button>
-                <div class="panel"><p>خداع متصفح المستخدم.</p></div>
-                <button class="accordion">4. OWASP Top 10</button>
-                <div class="panel"><p>قائمة بأخطر 10 ثغرات ويب.</p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/W6NZfCO5SIk" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان التطبيقات (40 سؤال)</h3>
-                <div id="quiz-appsec"></div>
-                <button class="btn" onclick="checkQuiz('appsec')">تصحيح</button>
-                <div class="result" id="result-appsec"></div>
-            </div>
-        </div>
-
-        <!-- 4. الهوية والوصول -->
-        <div id="iam" class="section-box">
-            <h2>4. أمن الهوية والوصول</h2>
-            <div class="glass-box">
-                <button class="accordion">1. إدارة الهويات (IAM)</button>
-                <div class="panel"><p>إدارة المستخدمين والصلاحيات.</p></div>
-                <button class="accordion">2. المصادقة الثنائية (MFA)</button>
-                <div class="panel"><p>طبقة حماية إضافية.</p></div>
-                <button class="accordion">3. التحكم في الوصول (RBAC)</button>
-                <div class="panel"><p>التحكم بناءً على الدور.</p></div>
-                <button class="accordion">4. مبدأ الصلاحيات الأقل</button>
-                <div class="panel"><p>أقل صلاحيات ممكنة.</p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/6hZ9vZ2Xq5Q" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان الهوية (40 سؤال)</h3>
-                <div id="quiz-iam"></div>
-                <button class="btn" onclick="checkQuiz('iam')">تصحيح</button>
-                <div class="result" id="result-iam"></div>
-            </div>
-        </div>
-
-        <!-- 5. العمليات الأمنية -->
-        <div id="soc" class="section-box">
-            <h2>5. العمليات الأمنية والدفاع</h2>
-            <div class="glass-box">
-                <button class="accordion">1. مركز العمليات (SOC)</button>
-                <div class="panel"><p>فريق مراقبة الأنظمة.</p></div>
-                <button class="accordion">2. أنظمة SIEM</button>
-                <div class="panel"><p>تحليل السجلات.</p></div>
-                <button class="accordion">3. الاستجابة للحوادث (IR)</button>
-                <div class="panel"><p>التعامل مع الاختراقات.</p></div>
-                <button class="accordion">4. التحقيق الجنائي الرقمي</button>
-                <div class="panel"><p>تحليل الأدلة الرقمية.</p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/9N4p1B6s7qQ" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان العمليات (40 سؤال)</h3>
-                <div id="quiz-soc"></div>
-                <button class="btn" onclick="checkQuiz('soc')">تصحيح</button>
-                <div class="result" id="result-soc"></div>
-            </div>
-        </div>
-
-        <!-- 6. الاختراق الأخلاقي -->
-        <div id="offensive" class="section-box">
-            <h2>6. الاختراق الأخلاقي</h2>
-            <div class="glass-box">
-                <button class="accordion">1. ما هو الاختراق الأخلاقي؟</button>
-                <div class="panel"><p>اختبار بإذن قانوني.</p></div>
-                <button class="accordion">2. مراحل الاختراق</button>
-                <div class="panel"><p>جمع المعلومات، الفحص، الاستغلال.</p></div>
-                <button class="accordion">3. أدوات الاختراق</button>
-                <div class="panel"><p>Nmap, Metasploit, Burp Suite.</p></div>
-                <button class="accordion">4. أنواع الاختبار</button>
-                <div class="panel"><p>Black Box, White Box, Grey Box.</p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/3Kq1MIfTWCE" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان الاختراق (40 سؤال)</h3>
-                <div id="quiz-offensive"></div>
-                <button class="btn" onclick="checkQuiz('offensive')">تصحيح</button>
-                <div class="result" id="result-offensive"></div>
-            </div>
-        </div>
-
-        <!-- 7. الحوكمة -->
-        <div id="grc" class="section-box">
-            <h2>7. الحوكمة والمخاطر والامتثال</h2>
-            <div class="glass-box">
-                <button class="accordion">1. الحوكمة (Governance)</button>
-                <div class="panel"><p>الإطار الإداري للسياسات.</p></div>
-                <button class="accordion">2. إدارة المخاطر (Risk)</button>
-                <div class="panel"><p>تحديد المخاطر ومعالجتها.</p></div>
-                <button class="accordion">3. الامتثال (Compliance)</button>
-                <div class="panel"><p>ISO 27001, GDPR.</p></div>
-                <button class="accordion">4. الجانب القانوني</button>
-                <div class="panel"><p>قوانين الجرائم الإلكترونية.</p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/Y8v1HnFq5mI" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان الحوكمة (40 سؤال)</h3>
-                <div id="quiz-grc"></div>
-                <button class="btn" onclick="checkQuiz('grc')">تصحيح</button>
-                <div class="result" id="result-grc"></div>
-            </div>
-        </div>
-
-        <!-- 8. الأمن السحابي -->
-        <div id="cloud" class="section-box">
-            <h2>8. الأمن السحابي</h2>
-            <div class="glass-box">
-                <button class="accordion">1. ما هو الأمن السحابي؟</button>
-                <div class="panel"><p>حماية البيئات السحابية.</p></div>
-                <button class="accordion">2. نموذج المسؤولية المشتركة</button>
-                <div class="panel"><p>توزيع المسؤوليات.</p></div>
-                <button class="accordion">3. إدارة الهويات السحابية (IAM)</button>
-                <div class="panel"><p>التحكم في الوصول السحابي.</p></div>
-                <button class="accordion">4. أمن الحاويات</button>
-                <div class="panel"><p>Docker و Kubernetes.</p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/2Rw1F5jX5s0" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان السحابة (40 سؤال)</h3>
-                <div id="quiz-cloud"></div>
-                <button class="btn" onclick="checkQuiz('cloud')">تصحيح</button>
-                <div class="result" id="result-cloud"></div>
-            </div>
-        </div>
-
-        <!-- 9. أنظمة التشغيل -->
-        <div id="endpoint" class="section-box">
-            <h2>9. أمن أنظمة التشغيل</h2>
-            <div class="glass-box">
-                <button class="accordion">1. تأمين الأنظمة</button>
-                <div class="panel"><p>Hardening للويندوز واللينكس.</p></div>
-                <button class="accordion">2. حماية الأجهزة الطرفية (EDR)</button>
-                <div class="panel"><p>اكتشاف وإيقاف التهديدات.</p></div>
-                <button class="accordion">3. إدارة الأجهزة المحمولة (MDM)</button>
-                <div class="panel"><p>تأمين الهواتف.</p></div>
-                <button class="accordion">4. التحديثات (Patch Management)</button>
-                <div class="panel"><p>تثبيت التحديثات الأمنية.</p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/7B7gE5l6y6k" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان الأنظمة (40 سؤال)</h3>
-                <div id="quiz-endpoint"></div>
-                <button class="btn" onclick="checkQuiz('endpoint')">تصحيح</button>
-                <div class="result" id="result-endpoint"></div>
-            </div>
-        </div>
-
-        <!-- 10. التقنيات الحديثة -->
-        <div id="emerging" class="section-box">
-            <h2>10. التقنيات الحديثة</h2>
-            <div class="glass-box">
-                <button class="accordion">1. أمن إنترنت الأشياء (IoT)</button>
-                <div class="panel"><p>حماية الأجهزة الذكية.</p></div>
-                <button class="accordion">2. أمن الذكاء الاصطناعي (AI)</button>
-                <div class="panel"><p>حماية نماذج AI.</p></div>
-                <button class="accordion">3. أمن سلاسل التوريد</button>
-                <div class="panel"><p>تأمين الموردين.</p></div>
-                <button class="accordion">4. نموذج Zero Trust</button>
-                <div class="panel"><p>لا تثق في أي شيء.</p></div>
-            </div>
-            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/6k8b5s0X4jE" allowfullscreen></iframe></div>
-            <div class="glass-box">
-                <h3>📝 امتحان التقنيات (40 سؤال)</h3>
-                <div id="quiz-emerging"></div>
-                <button class="btn" onclick="checkQuiz('emerging')">تصحيح</button>
-                <div class="result" id="result-emerging"></div>
-            </div>
-        </div>
-
-    </main>
-
-    <script>
-        function showPage(pageId, element) {
-            document.querySelectorAll('.section-box').forEach(box => box.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            element.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        var acc = document.getElementsByClassName("accordion");
-        for (var i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active-acc");
-                var panel = this.nextElementSibling;
-                if (panel.style.display === "block") {
-                    panel.style.display = "none";
-                } else {
-                    panel.style.display = "block";
-                }
-            });
-        }
-
-        const quizData = {
-            foundations: [
-                {"q": "ثالوث CIA يشمل:", "options": ["السرية، السلامة، التوافر", "الاختراق، الدفاع", "التشفير"], "answer": 0},
-                {"q": "السلامة (Integrity) تضمن:", "options": ["عدم التعديل", "التوافر", "السرعة"], "answer": 0},
-                {"q": "التوافر (Availability) يعني:", "options": ["توفير البيانات وقت الحاجة", "إخفاء البيانات", "حذف البيانات"], "answer": 0},
-                {"q": "التصيد الاحتيالي (Phishing) هو:", "options": ["خداع لسرقة البيانات", "اختراق شبكة", "تشفير"], "answer": 0},
-                {"q": "البرمجيات الخبيثة تشمل:", "options": ["الفيروسات", "برامج الحماية", "المتصفحات"], "answer": 0},
-                {"q": "حصان طروادة (Trojan):", "options": ["برنامج ضار يتنكر", "برنامج حماية", "فيروس"], "answer": 0},
-                {"q": "الهاكر الأخلاقي:", "options": ["يختبر بإذن", "يسرق البيانات", "ينشر الفيروسات"], "answer": 0},
-                {"q": "الهندسة الاجتماعية:", "options": ["التلاعب بالبشر", "بناء شبكات", "تشفير"], "answer": 0},
-                {"q": "كلمة المرور القوية:", "options": ["حروف وأرقام ورموز", "اسمك", "تاريخ ميلادك"], "answer": 0},
-                {"q": "2FA:", "options": ["مصادقة ثنائية", "تشفير مزدوج", "شبكة"], "answer": 0},
-                {"q": "برنامج الفدية (Ransomware):", "options": ["يشفر الملفات ويطلب فدية", "برنامج مجاني", "متصفح"], "answer": 0},
-                {"q": "وظيفة Firewall:", "options": ["فلترة الترافيك", "تصميم", "تشفير"], "answer": 0},
-                {"q": "التشفير (Encryption):", "options": ["تحويل البيانات لصيغة غير مفهومة", "حذف", "نسخ"], "answer": 0},
-                {"q": "التشفير المتماثل:", "options": ["مفتاح واحد", "مفتاحين", "بدون مفاتيح"], "answer": 0},
-                {"q": "التشفير غير المتماثل:", "options": ["مفتاحين (عام وخاص)", "مفتاح واحد", "أرقام"], "answer": 0},
-                {"q": "الهاش (Hash):", "options": ["بصمة رقمية", "تشفير قابل للفك", "شبكة"], "answer": 0},
-                {"q": "فك الهاش:", "options": ["مستحيل (اتجاه واحد)", "ممكن دائماً", "بالمفتاح"], "answer": 0},
-                {"q": "الـ VPN:", "options": ["إخفاء IP وتشفير", "زيادة السرعة", "حفظ الملفات"], "answer": 0},
-                {"q": "الثغرة (Vulnerability):", "options": ["نقطة ضعف", "برنامج حماية", "شبكة"], "answer": 0},
-                {"q": "الاستغلال (Exploit):", "options": ["استخدام الثغرة", "حماية", "تحديث"], "answer": 0},
-                {"q": "مبدأ الصلاحيات الأقل:", "options": ["أقل صلاحيات ممكنة", "كل الصلاحيات", "حذف الحسابات"], "answer": 0},
-                {"q": "التصحيح الأمني (Patch):", "options": ["تحديث لإصلاح ثغرة", "برنامج ضار", "ملف نصي"], "answer": 0},
-                {"q": "رابط مشبوه:", "options": ["تمرير الماوس لرؤيته", "فتحه", "إرساله"], "answer": 0},
-                {"q": "واي فاي عام:", "options": ["غير آمن", "آمن تماماً", "أفضل من المنزل"], "answer": 0},
-                {"q": "الاختراق الأخلاقي:", "options": ["بإذن قانوني", "بدون إذن", "سرقة"], "answer": 0},
-                {"q": "الهندسة العكسية:", "options": ["تفكيك البرنامج لفهمه", "تصميم", "تشفير"], "answer": 0},
-                {"q": "مكافحة الفيروسات:", "options": ["اكتشاف وإزالة البرمجيات الخبيثة", "تصميم", "تسريع"], "answer": 0},
-                {"q": "أمنية البيانات (Privacy):", "options": ["التحكم في جمع واستخدام البيانات", "مشاركة البيانات", "حذف"], "answer": 0},
-                {"q": "حماية حسابات التواصل:", "options": ["كلمة مرور قوية و 2FA", "مشاركة كلمة المرور", "تعطيل الحماية"], "answer": 0},
-                {"q": "الاحتيال الإلكتروني (Scam):", "options": ["خداع لسرقة المال", "قانوني", "تحديث"], "answer": 0},
-                {"q": "عند اختراق حسابك:", "options": ["تغيير كلمة المرور فوراً", "تجاهل", "حذف الحساب"], "answer": 0},
-                {"q": "البيانات الحساسة:", "options": ["الشخصية والمالية", "العامة", "المطبوعة"], "answer": 0},
-                {"q": "تهديد أمني:", "options": ["فتح مرفقات مجهولة", "تحديث النظام", "كلمة مرور قوية"], "answer": 0},
-                {"q": "Spear Phishing:", "options": ["هجوم موجه لشخص", "هجوم عام", "برنامج حماية"], "answer": 0},
-                {"q": "مدير كلمات المرور:", "options": ["أفضل طريقة لحفظ كلمات المرور", "ملف نصي", "ورقة"], "answer": 0},
-                {"q": "الفيروس (Virus):", "options": ["يلتصق بالملفات ويتكاثر", "برنامج حماية", "شبكة"], "answer": 0},
-                {"q": "الحماية من الفيروسات:", "options": ["تحديث النظام واستخدام مكافح فيروسات", "تعطيل جدار الحماية", "فتح كل المرفقات"], "answer": 0},
-                {"q": "السلامة (Integrity):", "options": ["منع التعديل غير المصرح به", "منع الوصول", "توفير البيانات"], "answer": 0},
-                {"q": "السرية (Confidentiality):", "options": ["منع الوصول غير المصرح به", "منع التعديل", "توفير البيانات"], "answer": 0},
-                {"q": "الهاكر ذو القبعة السوداء (Black Hat):", "options": ["يخترق بدون إذن", "يخترق بإذن", "يحماية الأنظمة"], "answer": 0}
-            ],
-            network: [
-                {"q": "منفذ HTTP:", "options": ["80", "443", "22"], "answer": 0},
-                {"q": "منفذ HTTPS:", "options": ["443", "80", "21"], "answer": 0},
-                {"q": "بروتوكول DNS:", "options": ["يحول النطاقات لعناوين IP", "ينقل الملفات", "يشفر"], "answer": 0},
-                {"q": "البروتوكول الموثوق:", "options": ["TCP", "UDP", "ARP"], "answer": 0},
-                {"q": "وظيفة Firewall:", "options": ["فلترة الترافيك", "تشفير", "تصفح"], "answer": 0},
-                {"q": "عنوان IP:", "options": ["عنوان منطقي للتوجيه", "كلمة مرور", "نوع شاشة"], "answer": 0},
-                {"q": "بروتوكول SSH:", "options": ["تحكم آمن عن بعد", "نقل ملفات", "بريد"], "answer": 0},
-                {"q": "بروتوكول FTP:", "options": ["نقل الملفات", "تشفير", "تحويل عناوين"], "answer": 0},
-                {"q": "الأسرع والأقل موثوقية:", "options": ["UDP", "TCP", "HTTPS"], "answer": 0},
-                {"q": "عنوان MAC:", "options": ["عنوان فيزيائي فريد", "عنوان منطقي", "كلمة مرور"], "answer": 0},
-                {"q": "وظيفة الراوتر:", "options": ["توجيه البيانات بين الشبكات", "تشفير", "حفظ"], "answer": 0},
-                {"q": "وظيفة السويتش:", "options": ["توصيل الأجهزة في نفس الشبكة", "الاتصال بالإنترنت", "تشفير"], "answer": 0},
-                {"q": "الـ VPN:", "options": ["شبكة افتراضية تشفر الاتصال", "برنامج حماية", "كابل"], "answer": 0},
-                {"q": "الـ Subnet Mask:", "options": ["يحدد حجم الشبكة", "كلمة مرور", "سرعة"], "answer": 0},
-                {"q": "أداة Ping:", "options": ["اختبار الاتصال", "برنامج اختراق", "نقل ملفات"], "answer": 0},
-                {"q": "الـ Ping يقيس:", "options": ["زمن الاستجابة (Latency)", "حجم الملفات", "عدد الأجهزة"], "answer": 0},
-                {"q": "هجوم DDoS:", "options": ["حجب الخدمة الموزع", "بروتوكول", "برنامج حماية"], "answer": 0},
-                {"q": "آلية DDoS:", "options": ["إغراق السيرفر بطلبات وهمية", "سرقة كلمة المرور", "تشفير"], "answer": 0},
-                {"q": "شبكة LAN:", "options": ["شبكة محلية", "شبكة واسعة", "لاسلكية"], "answer": 0},
-                {"q": "شبكة WAN:", "options": ["شبكة واسعة النطاق", "محلية", "افتراضية"], "answer": 0},
-                {"q": "شبكة Wi-Fi:", "options": ["لاسلكية", "سلكية", "خلوية"], "answer": 0},
-                {"q": "وظيفة DHCP:", "options": ["توزيع عناوين IP تلقائياً", "تشفير", "تحويل"], "answer": 0},
-                {"q": "الـ Proxy Server:", "options": ["وسيط بين المستخدم والإنترنت", "برنامج حماية", "كابل"], "answer": 0},
-                {"q": "فائدة Proxy:", "options": ["إخفاء IP وتصفية المحتوى", "زيادة السرعة", "تشفير الملفات"], "answer": 0},
-                {"q": "Port Scanning:", "options": ["فحص المنافذ المفتوحة", "تصميم", "تشفير"], "answer": 0},
-                {"q": "سبب Port Scanning:", "options": ["معرفة الخدمات التي تعمل", "زيادة السرعة", "حذف الفيروسات"], "answer": 0},
-                {"q": "الـ IDS:", "options": ["نظام كشف التسلل", "منع التسلل", "تصميم"], "answer": 0},
-                {"q": "الـ IPS:", "options": ["نظام منع التسلل", "كشف التسلل", "تصميم"], "answer": 0},
-                {"q": "الفرق بين IDS و IPS:", "options": ["IDS يكشف و IPS يمنع", "العكس", "لا فرق"], "answer": 0},
-                {"q": "شبكة VLAN:", "options": ["تقسيم منطقي للشبكة", "لاسلكية", "واسعة"], "answer": 0},
-                {"q": "فائدة VLAN:", "options": ["تحسين الأمان", "زيادة السرعة", "تشفير"], "answer": 0},
-                {"q": "بروتوكول HTTPS:", "options": ["HTTP مع تشفير", "HTTP بدون تشفير", "نقل ملفات"], "answer": 0},
-                {"q": "شهادة SSL/TLS:", "options": ["شهادة لتشفير الاتصال", "برنامج حماية", "كابل"], "answer": 0},
-                {"q": "سبب استخدام HTTPS:", "options": ["تشفير البيانات", "زيادة السرعة", "حفظ الملفات"], "answer": 0},
-                {"q": "هجوم MITM:", "options": ["تنصت على الاتصال", "برنامج حماية", "كابل"], "answer": 0},
-                {"q": "الحماية من MITM:", "options": ["استخدام HTTPS و VPN", "استخدام HTTP", "تعطيل الحماية"], "answer": 0},
-                {"q": "Spoofing:", "options": ["انتحال هوية جهاز أو مستخدم", "تشفير", "حفظ"], "answer": 0},
-                {"q": "ARP Spoofing:", "options": ["انتحال MAC لتوجيه الترافيك", "برنامج حماية", "كابل"], "answer": 0},
-                {"q": "الـ ping يستخدم بروتوكول:", "options": ["ICMP", "TCP", "UDP"], "answer": 0},
-                {"q": "الـ OSI Model:", "options": ["نموذج من 7 طبقات", "بروتوكول", "برنامج"], "answer": 0}
-            ],
-            appsec: [
-                {"q": "ثغرة SQL Injection:", "options": ["حقن أوامر SQL", "تشفير", "نسخ"], "answer": 0},
-                {"q": "ثغرة XSS:", "options": ["حقن JavaScript", "SQL", "CSRF"], "answer": 0},
-                {"q": "الحماية من SQLi:", "options": ["Prepared Statements", "إخفاء الصفحة", "تعطيل JS"], "answer": 0},
-                {"q": "ثغرة CSRF:", "options": ["طلب مزور", "SQL", "XSS"], "answer": 0},
-                {"q": "OWASP Top 10:", "options": ["قائمة أشهر الثغرات", "برنامج حماية", "شبكة"], "answer": 0},
-                {"q": "تأمين الكود:", "options": ["Secure Coding", "تشفير", "تصميم"], "answer": 0},
-                {"q": "DevSecOps:", "options": ["دمج الأمان في التطوير", "فصل الأمان", "حذف الكود"], "answer": 0},
-                {"q": "SAST:", "options": ["تحليل الكود الثابت", "تحليل الكود الديناميكي", "تشفير"], "answer": 0},
-                {"q": "DAST:", "options": ["تحليل الكود الديناميكي", "تحليل الكود الثابت", "تشفير"], "answer": 0},
-                {"q": "Broken Access Control:", "options": ["وصول غير مصرح", "تشفير", "حقن SQL"], "answer": 0},
-                {"q": "Cryptographic Failures:", "options": ["ضعف التشفير", "حقن SQL", "تشفير قوي"], "answer": 0},
-                {"q": "Security Misconfiguration:", "options": ["إعدادات خاطئة", "تشفير", "حقن"], "answer": 0},
-                {"q": "Vulnerable Components:", "options": ["مكونات بها ثغرات", "تشفير", "حقن"], "answer": 0},
-                {"q": "Authentication Failures:", "options": ["ضعف المصادقة", "تشفير", "حقن"], "answer": 0},
-                {"q": "SSRF:", "options": ["تزوير طلبات الخادم", "حقن SQL", "تشفير"], "answer": 0},
-                {"q": "Burp Suite:", "options": ["أداة اختبار ويب", "برنامج حماية", "شبكة"], "answer": 0},
-                {"q": "WAF:", "options": ["جدار حماية الويب", "تصميم", "نظام"], "answer": 0},
-                {"q": "Directory Traversal:", "options": ["وصول غير مصرح", "تشفير", "حقن"], "answer": 0},
-                {"q": "Command Injection:", "options": ["تنفيذ أوامر خبيثة", "تشفير", "حقن"], "answer": 0},
-                {"q": "Insecure Deserialization:", "options": ["استغلال فك التسلسل", "تشفير", "حقن"], "answer": 0},
-                {"q": "API Security:", "options": ["تأمين واجهات البرمجة", "تصميم", "تشفير"], "answer": 0},
-                {"q": "IDOR:", "options": ["وصول مباشر للموارد", "تشفير", "حقن"], "answer": 0},
-                {"q": "CSP:", "options": ["سياسة حماية المحتوى", "برنامج", "شبكة"], "answer": 0},
-                {"q": "Clickjacking:", "options": ["خداع بالنقر", "تشفير", "حقن"], "answer": 0},
-                {"q": "HTTPS:", "options": ["HTTP مع تشفير", "HTTP بدون تشفير", "نقل ملفات"], "answer": 0},
-                {"q": "Same-Origin Policy:", "options": ["سياسة منع التداخل", "برنامج", "شبكة"], "answer": 0},
-                {"q": "Race Condition:", "options": ["استغلال التوقيت", "تشفير", "حقن"], "answer": 0},
-                {"q": "Secure SDLC:", "options": ["دورة تطوير آمنة", "برنامج", "شبكة"], "answer": 0},
-                {"q": "Penetration Testing:", "options": ["اختبار الاختراق", "برنامج", "شبكة"], "answer": 0},
-                {"q": "Buffer Overflow:", "options": ["تجاوز الذاكرة", "تشفير", "حقن"], "answer": 0},
-                {"q": "XXE:", "options": ["استغلال XML", "تشفير", "حقن"], "answer": 0},
-                {"q": "OAuth:", "options": ["بروتوكول تفويض", "تشفير", "شبكة"], "answer": 0},
-                {"q": "JWT:", "options": ["JSON Web Token", "برنامج", "شبكة"], "answer": 0},
-                {"q": "Session Hijacking:", "options": ["سرقة الجلسة", "تشفير", "حقن"], "answer": 0},
-                {"q": "Session Fixation:", "options": ["تثبيت جلسة", "تشفير", "حقن"], "answer": 0},
-                {"q": "Rate Limiting:", "options": ["تحديد الطلبات", "برنامج", "شبكة"], "answer": 0},
-                {"q": "Insecure Direct Object Reference:", "options": ["وصول مباشر", "تشفير", "حقن"], "answer": 0},
-                {"q": "Security Header:", "options": ["رؤوس HTTP آمنة", "برنامج", "شبكة"], "answer": 0},
-                {"q": "Web Application Firewall:", "options": ["جدار حماية الويب", "تصميم", "نظام"], "answer": 0},
-                {"q": "Input Validation:", "options": ["التحقق من المدخلات", "تشفير", "حقن"], "answer": 0}
-            ]
-        };
-
-        function renderQuiz(section) {
-            const area = document.getElementById(`quiz-${section}`);
-            if (!area) return;
-            area.innerHTML = quizData[section].map((q, index) => `
-                <div class="question">
-                    <p>${index + 1}. ${q.q}</p>
-                    ${q.options.map((opt, i) => `
-                        <label><input type="radio" name="${section}_q${index}" value="${i}"> ${opt}</label>
-                    `).join('')}
-                </div>
-            `).join('');
-        }
-
-        function checkQuiz(section) {
-            let score = 0, allAnswered = true;
-            quizData[section].forEach((q, index) => {
-                const selected = document.querySelector(`input[name="${section}_q${index}"]:checked`);
-                if (!selected) allAnswered = false;
-                else if (parseInt(selected.value) === q.answer) score++;
-            });
-            const resultDiv = document.getElementById(`result-${section}`);
-            if (!allAnswered) {
-                resultDiv.style.color = '#ff4545';
-                resultDiv.innerText = '⚠️ أجب على جميع الأسئلة.';
-            } else {
-                resultDiv.style.color = 'var(--neon)';
-                resultDiv.innerText = `✅ نتيجتك: ${score} من ${quizData[section].length}`;
-            }
-        }
-
-        renderQuiz('foundations');
-        renderQuiz('network');
-        renderQuiz('appsec');
-    </script>
+</div><form class="term-input" onsubmit="runCommand(event)"><span>student@cyber:~$</span><input id="termInput" autocomplete="off" placeholder="help" aria-label="أمر تجريبي"><button>تنفيذ</button></form></div><div class="notice">المعامل الحقيقية لاحقًا تكون معزولة ومخصصة للتدريب وبإذن واضح. المحاكي الحالي لا يفحص الشبكات ولا يتصل بأجهزة خارجية.</div></section>
+<section id="challenges" class="view hidden"><div class="section-head"><div><h2>تحديات CTF تعليمية</h2><p>ابدأ بتحليل النصوص والسجلات واكتشاف الأخطاء المنطقية.</p></div></div><div class="grid" id="challengeGrid"></div></section>
+<section id="glossary" class="view hidden"><div class="section-head"><div><h2>قاموس المصطلحات</h2><p>مصطلحات أساسية بالعربي والإنجليزي.</p></div><div class="searchbox"><i class="fa-solid fa-magnifying-glass"></i><input id="glossarySearch" placeholder="ابحث عن مصطلح..." oninput="renderGlossary()"></div></div><div class="grid" id="glossaryGrid"></div></section>
+<section id="roadmap" class="view hidden"><div class="section-head"><div><h2>خريطة الطريق</h2><p>ترتيب مقترح للتعلم من غير القفز على الأساسيات.</p></div></div><div class="lesson-list" id="roadmapList"></div></section>
+<section id="about" class="view hidden"><div class="welcome"><div><div class="eyebrow">LEARN • PRACTICE • DEFEND</div><h1>الأمن السيبراني يبدأ <span>بالفهم</span></h1><p>هدف الأكاديمية تقديم مسار عربي منظم للتعلم، مع اختبارات ومعامل تعليمية آمنة ومحتوى قابل للتوسع.</p></div><div class="hero-art"><i class="fa-solid fa-user-shield"></i></div></div><div class="section grid"><div class="card"><div class="course-icon"><i class="fa-solid fa-scale-balanced"></i></div><h3>استخدام مسؤول</h3><p>اختبر فقط الأنظمة التي تملكها أو لديك إذن صريح لاختبارها. التعلم هدفه الحماية وليس الإضرار.</p></div><div class="card"><div class="course-icon"><i class="fa-solid fa-lock"></i></div><h3>خصوصية واضحة</h3><p>هذه الواجهة لا تنشئ حسابات حقيقية. لا تدخل كلمات مرور أو بيانات شخصية حساسة.</p></div><div class="card"><div class="course-icon"><i class="fa-solid fa-code"></i></div><h3>قابلة للتطوير</h3><p>يمكن توصيلها لاحقًا بواجهة API وقاعدة بيانات لحفظ الحسابات والتقدم والكورسات.</p></div></div></section>
+<footer class="footer">© 2026 Cyber Academy — منصة عربية للتعلم الآمن في الأمن السيبراني</footer>
+</main>
+</div>
+<script>
+const paths=[
+{id:'basics',name:'أساسيات الأمن السيبراني',icon:'fa-shield-halved',level:'مبتدئ',desc:'المفاهيم الأساسية والتهديدات ومبادئ الحماية.',courses:['مقدمة الأمن السيبراني','إدارة الهوية وكلمات المرور','الخصوصية والأمان الرقمي']},
+{id:'network',name:'أمن الشبكات',icon:'fa-network-wired',level:'مبتدئ — متوسط',desc:'تعلم الشبكات والبروتوكولات ومبادئ الدفاع.',courses:['أساسيات الشبكات','TCP/IP وDNS وHTTP','الجدران النارية ومراقبة الشبكات']},
+{id:'web',name:'أمن تطبيقات الويب',icon:'fa-code',level:'متوسط',desc:'فهم جلسات الدخول والتحقق من المدخلات والثغرات الشائعة.',courses:['أساسيات HTTP وواجهات API','التحقق من المدخلات','مقدمة OWASP Top 10']},
+{id:'ethical',name:'الاختراق الأخلاقي',icon:'fa-user-secret',level:'متوسط',desc:'منهجية اختبار مصرح بها وتوثيق النتائج وإصلاحها.',courses:['قواعد الاختبار المصرح','جمع المعلومات بشكل قانوني','كتابة تقرير الثغرات']},
+{id:'defense',name:'الدفاع السيبراني وSOC',icon:'fa-binoculars',level:'متوسط',desc:'مراقبة الأحداث وتحليل السجلات والاستجابة للحوادث.',courses:['مقدمة SOC','قراءة سجلات الأنظمة','الاستجابة للحوادث']},
+{id:'crypto',name:'التشفير وحماية البيانات',icon:'fa-key',level:'متوسط',desc:'التشفير والهاش والتوقيعات وإدارة المفاتيح.',courses:['مفاهيم التشفير','Hashing وDigital Signatures','إدارة المفاتيح']},
+{id:'forensics',name:'التحليل الجنائي الرقمي',icon:'fa-magnifying-glass-chart',level:'متوسط',desc:'جمع الأدلة الرقمية وفهم الخط الزمني للحوادث.',courses:['مبادئ الأدلة الرقمية','تحليل السجلات','بناء خط زمني']},
+{id:'cloud',name:'أمن السحابة وDevSecOps',icon:'fa-cloud',level:'متقدم',desc:'مبادئ تأمين الخدمات السحابية ودمج الأمن في التطوير.',courses:['مفاهيم أمن السحابة','إدارة الصلاحيات','مقدمة DevSecOps']},
+{id:'malware',name:'تحليل البرمجيات الخبيثة',icon:'fa-bug',level:'متقدم',desc:'التعرف على السلوكيات الخطرة والتحليل النظري داخل بيئة معزولة.',courses:['أنواع البرمجيات الخبيثة','مؤشرات الاختراق','مبادئ التحليل الآمن']},
+{id:'osint',name:'OSINT والاستخبارات المفتوحة',icon:'fa-magnifying-glass',level:'مبتدئ — متوسط',desc:'البحث والتحقق من المصادر العامة مع احترام الخصوصية والقانون.',courses:['تقييم المصادر','التحقق من المعلومات','أخلاقيات OSINT']},
+{id:'linux',name:'Linux وPython للأمن',icon:'fa-terminal',level:'مبتدئ',desc:'أدوات أساسية لفهم الأنظمة والبرمجة وتحليل البيانات.',courses:['مقدمة Linux','أساسيات Python','معالجة النصوص والسجلات']},
+{id:'incident',name:'إدارة المخاطر والاستجابة',icon:'fa-triangle-exclamation',level:'متوسط',desc:'تحديد المخاطر وترتيبها ووضع خطط الاستجابة والتعافي.',courses:['تقييم المخاطر','خطط الاستجابة','التعافي واستمرارية الأعمال']}
+];
+const courses=paths.flatMap((p,pi)=>p.courses.map((name,i)=>({id:p.id+'-'+i,name,path:p.name,pathId:p.id,level:p.level,desc:p.desc,lessons:3+i%2,progress:0})));
+const lessons=[
+{title:'ما هو الأمن السيبراني؟',course:'مقدمة الأمن السيبراني',time:'8 دقائق',body:'الأمن السيبراني هو مجموعة من الممارسات والتقنيات التي تحمي الأجهزة والشبكات والبرامج والبيانات من الوصول غير المصرح به أو التعطيل أو التغيير. يبدأ التعلم بفهم الأصول التي نريد حمايتها والتهديدات المحتملة وطرق تقليل المخاطر.'},
+{title:'السرية والسلامة والتوافر',course:'مقدمة الأمن السيبراني',time:'7 دقائق',body:'السرية تعني ألا يصل إلى البيانات إلا المصرح لهم. السلامة تعني الحفاظ على دقة البيانات وعدم تعديلها دون تصريح. التوافر يعني بقاء الأنظمة والبيانات متاحة عند الحاجة. تسمى هذه المبادئ الثلاثة CIA Triad.'},
+{title:'التهديد والثغرة والمخاطر',course:'مقدمة الأمن السيبراني',time:'9 دقائق',body:'التهديد حدث أو جهة قد تسبب ضررًا، والثغرة نقطة ضعف يمكن استغلالها، أما المخاطر فتتعلق باحتمال وقوع الضرر وأثره. يساعد تحديث البرامج وتقليل الصلاحيات والنسخ الاحتياطي على خفض المخاطر.'},
+{title:'مقدمة إلى الشبكات',course:'أساسيات الشبكات',time:'10 دقائق',body:'الشبكة تربط أجهزة لتبادل البيانات. من المفاهيم الأساسية عنوان IP، والراوتر، والسويتش، والبوابة الافتراضية، وDNS الذي يساعد في تحويل أسماء النطاقات إلى عناوين IP.'},
+{title:'ما الفرق بين HTTP وHTTPS؟',course:'TCP/IP وDNS وHTTP',time:'6 دقائق',body:'HTTP بروتوكول لنقل بيانات الويب. HTTPS يستخدم HTTP داخل اتصال مشفر عبر TLS، ما يساعد على حماية سرية البيانات وسلامتها والتحقق من هوية الخادم عند ضبط الشهادات بشكل صحيح.'},
+{title:'مبدأ أقل صلاحية',course:'إدارة الهوية وكلمات المرور',time:'5 دقائق',body:'امنح كل مستخدم أو برنامج الحد الأدنى من الصلاحيات اللازمة لأداء المهمة فقط. استخدم المصادقة متعددة العوامل، ومدير كلمات مرور موثوقًا، ولا تعِد استخدام كلمة المرور نفسها عبر الخدمات.'},
+{title:'التحقق من المدخلات',course:'التحقق من المدخلات',time:'9 دقائق',body:'يجب ألا يثق التطبيق في المدخلات القادمة من المستخدم. تحقّق من النوع والطول والصيغة في الخادم، واستخدم الاستعلامات المعلّمة في قواعد البيانات، واهرب المخرجات بحسب سياق العرض.'},
+{title:'مقدمة OWASP Top 10',course:'مقدمة OWASP Top 10',time:'8 دقائق',body:'OWASP Top 10 قائمة توعوية بأهم فئات مخاطر تطبيقات الويب. هي نقطة بداية للتعلم وليست قائمة كاملة بكل الثغرات. راجع الإصدار الرسمي الأحدث عند الدراسة المهنية.'},
+{title:'قراءة سجلات الأنظمة',course:'قراءة سجلات الأنظمة',time:'8 دقائق',body:'تساعد السجلات على فهم ما حدث ومتى ومن أي مصدر. عند التحليل راقب الطوابع الزمنية، وهوية الحساب، ونوع الحدث، وعنوان المصدر عند توفره، وابحث عن أنماط غير معتادة مع مراعاة الخصوصية.'},
+{title:'ما هو التشفير والهاش؟',course:'مفاهيم التشفير',time:'7 دقائق',body:'التشفير يحول البيانات إلى صيغة لا تقرأ دون المفتاح المناسب، ويمكن عكسه بالمفتاح الصحيح. الهاش ينتج بصمة ثابتة الطول ولا يفترض أن يكون قابلًا للعكس. تخزين كلمات المرور يحتاج خوارزميات مخصصة بطيئة مثل Argon2 أو bcrypt.'},
+{title:'مبادئ الأدلة الرقمية',course:'مبادئ الأدلة الرقمية',time:'8 دقائق',body:'تتطلب الأدلة الرقمية الحفاظ على سلامتها وتوثيق طريقة جمعها والتعامل معها. في العمل المهني يجب اتباع الإجراءات القانونية وسلسلة حيازة الأدلة وعدم تغيير المصدر الأصلي دون ضرورة وإذن.'},
+{title:'مقدمة Python للأمن',course:'أساسيات Python',time:'10 دقائق',body:'تستخدم Python في أتمتة المهام وتحليل النصوص والسجلات. ابدأ بالمتغيرات والشروط والحلقات والدوال وقراءة الملفات، ثم تدرب على تحليل ملفات محلية تملك حق استخدامها.'}
+];
+const glossary=[
+['Asset','أصل رقمي','جهاز أو نظام أو بيانات لها قيمة وتحتاج إلى حماية.'],['Threat','تهديد','شيء قد يسبب ضررًا لأصل أو نظام.'],['Vulnerability','ثغرة','نقطة ضعف في تصميم أو تنفيذ أو إعداد.'],['Risk','مخاطر','احتمال وقوع ضرر مع مراعاة أثره.'],['Firewall','جدار ناري','نظام يراقب حركة الشبكة ويسمح بها أو يمنعها وفق قواعد.'],['Encryption','تشفير','تحويل البيانات إلى صيغة لا تُقرأ دون المفتاح المناسب.'],['Hash','بصمة رقمية','ناتج دالة أحادية الاتجاه يستخدم للتحقق أو المقارنة.'],['MFA','مصادقة متعددة العوامل','استخدام أكثر من عامل للتحقق من الهوية.'],['Phishing','تصيد احتيالي','خداع المستخدم لدفعه لكشف معلومات أو تنفيذ إجراء.'],['Patch','تحديث إصلاحي','تحديث يعالج مشكلة أو ثغرة أو خطأ.'],['SOC','مركز عمليات الأمن','فريق أو مركز يراقب التنبيهات والأحداث الأمنية.'],['SIEM','إدارة معلومات وأحداث الأمن','منصة تجمع السجلات وتربط الأحداث لإنتاج تنبيهات.'],['CTF','التقاط العلم','تحديات تدريبية لحل ألغاز أمنية ضمن نطاق محدد.'],['Least Privilege','أقل صلاحية','منح الحد الأدنى من الأذونات اللازمة.'],['Incident Response','الاستجابة للحوادث','خطوات منظمة لاحتواء حادث أمني وتحليله والتعافي منه.'],['Zero-day','ثغرة غير معروفة أو غير معالَجة','ثغرة لا يتوفر لها إصلاح مناسب وقت استغلالها أو اكتشافها.']
+];
+const quizQuestions=[
+{q:'ما المقصود بالسرية في الأمن السيبراني؟',a:['إتاحة البيانات للجميع','وصول البيانات للمصرح لهم فقط','تسريع الشبكة','حذف النسخ الاحتياطية'],correct:1,why:'السرية تحد من الوصول إلى البيانات للأشخاص والأنظمة المصرح لهم.'},
+{q:'أي بروتوكول يساعد في تشفير اتصال الويب؟',a:['HTTP وحده','FTP وحده','TLS ضمن اتصال HTTPS','DNS وحده'],correct:2,why:'يستخدم HTTPS بروتوكول TLS لحماية الاتصال عند إعداده بشكل صحيح.'},
+{q:'ما أفضل ممارسة لتخزين كلمات المرور؟',a:['تخزينها كنص واضح','تشفيرها بمفتاح ثابت فقط','استخدام هاش مخصص لكلمات المرور مع salt','إرسالها بالبريد'],correct:2,why:'تستخدم خوارزميات مخصصة مثل Argon2 أو bcrypt مع salt فريد وإعدادات مناسبة.'},
+{q:'ما معنى مبدأ أقل صلاحية؟',a:['إعطاء الجميع صلاحيات المدير','منح أقل قدر لازم من الصلاحيات','إلغاء كل الحسابات','استخدام كلمة مرور واحدة'],correct:1,why:'تقليل الصلاحيات يقلل الأثر المحتمل عند إساءة الاستخدام أو اختراق الحساب.'},
+{q:'ماذا تفعل عند اكتشاف ثغرة في نظام لا تملكه؟',a:['تستغلها للتأكد','تنشر بيانات النظام','تلتزم بالنطاق المصرح وقناة الإفصاح المناسبة','تجرب كلمات مرور'],correct:2,why:'يجب الحصول على إذن واضح والالتزام بالنطاق والإبلاغ المسؤول.'},
+{q:'أي مما يلي مثال على بيانات سجل مفيدة للتحقيق؟',a:['الوقت ونوع الحدث والحساب','لون خلفية الموقع فقط','حجم الشاشة فقط','اسم خط الصفحة فقط'],correct:0,why:'الوقت ونوع الحدث والحساب تساعد في ربط الأحداث وفهم التسلسل الزمني.'}
+];
+let currentQuiz=0,score=0,answered=false,selectedPath='all',completed=new Set(JSON.parse(localStorage.getItem('cyberCompleted')||'[]'));
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function pathCard(p){return `<div class="path-card" onclick="openPath('${p.id}')"><i class="fa-solid ${p.icon}"></i><b>${p.name}</b><small>${p.level}</small></div>`}
+function courseCard(c){let pct=completed.has(c.id)?100:0;return `<article class="card"><div class="course-icon"><i class="fa-solid ${paths.find(p=>p.id===c.pathId)?.icon||'fa-book'}"></i></div><div class="chips"><span class="chip">${c.level}</span><span class="chip">${c.lessons} دروس</span></div><h3>${c.name}</h3><p>${c.desc}</p><div class="progress"><span style="width:${pct}%"></span></div><button class="primary" onclick="openCourse('${c.id}')">${pct?'مراجعة الكورس':'ابدأ التعلم'} <i class="fa-solid fa-arrow-left"></i></button></article>`}
+function renderPaths(){document.getElementById('homePaths').innerHTML=paths.slice(0,4).map(pathCard).join('');document.getElementById('allPaths').innerHTML=paths.map(pathCard).join('');document.getElementById('featuredCourses').innerHTML=courses.slice(0,3).map(courseCard).join('')}
+function renderCourses(){let q=(document.getElementById('courseSearch')?.value||'').trim().toLowerCase();let filtered=courses.filter(c=>(selectedPath==='all'||c.pathId===selectedPath)&&(c.name+' '+c.path+' '+c.desc).toLowerCase().includes(q));document.getElementById('courseGrid').innerHTML=filtered.length?filtered.map(courseCard).join(''):'<div class="empty">مفيش كورسات مطابقة للبحث.</div>'}
+function renderCourseTabs(){document.getElementById('courseTabs').innerHTML=`<button class="tab ${selectedPath==='all'?'active':''}" onclick="setCoursePath('all')">الكل</button>`+paths.map(p=>`<button class="tab ${selectedPath===p.id?'active':''}" onclick="setCoursePath('${p.id}')">${p.name}</button>`).join('')}
+function setCoursePath(id){selectedPath=id;renderCourseTabs();renderCourses()}
+function openPath(id){let p=paths.find(x=>x.id===id);if(!p)return;showSection('paths');document.getElementById('pathDetails').innerHTML=`<div class="section-head"><div><h2>${p.name}</h2><p>${p.desc}</p></div><span class="chip">${p.level}</span></div><div class="grid">${courses.filter(c=>c.pathId===id).map(courseCard).join('')}</div>`;document.getElementById('pathDetails').scrollIntoView({behavior:'smooth',block:'start'})}
+function openCourse(id){let c=courses.find(x=>x.id===id);if(!c)return;showSection('lessons');document.getElementById('lessonTitle').textContent=c.name;let relevant=lessons.filter(l=>l.course===c.name);if(!relevant.length)relevant=[{title:'مقدمة: '+c.name,course:c.name,time:'8 دقائق',body:c.desc+' ابدأ بتحديد المفاهيم الأساسية، ثم اقرأ التوثيق الموثوق، وطبّق ما تعلمته في بيئة تملكها أو لديك إذن لاستخدامها.'},{title:'المفاهيم الرئيسية',course:c.name,time:'10 دقائق',body:'دوّن المصطلحات الأساسية، وافهم التهديدات وطرق الحماية، ثم راجع الأمثلة التعليمية ضمن نطاق آمن ومصرح.'},{title:'المراجعة والتطبيق',course:c.name,time:'12 دقيقة',body:'راجع ما تعلمته، واكتب ملخصًا، واختبر فهمك على أمثلة محلية أو بيانات تدريبية غير حساسة.'}];document.getElementById('lessonList').innerHTML=relevant.map((l,i)=>`<div class="lesson"><div class="lesson-num">${i+1}</div><div><b>${l.title}</b><p>${l.time} • ${completed.has(c.id+'-l'+i)?'مكتمل':'درس تعليمي'}</p></div><button onclick="readLesson('${c.id}',${i})">افتح الدرس</button></div>`).join('');document.getElementById('lessonContent').classList.add('hidden');document.getElementById('lessonList').dataset.course=id;document.getElementById('lessonList').dataset.lessons=JSON.stringify(relevant)}
+function readLesson(courseId,i){let list=document.getElementById('lessonList'),arr=JSON.parse(list.dataset.lessons||'[]'),l=arr[i];if(!l)return;let box=document.getElementById('lessonContent');box.classList.remove('hidden');box.innerHTML=`<div class="eyebrow">درس ${i+1} • ${l.time}</div><h2>${l.title}</h2><p style="line-height:2;color:#d0d0d8">${l.body}</p><button class="primary" onclick="completeLesson('${courseId}-l${i}','${courseId}')"> <i class="fa-solid fa-check"></i> علّم الدرس كمكتمل</button>`;box.scrollIntoView({behavior:'smooth',block:'start'})}
+function completeLesson(id,courseId){completed.add(id);localStorage.setItem('cyberCompleted',JSON.stringify([...completed]));document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/24*100))+'%';openCourse(courseId)}
+function renderQuiz(){let q=quizQuestions[currentQuiz],box=document.getElementById('quizBox');answered=false;box.innerHTML=`<div class="eyebrow">السؤال ${currentQuiz+1} من ${quizQuestions.length}</div><div class="progress"><span style="width:${(currentQuiz+1)/quizQuestions.length*100}%"></span></div><div class="quiz-question">${q.q}</div><div class="answers">${q.a.map((a,i)=>`<button class="answer" onclick="answerQuiz(${i})">${['أ','ب','ج','د'][i]}. ${a}</button>`).join('')}</div><div id="quizFeedback"></div><div style="display:flex;justify-content:space-between;gap:10px;margin-top:15px"><span style="color:var(--muted);font-size:12px">النتيجة: ${score} صحيحة</span><button id="nextQuiz" class="primary hidden" onclick="nextQuestion()">${currentQuiz===quizQuestions.length-1?'إنهاء الاختبار':'السؤال التالي'} ←</button></div>`}
+function answerQuiz(i){if(answered)return;answered=true;let q=quizQuestions[currentQuiz],buttons=document.querySelectorAll('.answer');buttons[q.correct].classList.add('correct');if(i===q.correct){score++;document.getElementById('statScore').textContent=score}else buttons[i].classList.add('wrong');document.getElementById('quizFeedback').innerHTML=`<div class="feedback">${i===q.correct?'إجابة صحيحة!':'الإجابة الصحيحة: '+q.a[q.correct]}<br>${q.why}</div>`;document.getElementById('nextQuiz').classList.remove('hidden')}
+function nextQuestion(){if(currentQuiz<quizQuestions.length-1){currentQuiz++;renderQuiz()}else{document.getElementById('quizBox').innerHTML=`<div class="course-icon"><i class="fa-solid fa-trophy"></i></div><h2>خلصت الاختبار!</h2><p>إجاباتك الصحيحة: ${score} من ${quizQuestions.length}</p><div class="progress"><span style="width:${score/quizQuestions.length*100}%"></span></div><button class="primary" onclick="currentQuiz=0;score=0;renderQuiz()">إعادة الاختبار</button>`}}
+function renderGlossary(){let q=(document.getElementById('glossarySearch')?.value||'').toLowerCase();let arr=glossary.filter(x=>x.join(' ').toLowerCase().includes(q));document.getElementById('glossaryGrid').innerHTML=arr.map(x=>`<div class="card"><div class="eyebrow">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p></div>`).join('')||'<div class="empty">مفيش مصطلحات مطابقة.</div>'}
+const challenges=[
+{title:'تحدي الهاش',desc:'حدد لماذا لا يُعد الهاش تشفيرًا قابلًا للفك.',hint:'فكر في الفرق بين دالة أحادية الاتجاه وخوارزمية تستخدم مفتاحًا.'},
+{title:'تحليل سجل دخول',desc:'راجع سجلًا تدريبيًا وحدد الحدث الذي يحتاج إلى مراجعة.',hint:'تكرار محاولات فاشلة في وقت قصير قد يستحق التحقيق، لكنه لا يثبت وحده وجود اختراق.'},
+{title:'اكتشاف رابط مشبوه',desc:'تعلم مؤشرات التصيد قبل فتح أي رابط.',hint:'افحص اسم النطاق، والسياق، والأخطاء الإملائية، واطلب تأكيدًا من مرسل موثوق.'},
+{title:'مبدأ أقل صلاحية',desc:'اختر الصلاحيات المناسبة لحساب مستخدم عادي.',hint:'لا تمنح صلاحيات المدير إلا عند الحاجة المبررة.'},
+{title:'حماية البيانات',desc:'رتب خطوات التعامل الآمن مع ملف حساس.',hint:'فكر في الصلاحيات والتشفير والنسخ الاحتياطي والتخلص الآمن.'},
+{title:'سلسلة حيازة الأدلة',desc:'تعرف على أهمية توثيق من تعامل مع الدليل الرقمي.',hint:'الوقت وهوية المستلم والإجراءات تساعد في إثبات سلامة الدليل.'}
+];
+function renderChallenges(){document.getElementById('challengeGrid').innerHTML=challenges.map((c,i)=>`<div class="card"><div class="course-icon"><i class="fa-solid fa-flag"></i></div><h3>${c.title}</h3><p>${c.desc}</p><button class="secondary" onclick="challengeHint(${i})">عرض تلميح</button><p id="hint${i}" class="hidden" style="margin-top:12px;color:#ff9aa8">${c.hint}</p></div>`).join('')}
+function challengeHint(i){document.getElementById('hint'+i).classList.toggle('hidden')}
+function renderRoadmap(){let stages=[['1','الأساسيات','مفاهيم الأمن والخصوصية وأنظمة التشغيل'],['2','الشبكات','IP وDNS وHTTP ومبادئ TCP/IP'],['3','Linux وPython','الطرفية والبرمجة وتحليل النصوص'],['4','اختار تخصصًا','ويب أو دفاع سيبراني أو شبكات أو تحليل رقمي'],['5','تدريب آمن','مختبرات قانونية وتحديات CTF تعليمية'],['6','ملف أعمال','تقارير توثيقية ومشروعات دفاعية آمنة']];document.getElementById('roadmapList').innerHTML=stages.map(s=>`<div class="lesson"><div class="lesson-num">${s[0]}</div><div><b>${s[1]}</b><p>${s[2]}</p></div></div>`).join('')}
+function showSection(id){document.querySelectorAll('.view').forEach(s=>s.classList.toggle('hidden',s.id!==id));document.querySelectorAll('.side-link').forEach(b=>b.classList.toggle('active',b.dataset.section===id));document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));document.getElementById('sidebar').classList.remove('open');if(id==='quiz'&&!answered)renderQuiz();window.scrollTo({top:0,behavior:'smooth'})}
+function toggleMenu(){document.getElementById('sidebar').classList.toggle('open')}
+const safeCommands={
+help:'الأوامر المتاحة:\nhelp       عرض المساعدة\nabout      معلومات المعمل\nwhoami     عرض هوية الطالب التجريبية\ndate       عرض تاريخ تجريبي من المتصفح\nclear      مسح شاشة المحاكي\nls         عرض ملفات تدريب افتراضية\nscan-demo  عرض مثال تعليمي ثابت لنتيجة فحص محلي وهمي',
+about:'هذا محاكي طرفية تعليمي داخل المتصفح. لا يتصل بأي جهاز ولا ينفذ أوامر نظام حقيقية.',
+whoami:'student (demo user)\npermissions: learning-sandbox-only',
+ls:'lessons/\npractice/\nnotes.txt\nsample-log.txt',
+'date':()=>new Date().toLocaleString('ar-EG'),
+'scan-demo':'DEMO ONLY — نتيجة افتراضية غير حقيقية\nHost: training-box.local\nStatus: reachable (simulated)\n22/tcp  filtered  ssh (simulated)\n80/tcp  open      http (simulated)\n443/tcp open      https (simulated)\nلا توجد عملية فحص حقيقية.'
+};
+function runCommand(e){e.preventDefault();let input=document.getElementById('termInput'),cmd=input.value.trim(),out=document.getElementById('termOutput');if(!cmd)return;if(cmd==='clear'){out.textContent='';input.value='';return}let result=safeCommands[cmd];if(typeof result==='function')result=result();if(!result)result='الأمر غير متاح في المحاكي. اكتب help لعرض الأوامر الآمنة.';out.innerHTML+=`<span class="red">student@cyber:~$ ${esc(cmd)}</span>\n${esc(result)}\n\n`;out.scrollTop=out.scrollHeight;input.value=''}
+renderPaths();renderCourseTabs();renderCourses();renderQuiz();renderGlossary();renderChallenges();renderRoadmap();document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/24*100))+'%';
+</script>
 </body>
 </html>
