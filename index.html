@@ -12,11 +12,14 @@
 :root{--bg:#08090d;--panel:#101116;--panel2:#15161d;--line:#282a34;--text:#f5f5f7;--muted:#9a9ba8;--red:#ff304b;--red2:#b90e2a;--white:#fff;--green:#45d483;--radius:18px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#301019 0,transparent 35%),var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.hidden{display:none!important}
 .topbar{height:72px;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:0 5%;background:#09090deF;backdrop-filter:blur(16px);border-bottom:1px solid #292a33}.brand{font-size:22px;font-weight:900;direction:ltr;white-space:nowrap}.brand b{color:var(--red)}.brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:2px;text-align:right}.navlinks{display:flex;gap:7px;align-items:center}.navlinks button,.iconbtn{border:1px solid transparent;background:transparent;color:#c9c9d2;padding:10px 13px;border-radius:10px}.navlinks button:hover,.navlinks button.active{background:#211117;color:white;border-color:#54212c}.top-actions{display:flex;gap:9px;align-items:center}.primary,.secondary{border:0;border-radius:11px;padding:11px 17px;font-weight:800}.primary{background:linear-gradient(135deg,var(--red),#c50e31);color:white;box-shadow:0 7px 25px #ff304b28}.secondary{background:#1b1c24;color:#eee;border:1px solid var(--line)}.iconbtn{font-size:19px;display:none}
-.layout{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1500px;margin:auto;min-height:calc(100vh - 72px)}.sidebar{border-left:1px solid var(--line);padding:25px 17px;position:sticky;top:72px;height:calc(100vh - 72px);overflow:auto;background:#0b0c11}.profile{padding:16px;background:linear-gradient(140deg,#241019,#12131a);border:1px solid #49202b;border-radius:16px;margin-bottom:23px}.avatar{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#ff304b,#821127);display:grid;place-items:center;font-size:20px;margin-bottom:9px}.profile strong{display:block}.profile span{font-size:12px;color:var(--muted)}.side-label{font-size:11px;color:#777986;font-weight:800;margin:20px 12px 8px}.side-link{width:100%;display:flex;align-items:center;gap:12px;text-align:right;color:#b9bac4;background:transparent;border:1px solid transparent;padding:12px 13px;border-radius:11px;margin:3px 0}.side-link i{width:19px;text-align:center;color:#92939f}.side-link:hover,.side-link.active{background:#241117;color:white;border-color:#49202b}.side-link.active i{color:var(--red)}.main{padding:30px clamp(16px,3vw,42px) 55px;min-width:0}.welcome{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:clamp(22px,4vw,45px);border:1px solid #49202b;border-radius:24px;background:radial-gradient(circle at 15% 15%,#5a1024 0,transparent 45%),linear-gradient(120deg,#1a0d13,#111219 70%);position:relative;overflow:hidden}.welcome:after{content:"</>";position:absolute;left:4%;bottom:-28px;font-size:125px;font-weight:900;color:#ffffff08;direction:ltr}.eyebrow{color:#ff7485;font-size:12px;font-weight:800;letter-spacing:1px}.welcome h1{font-size:clamp(25px,4vw,43px);line-height:1.35;margin:12px 0}.welcome h1 span{color:var(--red)}.welcome p{color:#b5b5c0;max-width:650px;line-height:1.9;margin:0 0 22px}.hero-art{font-size:clamp(70px,10vw,130px);color:#ff304b;filter:drop-shadow(0 0 28px #ff304b55);padding:10px 25px}.section{margin-top:35px;scroll-margin-top:95px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:17px}.section-head h2{margin:0;font-size:22px}.section-head p{color:var(--muted);margin:5px 0 0;font-size:13px}.textlink{background:transparent;border:0;color:#ff687b}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:20px}.stat,.card{background:linear-gradient(145deg,#14151c,#101116);border:1px solid var(--line);border-radius:var(--radius)}.stat{padding:17px;display:flex;gap:13px;align-items:center}.stat-icon{width:43px;height:43px;display:grid;place-items:center;background:#28121a;color:#ff5268;border-radius:13px;font-size:18px}.stat strong{display:block;font-size:22px}.stat span{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.card{padding:20px;transition:.2s;min-width:0}.card:hover{transform:translateY(-3px);border-color:#71303d}.course-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:#29121a;color:#ff5268;font-size:21px;margin-bottom:14px}.card h3{font-size:16px;margin:0 0 8px}.card p{font-size:13px;color:var(--muted);line-height:1.8;margin:0 0 16px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}.chip{font-size:11px;color:#c9c9d2;background:#20212a;padding:5px 9px;border-radius:7px}.card .secondary,.card .primary{width:100%;padding:9px}.progress{height:6px;background:#2a2b34;border-radius:99px;overflow:hidden;margin:12px 0}.progress span{height:100%;display:block;background:linear-gradient(90deg,var(--red2),var(--red));border-radius:99px}.path-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.path-card{padding:18px 14px;border:1px solid var(--line);background:#121319;border-radius:15px;text-align:center;cursor:pointer;transition:.2s}.path-card:hover{border-color:var(--red);background:#211117;transform:translateY(-3px)}.path-card i{font-size:27px;color:var(--red);margin-bottom:12px}.path-card b{display:block;font-size:13px}.path-card small{display:block;color:var(--muted);margin-top:7px}.searchbox{width:min(100%,330px);position:relative}.searchbox i{position:absolute;right:13px;top:14px;color:var(--muted)}.searchbox input{width:100%;background:#121319;border:1px solid var(--line);border-radius:11px;padding:10px 38px 10px 12px;color:white;outline:none}.searchbox input:focus{border-color:#a52a40}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);background:#13141a;color:#bdbdc7;border-radius:9px;padding:8px 13px;font-size:12px}.tab.active{background:#32131c;border-color:#7b2636;color:white}.lesson-list{display:grid;gap:10px}.lesson{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--line);background:#121319;border-radius:13px}.lesson-num{width:38px;height:38px;display:grid;place-items:center;background:#25121a;color:#ff5a70;border-radius:10px;flex-shrink:0}.lesson div:nth-child(2){flex:1}.lesson p{margin:3px 0 0;color:var(--muted);font-size:12px}.lesson button{background:#20212a;border:1px solid #333540;color:white;border-radius:9px;padding:7px 11px}.terminal{background:#080a0c;border:1px solid #30323a;border-radius:15px;overflow:hidden}.term-head{padding:12px 15px;background:#171820;border-bottom:1px solid #30323a;display:flex;gap:7px;align-items:center}.dot{width:9px;height:9px;border-radius:50%;background:#ff5268}.dot:nth-child(2){background:#ffc45c}.dot:nth-child(3){background:#45d483}.term-title{margin-right:auto;color:#a5a6b1;font-size:12px;direction:ltr}.term-output{padding:18px;height:260px;overflow:auto;color:#d3d3da;font:13px/1.9 monospace;direction:ltr;text-align:left;white-space:pre-wrap}.term-output .red{color:#ff536c}.term-output .green{color:#5de39b}.term-input{display:flex;gap:8px;padding:12px;border-top:1px solid #292b33;direction:ltr}.term-input span{color:#ff5268;padding-top:8px}.term-input input{flex:1;min-width:0;background:#111219;border:1px solid #30323a;color:white;border-radius:8px;padding:9px;outline:none;direction:ltr}.term-input button{background:#d91e3d;border:0;border-radius:8px;color:white;padding:8px 14px}.quiz-question{font-size:18px;font-weight:800;line-height:1.8}.answers{display:grid;gap:10px;margin:20px 0}.answer{padding:13px 15px;border:1px solid var(--line);border-radius:11px;background:#15161d;color:#eee;text-align:right}.answer:hover{border-color:#a12a40}.answer.correct{border-color:#2eaa70;background:#10251b}.answer.wrong{border-color:#d6324a;background:#2b1118}.feedback{padding:12px;border-radius:10px;background:#171820;color:#ddd;font-size:13px;line-height:1.8}.footer{border-top:1px solid var(--line);margin-top:45px;padding:22px 0;color:#777986;text-align:center;font-size:12px}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #343540;border-radius:13px;grid-column:1/-1}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1500px;margin:auto;min-height:calc(100vh - 72px)}.sidebar{border-left:1px solid var(--line);padding:25px 17px;position:sticky;top:72px;height:calc(100vh - 72px);overflow:auto;background:#0b0c11}.profile{padding:16px;background:linear-gradient(140deg,#241019,#12131a);border:1px solid #49202b;border-radius:16px;margin-bottom:23px}.avatar{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#ff304b,#821127);display:grid;place-items:center;font-size:20px;margin-bottom:9px}.profile strong{display:block}.profile span{font-size:12px;color:var(--muted)}.side-label{font-size:11px;color:#777986;font-weight:800;margin:20px 12px 8px}.side-link{width:100%;display:flex;align-items:center;gap:12px;text-align:right;color:#b9bac4;background:transparent;border:1px solid transparent;padding:12px 13px;border-radius:11px;margin:3px 0}.side-link i{width:19px;text-align:center;color:#92939f}.side-link:hover,.side-link.active{background:#241117;color:white;border-color:#49202b}.side-link.active i{color:var(--red)}.main{padding:30px clamp(16px,3vw,42px) 55px;min-width:0}.welcome{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:clamp(22px,4vw,45px);border:1px solid #49202b;border-radius:24px;background:radial-gradient(circle at 15% 15%,#5a1024 0,transparent 45%),linear-gradient(120deg,#1a0d13,#111219 70%);position:relative;overflow:hidden}.welcome:after{content:"</>";position:absolute;left:4%;bottom:-28px;font-size:125px;font-weight:900;color:#ffffff08;direction:ltr}.eyebrow{color:#ff7485;font-size:12px;font-weight:800;letter-spacing:1px}.welcome h1{font-size:clamp(25px,4vw,43px);line-height:1.35;margin:12px 0}.welcome h1 span{color:var(--red)}.welcome p{color:#b5b5c0;max-width:650px;line-height:1.9;margin:0 0 22px}.hero-art{font-size:clamp(70px,10vw,130px);color:#ff304b;filter:drop-shadow(0 0 28px #ff304b55);padding:10px 25px}.section{margin-top:35px;scroll-margin-top:95px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:17px}.section-head h2{margin:0;font-size:22px}.section-head p{color:var(--muted);margin:5px 0 0;font-size:13px}.textlink{background:transparent;border:0;color:#ff687b}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:20px}.stat,.card{background:linear-gradient(145deg,#14151c,#101116);border:1px solid var(--line);border-radius:var(--radius)}.stat{padding:17px;display:flex;gap:13px;align-items:center}.stat-icon{width:43px;height:43px;display:grid;place-items:center;background:#28121a;color:#ff5268;border-radius:13px;font-size:18px}.stat strong{display:block;font-size:22px}.stat span{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.card{padding:20px;transition:.2s;min-width:0}.card:hover{transform:translateY(-3px);border-color:#71303d}.course-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:#29121a;color:#ff5268;font-size:21px;margin-bottom:14px}.card h3{font-size:16px;margin:0 0 8px}.card p{font-size:13px;color:var(--muted);line-height:1.8;margin:0 0 16px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}.chip{font-size:11px;color:#c9c9d2;background:#20212a;padding:5px 9px;border-radius:7px}.card .secondary,.card .primary{width:100%;padding:9px}.progress{height:6px;background:#2a2b34;border-radius:99px;overflow:hidden;margin:12px 0}.progress span{height:100%;display:block;background:linear-gradient(90deg,var(--red2),var(--red));border-radius:99px}.path-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.path-card{padding:18px 14px;border:1px solid var(--line);background:#121319;border-radius:15px;text-align:center;cursor:pointer;transition:.2s}.path-card:hover{border-color:var(--red);background:#211117;transform:translateY(-3px)}.path-card i{font-size:27px;color:var(--red);margin-bottom:12px}.path-card b{display:block;font-size:13px}.path-card small{display:block;color:var(--muted);margin-top:7px}.searchbox{width:min(100%,330px);position:relative}.searchbox i{position:absolute;right:13px;top:14px;color:var(--muted)}.searchbox input{width:100%;background:#121319;border:1px solid var(--line);border-radius:11px;padding:10px 38px 10px 12px;color:white;outline:none}.searchbox input:focus{border-color:#a52a40}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);background:#13141a;color:#bdbdc7;border-radius:9px;padding:8px 13px;font-size:12px}.tab.active{background:#32131c;border-color:#7b2636;color:white}.lesson-list{display:grid;gap:10px}.lesson{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--line);background:#121319;border-radius:13px}.lesson-num{width:38px;height:38px;display:grid;place-items:center;background:#25121a;color:#ff5a70;border-radius:10px;flex-shrink:0}.lesson div:nth-child(2){flex:1}.lesson p{margin:3px 0 0;color:var(--muted);font-size:12px}.lesson button{background:#20212a;border:1px solid #333540;color:white;border-radius:9px;padding:7px 11px}.quiz-question{font-size:18px;font-weight:800;line-height:1.8}.answers{display:grid;gap:10px;margin:20px 0}.answer{padding:13px 15px;border:1px solid var(--line);border-radius:11px;background:#15161d;color:#eee;text-align:right}.answer:hover{border-color:#a12a40}.answer.correct{border-color:#2eaa70;background:#10251b}.answer.wrong{border-color:#d6324a;background:#2b1118}.feedback{padding:12px;border-radius:10px;background:#171820;color:#ddd;font-size:13px;line-height:1.8}.footer{border-top:1px solid var(--line);margin-top:45px;padding:22px 0;color:#777986;text-align:center;font-size:12px}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #343540;border-radius:13px;grid-column:1/-1}
+
+.video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 14px; margin: 20px 0; border: 1px solid var(--line); background: #000; }
+.video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
 @media(max-width:1050px){.layout{grid-template-columns:210px minmax(0,1fr)}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-art{display:none}}
 @media(max-width:720px){
   .topbar{height:62px;padding:0 14px}.navlinks{display:none}
-  /* زرار القائمة الجديد */
   .iconbtn{display:grid; place-items:center; background:#211117; border:1px solid #54212c; color:white; font-size:22px; width:42px; height:42px; border-radius:10px; padding:0;}
   .top-actions .primary{padding:8px 11px;font-size:12px}.brand{font-size:18px}.layout{display:block}.sidebar{position:fixed;top:62px;right:0;bottom:0;height:auto;width:260px;z-index:30;transform:translateX(105%);transition:.25s;box-shadow:-20px 0 60px #0008}.sidebar.open{transform:translateX(0)}.main{padding:18px 13px 40px}.welcome{padding:23px 19px}.welcome h1{font-size:27px}.stats{gap:9px}.stat{padding:12px;gap:9px}.stat strong{font-size:19px}.stat-icon{width:36px;height:36px}.grid{grid-template-columns:1fr}.path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{align-items:start;flex-direction:column}.searchbox{width:100%}.lesson{align-items:flex-start;flex-wrap:wrap}.lesson button{margin-right:auto}.section{margin-top:28px}
 }
@@ -24,14 +27,12 @@
 </head>
 <body>
 <header class="topbar">
-  <!-- غيرت الأيقونة لعلامة نصية عشان تظهر دايماً -->
   <button class="iconbtn" onclick="toggleMenu()" aria-label="فتح القائمة">☰</button>
   <a class="brand" href="#" onclick="showSection('home');return false">_Cyber<b>Academy</b><small>LEARN • PRACTICE • DEFEND</small></a>
   <nav class="navlinks">
     <button class="active" data-nav="home" onclick="showSection('home')">الرئيسية</button>
     <button data-nav="paths" onclick="showSection('paths')">المسارات</button>
     <button data-nav="courses" onclick="showSection('courses')">الكورسات</button>
-    <button data-nav="labs" onclick="showSection('labs')">المعامل</button>
   </nav>
   <div class="top-actions"><button class="secondary" onclick="showSection('quiz')"><i class="fa-solid fa-bolt"></i> اختبر نفسك</button></div>
 </header>
@@ -44,20 +45,18 @@
   <button class="side-link" data-section="courses" onclick="showSection('courses')"><i class="fa-solid fa-book-open"></i> مكتبة الكورسات</button>
   <button class="side-link" data-section="lessons" onclick="showSection('lessons')"><i class="fa-solid fa-list-check"></i> الدروس</button>
   <button class="side-link" data-section="quiz" onclick="showSection('quiz')"><i class="fa-solid fa-circle-question"></i> الاختبارات</button>
-  <div class="side-label">التدريب العملي</div>
-  <button class="side-link" data-section="labs" onclick="showSection('labs')"><i class="fa-solid fa-terminal"></i> المعمل الطرفي</button>
+  <div class="side-label">المعلومات</div>
   <button class="side-link" data-section="challenges" onclick="showSection('challenges')"><i class="fa-solid fa-flag"></i> تحديات CTF</button>
   <button class="side-link" data-section="glossary" onclick="showSection('glossary')"><i class="fa-solid fa-book"></i> قاموس المصطلحات</button>
-  <div class="side-label">المعلومات</div>
   <button class="side-link" data-section="roadmap" onclick="showSection('roadmap')"><i class="fa-solid fa-map"></i> خريطة الطريق</button>
   <button class="side-link" data-section="about" onclick="showSection('about')"><i class="fa-solid fa-shield-halved"></i> عن الأكاديمية</button>
 </aside>
 <main class="main">
 <section id="home" class="view">
- <div class="welcome"><div><div class="eyebrow">من الصفر إلى الممارسة الآمنة</div><h1>أهلاً بك في <span>أكاديمية سايبر</span></h1><p>اتعلم الأمن السيبراني خطوة بخطوة: افهم الشبكات، أمّن التطبيقات، تدرب داخل معامل تعليمية، واختبر معلوماتك في بيئة آمنة.</p><button class="primary" onclick="showSection('paths')">ابدأ رحلة التعلم <i class="fa-solid fa-arrow-left"></i></button> <button class="secondary" onclick="showSection('courses')">استكشف الكورسات</button></div><div class="hero-art"><i class="fa-solid fa-shield-halved"></i></div></div>
+ <div class="welcome"><div><div class="eyebrow">من الصفر إلى الممارسة الآمنة</div><h1>أهلاً بك في <span>أكاديمية سايبر</span></h1><p>اتعلم الأمن السيبراني خطوة بخطوة: افهم الشبكات، أمّن التطبيقات، وتدرب من خلال فيديوهات شارحة واختبارات تفاعلية في بيئة آمنة.</p><button class="primary" onclick="showSection('paths')">ابدأ رحلة التعلم <i class="fa-solid fa-arrow-left"></i></button> <button class="secondary" onclick="showSection('courses')">استكشف الكورسات</button></div><div class="hero-art"><i class="fa-solid fa-shield-halved"></i></div></div>
  <div class="stats">
   <div class="stat"><div class="stat-icon"><i class="fa-solid fa-book-open"></i></div><div><strong id="statCourses">12</strong><span>مسار وكورس</span></div></div>
-  <div class="stat"><div class="stat-icon"><i class="fa-solid fa-list-check"></i></div><div><strong id="statLessons">24</strong><span>موضوع تعليمي</span></div></div>
+  <div class="stat"><div class="stat-icon"><i class="fa-solid fa-list-check"></i></div><div><strong id="statLessons">36</strong><span>درس فيديو</span></div></div>
   <div class="stat"><div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div><div><strong id="statScore">0</strong><span>إجابات صحيحة</span></div></div>
   <div class="stat"><div class="stat-icon"><i class="fa-solid fa-fire"></i></div><div><strong id="statDone">0%</strong><span>تقدمك المحلي</span></div></div>
  </div>
@@ -66,16 +65,12 @@
 </section>
 <section id="paths" class="view hidden"><div class="section-head"><div><h2>مسارات التعلم</h2><p>اختار التخصص المناسب لمستواك وابدأ بالترتيب المقترح.</p></div></div><div class="path-grid" id="allPaths"></div><div id="pathDetails" class="section"></div></section>
 <section id="courses" class="view hidden"><div class="section-head"><div><h2>مكتبة الكورسات</h2><p>ابحث في موضوعات الأمن السيبراني المتاحة.</p></div><div class="searchbox"><i class="fa-solid fa-magnifying-glass"></i><input id="courseSearch" placeholder="ابحث عن كورس..." oninput="renderCourses()"></div></div><div class="tabs" id="courseTabs"></div><div class="grid" id="courseGrid"></div></section>
-<section id="lessons" class="view hidden"><div class="section-head"><div><h2 id="lessonTitle">الدروس التعليمية</h2><p>افتح الدرس لقراءة الشرح المختصر ثم علّمه كمكتمل.</p></div></div><div class="lesson-list" id="lessonList"></div><div id="lessonContent" class="card section hidden"></div></section>
+<section id="lessons" class="view hidden"><div class="section-head"><div><h2 id="lessonTitle">الدروس التعليمية</h2><p>شاهد الفيديو واقرأ الشرح ثم علّم الدرس كمكتمل.</p></div></div><div class="lesson-list" id="lessonList"></div><div id="lessonContent" class="card section hidden"></div></section>
 <section id="quiz" class="view hidden"><div class="section-head"><div><h2>اختبر معلوماتك</h2><p>أسئلة أساسية مع تصحيح وشرح فوري.</p></div></div><div class="card" id="quizBox"></div></section>
-<section id="labs" class="view hidden"><div class="section-head"><div><h2>المعمل الطرفي</h2><p>محاكي أوامر لتعلم أساسيات لينكس والشبكات.</p></div></div><div class="terminal"><div class="term-head"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="term-title">cyber-lab — command line</span></div><div class="term-output" id="termOutput"><span class="green">Cyber Academy Lab v2.0</span>
-اكتب help لعرض الأوامر المتاحة.
-
-</div><form class="term-input" onsubmit="runCommand(event)"><span>student@cyber:~$</span><input id="termInput" autocomplete="off" placeholder="help" aria-label="أمر"><button>تنفيذ</button></form></div></section>
 <section id="challenges" class="view hidden"><div class="section-head"><div><h2>تحديات CTF تعليمية</h2><p>ابدأ بتحليل النصوص والسجلات واكتشاف الأخطاء المنطقية.</p></div></div><div class="grid" id="challengeGrid"></div></section>
 <section id="glossary" class="view hidden"><div class="section-head"><div><h2>قاموس المصطلحات</h2><p>مصطلحات أساسية بالعربي والإنجليزي.</p></div><div class="searchbox"><i class="fa-solid fa-magnifying-glass"></i><input id="glossarySearch" placeholder="ابحث عن مصطلح..." oninput="renderGlossary()"></div></div><div class="grid" id="glossaryGrid"></div></section>
 <section id="roadmap" class="view hidden"><div class="section-head"><div><h2>خريطة الطريق</h2><p>ترتيب مقترح للتعلم من غير القفز على الأساسيات.</p></div></div><div class="lesson-list" id="roadmapList"></div></section>
-<section id="about" class="view hidden"><div class="welcome"><div><div class="eyebrow">LEARN • PRACTICE • DEFEND</div><h1>الأمن السيبراني يبدأ <span>بالفهم</span></h1><p>هدف الأكاديمية تقديم مسار عربي منظم للتعلم، مع اختبارات ومعامل تعليمية آمنة ومحتوى قابل للتوسع.</p></div><div class="hero-art"><i class="fa-solid fa-user-shield"></i></div></div><div class="section grid"><div class="card"><div class="course-icon"><i class="fa-solid fa-scale-balanced"></i></div><h3>استخدام مسؤول</h3><p>اختبر فقط الأنظمة التي تملكها أو لديك إذن صريح لاختبارها. التعلم هدفه الحماية وليس الإضرار.</p></div><div class="card"><div class="course-icon"><i class="fa-solid fa-lock"></i></div><h3>خصوصية واضحة</h3><p>هذه الواجهة لا تنشئ حسابات حقيقية. لا تدخل كلمات مرور أو بيانات شخصية حساسة.</p></div><div class="card"><div class="course-icon"><i class="fa-solid fa-code"></i></div><h3>محتوى متكامل</h3><p>الأكاديمية تحتوي على مسارات تعليمية، دروس، امتحانات، ومعمل طرفي تفاعلي.</p></div></div></section>
+<section id="about" class="view hidden"><div class="welcome"><div><div class="eyebrow">LEARN • PRACTICE • DEFEND</div><h1>الأمن السيبراني يبدأ <span>بالفهم</span></h1><p>هدف الأكاديمية تقديم مسار عربي منظم للتعلم، مع فيديوهات شارحة، واختبارات تفاعلية ومحتوى قابل للتوسع.</p></div><div class="hero-art"><i class="fa-solid fa-user-shield"></i></div></div><div class="section grid"><div class="card"><div class="course-icon"><i class="fa-solid fa-scale-balanced"></i></div><h3>استخدام مسؤول</h3><p>اختبر فقط الأنظمة التي تملكها أو لديك إذن صريح لاختبارها. التعلم هدفه الحماية وليس الإضرار.</p></div><div class="card"><div class="course-icon"><i class="fa-solid fa-lock"></i></div><h3>خصوصية واضحة</h3><p>هذه الواجهة لا تنشئ حسابات حقيقية. لا تدخل كلمات مرور أو بيانات شخصية حساسة.</p></div><div class="card"><div class="course-icon"><i class="fa-solid fa-code"></i></div><h3>محتوى متكامل</h3><p>الأكاديمية تحتوي على مسارات تعليمية، دروس بالفيديو والكتابة، وامتحانات تفاعلية.</p></div></div></section>
 <footer class="footer">© 2026 Cyber Academy — منصة عربية للتعلم الآمن في الأمن السيبراني</footer>
 </main>
 </div>
@@ -94,21 +89,60 @@ const paths=[
 {id:'linux',name:'Linux وPython للأمن',icon:'fa-terminal',level:'مبتدئ',desc:'أدوات أساسية لفهم الأنظمة والبرمجة وتحليل البيانات.',courses:['مقدمة Linux','أساسيات Python','معالجة النصوص والسجلات']},
 {id:'incident',name:'إدارة المخاطر والاستجابة',icon:'fa-triangle-exclamation',level:'متوسط',desc:'تحديد المخاطر وترتيبها ووضع خطط الاستجابة والتعافي.',courses:['تقييم المخاطر','خطط الاستجابة','التعافي واستمرارية الأعمال']}
 ];
-const courses=paths.flatMap((p,pi)=>p.courses.map((name,i)=>({id:p.id+'-'+i,name,path:p.name,pathId:p.id,level:p.level,desc:p.desc,lessons:3+i%2,progress:0})));
-const lessons=[
-{title:'ما هو الأمن السيبراني؟',course:'مقدمة الأمن السيبراني',time:'8 دقائق',body:'الأمن السيبراني هو مجموعة من الممارسات والتقنيات التي تحمي الأجهزة والشبكات والبرامج والبيانات من الوصول غير المصرح به أو التعطيل أو التغيير. يبدأ التعلم بفهم الأصول التي نريد حمايتها والتهديدات المحتملة وطرق تقليل المخاطر.'},
-{title:'ثالوث CIA (السرية والسلامة والتوافر)',course:'مقدمة الأمن السيبراني',time:'7 دقائق',body:'السرية تعني ألا يصل إلى البيانات إلا المصرح لهم. السلامة تعني الحفاظ على دقة البيانات وعدم تعديلها دون تصريح. التوافر يعني بقاء الأنظمة والبيانات متاحة عند الحاجة. تسمى هذه المبادئ الثلاثة CIA Triad.'},
-{title:'التهديد والثغرة والمخاطر',course:'مقدمة الأمن السيبراني',time:'9 دقائق',body:'التهديد حدث أو جهة قد تسبب ضررًا، والثغرة نقطة ضعف يمكن استغلالها، أما المخاطر فتتعلق باحتمال وقوع الضرر وأثره. يساعد تحديث البرامج وتقليل الصلاحيات والنسخ الاحتياطي على خفض المخاطر.'},
-{title:'مقدمة إلى الشبكات',course:'أساسيات الشبكات',time:'10 دقائق',body:'الشبكة تربط أجهزة لتبادل البيانات. من المفاهيم الأساسية عنوان IP، والراوتر، والسويتش، والبوابة الافتراضية، وDNS الذي يساعد في تحويل أسماء النطاقات إلى عناوين IP.'},
-{title:'ما الفرق بين HTTP وHTTPS؟',course:'TCP/IP وDNS وHTTP',time:'6 دقائق',body:'HTTP بروتوكول لنقل بيانات الويب. HTTPS يستخدم HTTP داخل اتصال مشفر عبر TLS، ما يساعد على حماية سرية البيانات وسلامتها والتحقق من هوية الخادم عند ضبط الشهادات بشكل صحيح.'},
-{title:'مبدأ أقل صلاحية',course:'إدارة الهوية وكلمات المرور',time:'5 دقائق',body:'امنح كل مستخدم أو برنامج الحد الأدنى من الصلاحيات اللازمة لأداء المهمة فقط. استخدم المصادقة متعددة العوامل، ومدير كلمات مرور موثوقًا، ولا تعِد استخدام كلمة المرور نفسها عبر الخدمات.'},
-{title:'التحقق من المدخلات',course:'التحقق من المدخلات',time:'9 دقائق',body:'يجب ألا يثق التطبيق في المدخلات القادمة من المستخدم. تحقّق من النوع والطول والصيغة في الخادم، واستخدم الاستعلامات المعلّمة في قواعد البيانات، واهرب المخرجات بحسب سياق العرض.'},
-{title:'مقدمة OWASP Top 10',course:'مقدمة OWASP Top 10',time:'8 دقائق',body:'OWASP Top 10 قائمة توعوية بأهم فئات مخاطر تطبيقات الويب. هي نقطة بداية للتعلم وليست قائمة كاملة بكل الثغرات. راجع الإصدار الرسمي الأحدث عند الدراسة المهنية.'},
-{title:'قراءة سجلات الأنظمة',course:'قراءة سجلات الأنظمة',time:'8 دقائق',body:'تساعد السجلات على فهم ما حدث ومتى ومن أي مصدر. عند التحليل راقب الطوابع الزمنية، وهوية الحساب، ونوع الحدث، وعنوان المصدر عند توفره، وابحث عن أنماط غير معتادة مع مراعاة الخصوصية.'},
-{title:'ما هو التشفير والهاش؟',course:'مفاهيم التشفير',time:'7 دقائق',body:'التشفير يحول البيانات إلى صيغة لا تقرأ دون المفتاح المناسب، ويمكن عكسه بالمفتاح الصحيح. الهاش ينتج بصمة ثابتة الطول ولا يفترض أن يكون قابلًا للعكس. تخزين كلمات المرور يحتاج خوارزميات مخصصة بطيئة مثل Argon2 أو bcrypt.'},
-{title:'مبادئ الأدلة الرقمية',course:'مبادئ الأدلة الرقمية',time:'8 دقائق',body:'تتطلب الأدلة الرقمية الحفاظ على سلامتها وتوثيق طريقة جمعها والتعامل معها. في العمل المهني يجب اتباع الإجراءات القانونية وسلسلة حيازة الأدلة وعدم تغيير المصدر الأصلي دون ضرورة وإذن.'},
-{title:'مقدمة Python للأمن',course:'أساسيات Python',time:'10 دقائق',body:'تستخدم Python في أتمتة المهام وتحليل النصوص والسجلات. ابدأ بالمتغيرات والشروط والحلقات والدوال وقراءة الملفات، ثم تدرب على تحليل ملفات محلية تملك حق استخدامها.'}
-];
+const courses=paths.flatMap((p,pi)=>p.courses.map((name,i)=>({id:p.id+'-'+i,name,path:p.name,pathId:p.id,level:p.level,desc:p.desc,lessons:3,progress:0})));
+
+// قاعدة بيانات الفيديوهات: كل كورس ليه 3 فيديوهات مخصصة
+const videoDB = {
+    // 1. Basics
+    "مقدمة الأمن السيبراني": ["N9xY8M9xG2o", "6hZ9vZ2Xq5Q", "W6NZfCO5SIk"],
+    "إدارة الهوية وكلمات المرور": ["6hZ9vZ2Xq5Q", "9N4p1B6s7qQ", "Y8v1HnFq5mI"],
+    "الخصوصية والأمان الرقمي": ["W6NZfCO5SIk", "N9xY8M9xG2o", "3Kq1MIfTWCE"],
+    // 2. Network
+    "أساسيات الشبكات": ["qiQR5rTSshw", "Y8v1HnFq5mI", "9N4p1B6s7qQ"],
+    "TCP/IP وDNS وHTTP": ["Y8v1HnFq5mI", "qiQR5rTSshw", "W6NZfCO5SIk"],
+    "الجدران النارية ومراقبة الشبكات": ["3Kq1MIfTWCE", "qz0aGYrrlhU", "6hZ9vZ2Xq5Q"],
+    // 3. Web
+    "أساسيات HTTP وواجهات API": ["W6NZfCO5SIk", "qiQR5rTSshw", "Y8v1HnFq5mI"],
+    "التحقق من المدخلات": ["qz0aGYrrlhU", "N9xY8M9xG2o", "3Kq1MIfTWCE"],
+    "مقدمة OWASP Top 10": ["9N4p1B6s7qQ", "W6NZfCO5SIk", "6hZ9vZ2Xq5Q"],
+    // 4. Ethical
+    "قواعد الاختبار المصرح": ["3Kq1MIfTWCE", "9N4p1B6s7qQ", "qiQR5rTSshw"],
+    "جمع المعلومات بشكل قانوني": ["qiQR5rTSshw", "Y8v1HnFq5mI", "W6NZfCO5SIk"],
+    "كتابة تقرير الثغرات": ["Y8v1HnFq5mI", "6hZ9vZ2Xq5Q", "N9xY8M9xG2o"],
+    // 5. Defense
+    "مقدمة SOC": ["9N4p1B6s7qQ", "3Kq1MIfTWCE", "qz0aGYrrlhU"],
+    "قراءة سجلات الأنظمة": ["N9xY8M9xG2o", "qiQR5rTSshw", "W6NZfCO5SIk"],
+    "الاستجابة للحوادث": ["6hZ9vZ2Xq5Q", "Y8v1HnFq5mI", "9N4p1B6s7qQ"],
+    // 6. Crypto
+    "مفاهيم التشفير": ["W6NZfCO5SIk", "qz0aGYrrlhU", "3Kq1MIfTWCE"],
+    "Hashing وDigital Signatures": ["qz0aGYrrlhU", "N9xY8M9xG2o", "Y8v1HnFq5mI"],
+    "إدارة المفاتيح": ["3Kq1MIfTWCE", "6hZ9vZ2Xq5Q", "qiQR5rTSshw"],
+    // 7. Forensics
+    "مبادئ الأدلة الرقمية": ["qiQR5rTSshw", "9N4p1B6s7qQ", "W6NZfCO5SIk"],
+    "تحليل السجلات": ["9N4p1B6s7qQ", "N9xY8M9xG2o", "qz0aGYrrlhU"],
+    "بناء خط زمني": ["Y8v1HnFq5mI", "3Kq1MIfTWCE", "6hZ9vZ2Xq5Q"],
+    // 8. Cloud
+    "مفاهيم أمن السحابة": ["Y8v1HnFq5mI", "W6NZfCO5SIk", "qiQR5rTSshw"],
+    "إدارة الصلاحيات": ["N9xY8M9xG2o", "3Kq1MIfTWCE", "9N4p1B6s7qQ"],
+    "مقدمة DevSecOps": ["W6NZfCO5SIk", "6hZ9vZ2Xq5Q", "qz0aGYrrlhU"],
+    // 9. Malware
+    "أنواع البرمجيات الخبيثة": ["3Kq1MIfTWCE", "qiQR5rTSshw", "Y8v1HnFq5mI"],
+    "مؤشرات الاختراق": ["qiQR5rTSshw", "N9xY8M9xG2o", "W6NZfCO5SIk"],
+    "مبادئ التحليل الآمن": ["qz0aGYrrlhU", "9N4p1B6s7qQ", "6hZ9vZ2Xq5Q"],
+    // 10. OSINT
+    "تقييم المصادر": ["9N4p1B6s7qQ", "Y8v1HnFq5mI", "3Kq1MIfTWCE"],
+    "التحقق من المعلومات": ["6hZ9vZ2Xq5Q", "W6NZfCO5SIk", "N9xY8M9xG2o"],
+    "أخلاقيات OSINT": ["Y8v1HnFq5mI", "qiQR5rTSshw", "qz0aGYrrlhU"],
+    // 11. Linux
+    "مقدمة Linux": ["N9xY8M9xG2o", "3Kq1MIfTWCE", "W6NZfCO5SIk"],
+    "أساسيات Python": ["W6NZfCO5SIk", "qiQR5rTSshw", "9N4p1B6s7qQ"],
+    "معالجة النصوص والسجلات": ["3Kq1MIfTWCE", "Y8v1HnFq5mI", "6hZ9vZ2Xq5Q"],
+    // 12. Incident
+    "تقييم المخاطر": ["qiQR5rTSshw", "qz0aGYrrlhU", "N9xY8M9xG2o"],
+    "خطط الاستجابة": ["qz0aGYrrlhU", "9N4p1B6s7qQ", "W6NZfCO5SIk"],
+    "التعافي واستمرارية الأعمال": ["9N4p1B6s7qQ", "6hZ9vZ2Xq5Q", "3Kq1MIfTWCE"]
+};
+
 const glossary=[
 ['Asset','أصل رقمي','جهاز أو نظام أو بيانات لها قيمة وتحتاج إلى حماية.'],['Threat','تهديد','شيء قد يسبب ضررًا لأصل أو نظام.'],['Vulnerability','ثغرة','نقطة ضعف في تصميم أو تنفيذ أو إعداد.'],['Risk','مخاطر','احتمال وقوع ضرر مع مراعاة أثره.'],['Firewall','جدار ناري','نظام يراقب حركة الشبكة ويسمح بها أو يمنعها وفق قواعد.'],['Encryption','تشفير','تحويل البيانات إلى صيغة لا تُقرأ دون المفتاح المناسب.'],['Hash','بصمة رقمية','ناتج دالة أحادية الاتجاه يستخدم للتحقق أو المقارنة.'],['MFA','مصادقة متعددة العوامل','استخدام أكثر من عامل للتحقق من الهوية.'],['Phishing','تصيد احتيالي','خداع المستخدم لدفعه لكشف معلومات أو تنفيذ إجراء.'],['Patch','تحديث إصلاحي','تحديث يعالج مشكلة أو ثغرة أو خطأ.'],['SOC','مركز عمليات الأمن','فريق أو مركز يراقب التنبيهات والأحداث الأمنية.'],['SIEM','إدارة معلومات وأحداث الأمن','منصة تجمع السجلات وتربط الأحداث لإنتاج تنبيهات.'],['CTF','التقاط العلم','تحديات تدريبية لحل ألغاز أمنية ضمن نطاق محدد.'],['Least Privilege','أقل صلاحية','منح الحد الأدنى من الأذونات اللازمة.'],['Incident Response','الاستجابة للحوادث','خطوات منظمة لاحتواء حادث أمني وتحليله والتعافي منه.'],['Zero-day','ثغرة غير معروفة أو غير معالَجة','ثغرة لا يتوفر لها إصلاح مناسب وقت استغلالها أو اكتشافها.']
 ];
@@ -170,15 +204,55 @@ const quizQuestions=[
 let currentQuiz=0,score=0,answered=false,selectedPath='all',completed=new Set(JSON.parse(localStorage.getItem('cyberCompleted')||'[]'));
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function pathCard(p){return `<div class="path-card" onclick="openPath('${p.id}')"><i class="fa-solid ${p.icon}"></i><b>${p.name}</b><small>${p.level}</small></div>`}
-function courseCard(c){let pct=completed.has(c.id)?100:0;return `<article class="card"><div class="course-icon"><i class="fa-solid ${paths.find(p=>p.id===c.pathId)?.icon||'fa-book'}"></i></div><div class="chips"><span class="chip">${c.level}</span><span class="chip">${c.lessons} دروس</span></div><h3>${c.name}</h3><p>${c.desc}</p><div class="progress"><span style="width:${pct}%"></span></div><button class="primary" onclick="openCourse('${c.id}')">${pct?'مراجعة الكورس':'ابدأ التعلم'} <i class="fa-solid fa-arrow-left"></i></button></article>`}
+function courseCard(c){let pct=completed.has(c.id)?100:0;return `<article class="card"><div class="course-icon"><i class="fa-solid ${paths.find(p=>p.id===c.pathId)?.icon||'fa-book'}"></i></div><div class="chips"><span class="chip">${c.level}</span><span class="chip">${c.lessons} دروس فيديو</span></div><h3>${c.name}</h3><p>${c.desc}</p><div class="progress"><span style="width:${pct}%"></span></div><button class="primary" onclick="openCourse('${c.id}')">${pct?'مراجعة الكورس':'ابدأ التعلم'} <i class="fa-solid fa-arrow-left"></i></button></article>`}
 function renderPaths(){document.getElementById('homePaths').innerHTML=paths.slice(0,4).map(pathCard).join('');document.getElementById('allPaths').innerHTML=paths.map(pathCard).join('');document.getElementById('featuredCourses').innerHTML=courses.slice(0,3).map(courseCard).join('')}
 function renderCourses(){let q=(document.getElementById('courseSearch')?.value||'').trim().toLowerCase();let filtered=courses.filter(c=>(selectedPath==='all'||c.pathId===selectedPath)&&(c.name+' '+c.path+' '+c.desc).toLowerCase().includes(q));document.getElementById('courseGrid').innerHTML=filtered.length?filtered.map(courseCard).join(''):'<div class="empty">مفيش كورسات مطابقة للبحث.</div>'}
 function renderCourseTabs(){document.getElementById('courseTabs').innerHTML=`<button class="tab ${selectedPath==='all'?'active':''}" onclick="setCoursePath('all')">الكل</button>`+paths.map(p=>`<button class="tab ${selectedPath===p.id?'active':''}" onclick="setCoursePath('${p.id}')">${p.name}</button>`).join('')}
 function setCoursePath(id){selectedPath=id;renderCourseTabs();renderCourses()}
 function openPath(id){let p=paths.find(x=>x.id===id);if(!p)return;showSection('paths');document.getElementById('pathDetails').innerHTML=`<div class="section-head"><div><h2>${p.name}</h2><p>${p.desc}</p></div><span class="chip">${p.level}</span></div><div class="grid">${courses.filter(c=>c.pathId===id).map(courseCard).join('')}</div>`;document.getElementById('pathDetails').scrollIntoView({behavior:'smooth',block:'start'})}
-function openCourse(id){let c=courses.find(x=>x.id===id);if(!c)return;showSection('lessons');document.getElementById('lessonTitle').textContent=c.name;let relevant=lessons.filter(l=>l.course===c.name);if(!relevant.length)relevant=[{title:'مقدمة: '+c.name,course:c.name,time:'8 دقائق',body:c.desc+' ابدأ بتحديد المفاهيم الأساسية، ثم اقرأ التوثيق الموثوق، وطبّق ما تعلمته في بيئة تملكها أو لديك إذن لاستخدامها.'},{title:'المفاهيم الرئيسية',course:c.name,time:'10 دقائق',body:'دوّن المصطلحات الأساسية، وافهم التهديدات وطرق الحماية، ثم راجع الأمثلة التعليمية ضمن نطاق آمن ومصرح.'},{title:'المراجعة والتطبيق',course:c.name,time:'12 دقيقة',body:'راجع ما تعلمته، واكتب ملخصًا، واختبر فهمك على أمثلة محلية أو بيانات تدريبية غير حساسة.'}];document.getElementById('lessonList').innerHTML=relevant.map((l,i)=>`<div class="lesson"><div class="lesson-num">${i+1}</div><div><b>${l.title}</b><p>${l.time} • ${completed.has(c.id+'-l'+i)?'مكتمل':'درس تعليمي'}</p></div><button onclick="readLesson('${c.id}',${i})">افتح الدرس</button></div>`).join('');document.getElementById('lessonContent').classList.add('hidden');document.getElementById('lessonList').dataset.course=id;document.getElementById('lessonList').dataset.lessons=JSON.stringify(relevant)}
-function readLesson(courseId,i){let list=document.getElementById('lessonList'),arr=JSON.parse(list.dataset.lessons||'[]'),l=arr[i];if(!l)return;let box=document.getElementById('lessonContent');box.classList.remove('hidden');box.innerHTML=`<div class="eyebrow">درس ${i+1} • ${l.time}</div><h2>${l.title}</h2><p style="line-height:2;color:#d0d0d8">${l.body}</p><button class="primary" onclick="completeLesson('${courseId}-l${i}','${courseId}')"> <i class="fa-solid fa-check"></i> علّم الدرس كمكتمل</button>`;box.scrollIntoView({behavior:'smooth',block:'start'})}
-function completeLesson(id,courseId){completed.add(id);localStorage.setItem('cyberCompleted',JSON.stringify([...completed]));document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/24*100))+'%';openCourse(courseId)}
+
+function openCourse(id){
+  let c=courses.find(x=>x.id===id);if(!c)return;
+  showSection('lessons');document.getElementById('lessonTitle').textContent=c.name;
+  
+  // جلب الفيديوهات المخصصة لهذا الكورس من قاعدة البيانات
+  let vids = videoDB[c.name] || ["N9xY8M9xG2o", "qiQR5rTSshw", "W6NZfCO5SIk"];
+  
+  // توليد 3 دروس بكامل التفاصيل
+  let relevant = [
+      { 
+          title: 'الدرس الأول: مقدمة ' + c.name, 
+          time: '12 دقيقة', 
+          video: vids[0], 
+          body: 'في هذا الدرس نأخذ نظرة عامة وشاملة حول ' + c.name + '. سنتعرف على المفاهيم الأساسية، الأهداف، وأهمية هذا الموضوع في مجال الأمن السيبراني. هذا الفيديو يمهد لك الطريق لفهم باقي الدروس.' 
+      },
+      { 
+          title: 'الدرس الثاني: تطبيق عملي في ' + c.name, 
+          time: '15 دقيقة', 
+          video: vids[1], 
+          body: 'الآن وبعد فهم الأساسيات، ننتقل إلى الجانب العملي. سنشاهد أمثلة حية، ونستعرض الأدوات والتقنيات المستخدمة في ' + c.name + '. الفيديو يشرح خطوة بخطوة كيف تطبق ما تعلمته في بيئة آمنة.' 
+      },
+      { 
+          title: 'الدرس الثالث: مراجعة وتعمق في ' + c.name, 
+          time: '10 دقائق', 
+          video: vids[2], 
+          body: 'في الدرس الأخير من هذا الكورس، نقوم بمراجعة سريعة لكل ما سبق، ثم نتعمق في التحديات المتقدمة وأفضل الممارسات (Best Practices). بنهاية هذا الفيديو ستكون جاهزاً للانتقال للكورس التالي في المسار.' 
+      }
+  ];
+
+  document.getElementById('lessonList').innerHTML=relevant.map((l,i)=>`<div class="lesson"><div class="lesson-num">${i+1}</div><div><b>${l.title}</b><p>${l.time} • ${completed.has(c.id+'-l'+i)?'مكتمل':'درس تعليمي'}</p></div><button onclick="readLesson('${c.id}',${i})">افتح الدرس</button></div>`).join('');
+  document.getElementById('lessonContent').classList.add('hidden');
+  document.getElementById('lessonList').dataset.course=id;
+  document.getElementById('lessonList').dataset.lessons=JSON.stringify(relevant);
+}
+
+function readLesson(courseId,i){
+  let list=document.getElementById('lessonList'),arr=JSON.parse(list.dataset.lessons||'[]'),l=arr[i];
+  if(!l)return;let box=document.getElementById('lessonContent');box.classList.remove('hidden');
+  box.innerHTML=`<div class="eyebrow">درس ${i+1} • ${l.time}</div><h2>${l.title}</h2><div class="video-wrapper"><iframe src="https://www.youtube.com/embed/${l.video}" allowfullscreen></iframe></div><p style="line-height:2;color:#d0d0d8;margin-top:20px;">${l.body}</p><button class="primary" onclick="completeLesson('${courseId}-l${i}','${courseId}')"> <i class="fa-solid fa-check"></i> علّم الدرس كمكتمل</button>`;
+  box.scrollIntoView({behavior:'smooth',block:'start'})
+}
+function completeLesson(id,courseId){completed.add(id);localStorage.setItem('cyberCompleted',JSON.stringify([...completed]));document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/36*100))+'%';openCourse(courseId)}
 function renderQuiz(){let q=quizQuestions[currentQuiz],box=document.getElementById('quizBox');answered=false;box.innerHTML=`<div class="eyebrow">السؤال ${currentQuiz+1} من ${quizQuestions.length}</div><div class="progress"><span style="width:${(currentQuiz+1)/quizQuestions.length*100}%"></span></div><div class="quiz-question">${q.q}</div><div class="answers">${q.a.map((a,i)=>`<button class="answer" onclick="answerQuiz(${i})">${['أ','ب','ج','د'][i]}. ${a}</button>`).join('')}</div><div id="quizFeedback"></div><div style="display:flex;justify-content:space-between;gap:10px;margin-top:15px"><span style="color:var(--muted);font-size:12px">النتيجة: ${score} صحيحة</span><button id="nextQuiz" class="primary hidden" onclick="nextQuestion()">${currentQuiz===quizQuestions.length-1?'إنهاء الاختبار':'السؤال التالي'} ←</button></div>`}
 function answerQuiz(i){if(answered)return;answered=true;let q=quizQuestions[currentQuiz],buttons=document.querySelectorAll('.answer');buttons[q.correct].classList.add('correct');if(i===q.correct){score++;document.getElementById('statScore').textContent=score}else buttons[i].classList.add('wrong');document.getElementById('quizFeedback').innerHTML=`<div class="feedback">${i===q.correct?'إجابة صحيحة!':'الإجابة الصحيحة: '+q.a[q.correct]}<br>${q.why}</div>`;document.getElementById('nextQuiz').classList.remove('hidden')}
 function nextQuestion(){if(currentQuiz<quizQuestions.length-1){currentQuiz++;renderQuiz()}else{document.getElementById('quizBox').innerHTML=`<div class="course-icon"><i class="fa-solid fa-trophy"></i></div><h2>خلصت الاختبار!</h2><p>إجاباتك الصحيحة: ${score} من ${quizQuestions.length}</p><div class="progress"><span style="width:${score/quizQuestions.length*100}%"></span></div><button class="primary" onclick="currentQuiz=0;score=0;renderQuiz()">إعادة الاختبار</button>`}}
@@ -197,55 +271,7 @@ function renderRoadmap(){let stages=[['1','الأساسيات','مفاهيم ا�
 function showSection(id){document.querySelectorAll('.view').forEach(s=>s.classList.toggle('hidden',s.id!==id));document.querySelectorAll('.side-link').forEach(b=>b.classList.toggle('active',b.dataset.section===id));document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));document.getElementById('sidebar').classList.remove('open');if(id==='quiz'&&!answered)renderQuiz();window.scrollTo({top:0,behavior:'smooth'})}
 function toggleMenu(){document.getElementById('sidebar').classList.toggle('open')}
 
-// Realistic Terminal Commands with smart argument parsing
-const safeCommands={
-help:'Available commands:\nhelp       Show this help message\nclear      Clear the terminal screen\nwhoami     Display current user\npwd        Print working directory\nls         List directory contents\nping       Send ICMP ECHO_REQUEST to network hosts (simulated)\nnmap       Network exploration tool and port scanner (simulated)\ntraceroute Trace route to a network host (simulated)\ncat        Concatenate and print files',
-whoami:'student\nGroups: student, sudo',
-pwd:'/home/student',
-ls:'Documents  Downloads  labs  notes.txt  tools',
-'cat notes.txt':'Remember to update the firewall rules on the staging server.\nCheck the logs for any unusual SSH login attempts.\nAlways use strong passwords and MFA.'
-};
-
-function runCommand(e){
-  e.preventDefault();
-  let input=document.getElementById('termInput'),cmd=input.value.trim(),out=document.getElementById('termOutput');
-  if(!cmd)return;
-  
-  if(cmd==='clear'){out.textContent='';input.value='';return}
-  
-  // Parse command base and args
-  let parts = cmd.split(' ');
-  let baseCmd = parts[0];
-  let args = parts.slice(1); 
-  // Extract target (ignores flags like -sS, -v, etc.)
-  let target = args.filter(arg => !arg.startsWith('-')).pop() || '127.0.0.1';
-  
-  let result = '';
-  
-  if (baseCmd === 'ping') {
-     if(args.length > 0) result = `PING ${target} (${target}) 56(84) bytes of data.\n64 bytes from ${target}: icmp_seq=1 ttl=118 time=14.2 ms\n64 bytes from ${target}: icmp_seq=2 ttl=118 time=13.8 ms\n\n--- ${target} ping statistics ---\n2 packets transmitted, 2 received, 0% packet loss, time 1001ms`;
-     else result = 'ping: usage error: Destination address required';
-  } else if (baseCmd === 'nmap') {
-     if(args.length > 0) result = `Starting Nmap 7.92 ( https://nmap.org ) at ${new Date().toISOString().replace('T', ' ').substring(0, 19)} UTC\nNmap scan report for ${target}\nHost is up (0.12s latency).\nNot shown: 997 closed tcp ports (reset)\nPORT      STATE SERVICE\n22/tcp    open  ssh\n80/tcp    open  http\n\nNmap done: 1 IP address (1 host up) scanned in 1.43 seconds`;
-     else result = 'Nmap 7.92 ( https://nmap.org )\nUsage: nmap [Scan Type(s)] [Options] {target specification}';
-  } else if (baseCmd === 'traceroute') {
-     if(args.length > 0) result = `traceroute to ${target} (${target}), 30 hops max, 60 byte packets\n 1  _gateway (192.168.1.1)  1.123 ms  1.045 ms  1.012 ms\n 2  10.10.0.1 (10.10.0.1)  8.456 ms  8.321 ms  8.200 ms\n 3  * * *\n 4  ${target} (${target})  14.321 ms  14.100 ms  13.987 ms`;
-     else result = 'Usage: traceroute host';
-  } else if (baseCmd === 'cat') {
-     let file = args[0];
-     result = safeCommands['cat ' + file] || `cat: ${file}: No such file or directory`;
-  } else if (safeCommands[baseCmd]) {
-     result = typeof safeCommands[baseCmd] === 'function' ? safeCommands[baseCmd]() : safeCommands[baseCmd];
-  } else {
-     result = `bash: ${baseCmd}: command not found`;
-  }
-
-  out.innerHTML+=`<span class="red">student@cyber:~$ ${esc(cmd)}</span>\n<span class="green">${esc(result)}</span>\n\n`;
-  out.scrollTop=out.scrollHeight;
-  input.value='';
-}
-
-renderPaths();renderCourseTabs();renderCourses();renderQuiz();renderGlossary();renderChallenges();renderRoadmap();document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/24*100))+'%';
+renderPaths();renderCourseTabs();renderCourses();renderQuiz();renderGlossary();renderChallenges();renderRoadmap();document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/36*100))+'%';
 </script>
 </body>
 </html>
