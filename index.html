@@ -3,347 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Academy | منصة الجيل الجديد</title>
+    <title>Cyber Academy | المنصة الشاملة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --neon: #00ff41;
-            --dark: #050505;
-            --glass: rgba(20, 20, 20, 0.7);
-        }
-
+        :root { --neon: #00ff41; --dark: #050505; --glass: rgba(20, 20, 20, 0.85); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--dark); color: white; min-height: 100vh; }
+        body::before { content: ""; position: fixed; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(0,255,65,0.08), transparent 70%); z-index: -1; }
+        body::after { content: ""; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px); background-size: 40px 40px; z-index: -1; pointer-events: none; }
 
-        body { background-color: var(--dark); color: white; overflow-x: hidden; min-height: 100vh; }
-
-        /* --- الخلفية المتحركة --- */
-        .bg-animation {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px; animation: moveGrid 20s linear infinite;
-        }
-        @keyframes moveGrid { 0% { background-position: 0 0; } 100% { background-position: 30px 30px; } }
-
-        .glow {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(0, 255, 65, 0.1) 0%, transparent 70%);
-            z-index: -1; animation: pulse 4s ease-in-out infinite alternate;
-        }
-        @keyframes pulse { 0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.5; } 100% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
-
-        /* --- شاشة التحميل --- */
-        #loader {
-            position: fixed; inset: 0; background: var(--dark); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease;
-        }
-        .loader-text { color: var(--neon); font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; animation: blink 1s infinite alternate; }
-        .loader-bar { width: 200px; height: 4px; background: #222; margin-top: 15px; border-radius: 2px; overflow: hidden; position: relative; }
-        .loader-bar::after { content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 50%; background: var(--neon); box-shadow: 0 0 10px var(--neon); animation: load 1.5s ease-in-out infinite; }
-        @keyframes load { 0% { left: -50%; } 100% { left: 100%; } }
-        @keyframes blink { 0% { opacity: 0.5; } 100% { opacity: 1; text-shadow: 0 0 15px var(--neon); } }
-
-        /* --- الهيدر --- */
-        header {
-            display: flex; justify-content: space-between; align-items: center; padding: 20px 5%;
-            background: var(--glass); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0, 255, 65, 0.2);
-            position: sticky; top: 0; z-index: 100;
-        }
-        .logo { font-size: 1.5rem; font-weight: 900; color: white; text-shadow: 0 0 10px rgba(0, 255, 65, 0.5); }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 4%; background: var(--glass); border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 8px; }
+        .logo { font-size: 1.3rem; font-weight: 900; }
         .logo span { color: var(--neon); }
-        nav { display: flex; gap: 15px; flex-wrap: wrap; }
-        nav a { color: #aaa; text-decoration: none; font-weight: bold; transition: 0.3s; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        nav a:hover, nav a.active { color: var(--neon); background: rgba(0, 255, 65, 0.1); text-shadow: 0 0 10px var(--neon); }
+        nav { display: flex; gap: 5px; flex-wrap: wrap; }
+        nav a { color: #ccc; text-decoration: none; cursor: pointer; padding: 5px 8px; border-radius: 5px; font-size: 0.75rem; font-weight: 700; transition: 0.3s; }
+        nav a:hover, nav a.active { color: var(--neon); background: rgba(0,255,65,0.1); }
 
-        /* --- القسم الرئيسي (Hero) --- */
-        .hero { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 100px 20px; min-height: 60vh; }
-        .hero h1 { font-size: 3rem; margin-bottom: 20px; line-height: 1.4; }
-        .hero h1 span { color: var(--neon); text-shadow: 0 0 20px rgba(0, 255, 65, 0.6); }
-        .hero p { color: #aaa; font-size: 1.2rem; max-width: 600px; margin-bottom: 40px; line-height: 1.8; }
-
-        .btn {
-            padding: 12px 30px; background: transparent; color: var(--neon); border: 2px solid var(--neon);
-            border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
-            text-decoration: none; box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); position: relative; overflow: hidden;
-        }
-        .btn:hover { background: var(--neon); color: var(--dark); box-shadow: 0 0 30px rgba(0, 255, 65, 0.8); }
-
-        /* --- تنسيقات الصفحات الداخلية --- */
-        main { padding: 40px 5%; max-width: 1200px; margin: auto; }
-        .page-section { animation: fadeIn 0.4s ease; }
+        main { padding: 30px 4%; max-width: 1000px; margin: auto; }
+        .section-box { display: none; animation: fadeIn 0.3s ease; }
+        .section-box.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .section-title { text-align: center; font-size: 2rem; margin-bottom: 40px; }
-        .section-title span { color: var(--neon); }
+        .glass-box { background: var(--glass); border: 1px solid #333; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { color: var(--neon); margin-bottom: 8px; font-size: 1.6rem; }
+        .subtitle { color: #888; margin-bottom: 20px; font-size: 0.9rem; }
+        h3 { color: white; margin-bottom: 10px; font-size: 1.2rem; }
+        p { line-height: 1.9; color: #ccc; margin-bottom: 12px; }
+        ul { padding-right: 20px; margin-bottom: 12px; }
+        li { line-height: 1.9; color: #ccc; margin-bottom: 6px; }
+        b { color: var(--neon); }
 
-        .glass-box {
-            background: var(--glass); border: 1px solid rgba(0, 255, 65, 0.15); border-radius: 15px;
-            padding: 30px; margin-bottom: 30px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-        }
-        .glass-box h3 { color: var(--neon); margin-bottom: 15px; font-size: 1.4rem; }
-        .glass-box p, .glass-box li { color: #ccc; line-height: 2; font-size: 1.1rem; margin-bottom: 10px; }
-        .glass-box ul { padding-right: 20px; margin-bottom: 15px; }
+        .placeholder { text-align: center; color: #555; margin-top: 25px; font-size: 1rem; border: 2px dashed #333; padding: 25px; border-radius: 10px; }
 
-        .video-container iframe { border-radius: 10px; border: 1px solid rgba(0,255,65,0.3); margin-top: 15px; width: 100%; height: 400px; }
-
-        /* --- الامتحانات --- */
-        .quiz-box .question { margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; }
-        .quiz-box p { font-weight: bold; color: white; margin-bottom: 10px; }
-        .quiz-box label { display: block; padding: 10px; margin: 5px 0; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        .quiz-box label:hover { background: rgba(0, 255, 65, 0.1); }
-        .quiz-box input[type="radio"] { margin-left: 10px; accent-color: var(--neon); }
-        .quiz-result { margin-top: 15px; font-weight: bold; color: var(--neon); font-size: 1.1rem; }
-
-        /* --- الفيديوهات --- */
-        .video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .video-card { background: var(--glass); border: 1px solid rgba(0, 255, 65, 0.1); border-radius: 15px; text-align: center; transition: 0.3s; cursor: pointer; overflow: hidden; }
-        .video-card:hover { border-color: var(--neon); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 255, 65, 0.2); }
-        .video-card img { width: 100%; height: 160px; object-fit: cover; border-bottom: 2px solid var(--neon); }
-        .video-card h3 { margin: 15px 10px; color: white; font-size: 1rem; }
-
-        /* --- الموبايل --- */
-        @media (max-width: 768px) {
-            header { flex-direction: column; gap: 15px; padding: 15px; }
-            nav { justify-content: center; }
-            .hero h1 { font-size: 2rem; }
-            .video-container iframe { height: 250px; }
-        }
+        .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 15px; }
+        .quick-card { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; text-align: center; }
+        .quick-card:hover { border-color: var(--neon); background: #1a1a1a; transform: translateY(-3px); }
+        .quick-card h4 { color: var(--neon); margin-bottom: 4px; font-size: 0.9rem; }
+        .quick-card p { font-size: 0.75rem; margin: 0; }
     </style>
 </head>
 <body>
 
-    <!-- شاشة التحميل -->
-    <div id="loader">
-        <div class="loader-text">INITIALIZING SYSTEM...</div>
-        <div class="loader-bar"></div>
-    </div>
-
-    <!-- الخلفية المتحركة -->
-    <div class="bg-animation"></div>
-    <div class="glow"></div>
-
-    <!-- الهيدر -->
     <header>
         <div class="logo">Cyber<span>Academy</span></div>
         <nav>
-            <a class="nav-link active" data-target="home">الرئيسية</a>
-            <a class="nav-link" data-target="basics">الأساسيات</a>
-            <a class="nav-link" data-target="network">الشبكات</a>
-            <a class="nav-link" data-target="web">أمن الويب</a>
-            <a class="nav-link" data-target="videos">الفيديوهات</a>
+            <a class="nav-link active" onclick="showPage('home', this)">الرئيسية</a>
+            <a class="nav-link" onclick="showPage('foundations', this)">الأساسيات</a>
+            <a class="nav-link" onclick="showPage('network', this)">أمن الشبكات</a>
+            <a class="nav-link" onclick="showPage('appsec', this)">أمن التطبيقات</a>
+            <a class="nav-link" onclick="showPage('iam', this)">الهوية والوصول</a>
+            <a class="nav-link" onclick="showPage('soc', this)">العمليات الأمنية</a>
+            <a class="nav-link" onclick="showPage('offensive', this)">الاختراق الأخلاقي</a>
+            <a class="nav-link" onclick="showPage('grc', this)">الحوكمة والمخاطر</a>
+            <a class="nav-link" onclick="showPage('cloud', this)">الأمن السحابي</a>
+            <a class="nav-link" onclick="showPage('endpoint', this)">أنظمة التشغيل</a>
+            <a class="nav-link" onclick="showPage('emerging', this)">التقنيات الحديثة</a>
         </nav>
     </header>
 
-    <!-- المحتوى -->
     <main>
-        
-        <!-- 1. الرئيسية -->
-        <section id="home" class="page-section" style="display: block;">
-            <div class="hero">
-                <h1>مرحباً بك في <span>الجيل الجديد</span> من التعلم</h1>
-                <p>منصة عربية متكاملة لتعلم الأمن السيبراني والبرمجة. اختر مسارك وابدأ رحلتك الآن.</p>
-                <button class="btn nav-btn" data-target="basics">ابدأ التعلم الآن</button>
+        <!-- 0. الرئيسية -->
+        <div id="home" class="section-box active">
+            <div class="glass-box" style="text-align:center;">
+                <h2>مرحباً بك في CyberAcademy</h2>
+                <p>المنصة الشاملة لتعلم الأمن السيبراني. 10 مسارات تغطي كل المجال من الأساسيات لأحدث التقنيات.</p>
+                <div class="quick-grid">
+                    <div class="quick-card" onclick="showPage('foundations', document.querySelector('nav a[onclick*=foundations]'))"><h4>الأساسيات</h4><p>ابدأ من هنا</p></div>
+                    <div class="quick-card" onclick="showPage('network', document.querySelector('nav a[onclick*=network]'))"><h4>أمن الشبكات</h4><p>حماية البنية التحتية</p></div>
+                    <div class="quick-card" onclick="showPage('iam', document.querySelector('nav a[onclick*=iam]'))"><h4>الهوية والوصول</h4><p>التحكم في الصلاحيات</p></div>
+                    <div class="quick-card" onclick="showPage('offensive', document.querySelector('nav a[onclick*=offensive]'))"><h4>الاختراق الأخلاقي</h4><p>اختبر دفاعاتك</p></div>
+                </div>
             </div>
-        </section>
+        </div>
 
-        <!-- 2. الأساسيات -->
-        <section id="basics" class="page-section" style="display: none;">
-            <h2 class="section-title">مسار <span>الأساسيات</span></h2>
+        <!-- 1. الأساسيات -->
+        <div id="foundations" class="section-box">
+            <h2>1. أساسيات الأمن السيبراني</h2>
+            <p class="subtitle">Foundations of Cybersecurity</p>
             <div class="glass-box">
-                <h3>1. يعني إيه أمن سيبراني؟</h3>
-                <p>الأمن السيبراني هو حماية الأنظمة والشبكات والبرامج والبيانات من الهجمات الرقمية. الهدف هو تقليل المخاطر وحماية المعلومات الحساسة من الوصول غير المصرح به.</p>
-                <h3>2. ثالوث CIA</h3>
+                <h3>ماذا ستتعلم هنا؟</h3>
                 <ul>
-                    <li><b>السرية (Confidentiality):</b> ضمان عدم وصول غير المصرح لهم للبيانات.</li>
-                    <li><b>السلامة (Integrity):</b> ضمان عدم تعديل البيانات بدون إذن.</li>
-                    <li><b>التوافر (Availability):</b> ضمان توفر البيانات والأنظمة وقت الحاجة.</li>
+                    <li><b>ثالوث CIA:</b> السرية، السلامة، التوافر.</li>
+                    <li><b>المصادقة والتفويض:</b> Authentication vs Authorization.</li>
+                    <li><b>التشفير:</b> المتماثل، غير المتماثل، والهاش.</li>
+                    <li><b>البرمجيات الخبيثة:</b> الفيروسات، الديدان، أحصنة طروادة، وبرامج الفدية.</li>
                 </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
             </div>
-            <div class="glass-box video-container">
-                <h3>شرح مرئي: أساسيات الأمن السيبراني</h3>
-                <iframe src="https://www.youtube.com/embed/qz0aGYrrlhU" allowfullscreen></iframe>
-            </div>
-            <div class="glass-box quiz-box">
-                <h3>📝 امتحان الأساسيات</h3>
-                <div class="question">
-                    <p>1. ما هو العنصر الذي يضمن أن البيانات لم يتم تعديلها؟</p>
-                    <label><input type="radio" name="q1" value="wrong"> السرية</label>
-                    <label><input type="radio" name="q1" value="correct"> السلامة</label>
-                    <label><input type="radio" name="q1" value="wrong"> التوافر</label>
-                </div>
-                <div class="question">
-                    <p>2. هل الاختراق الأخلاقي يتم بإذن مسبق؟</p>
-                    <label><input type="radio" name="q2" value="correct"> نعم</label>
-                    <label><input type="radio" name="q2" value="wrong"> لا</label>
-                </div>
-                <button class="btn check-quiz-btn">تصحيح الإجابات</button>
-                <div class="quiz-result"></div>
-            </div>
-        </section>
+        </div>
 
-        <!-- 3. الشبكات -->
-        <section id="network" class="page-section" style="display: none;">
-            <h2 class="section-title">مسار <span>الشبكات</span></h2>
+        <!-- 2. أمن الشبكات -->
+        <div id="network" class="section-box">
+            <h2>2. أمن الشبكات</h2>
+            <p class="subtitle">Network Security</p>
             <div class="glass-box">
-                <h3>1. ما هي الشبكة؟</h3>
-                <p>الشبكة هي مجموعة من الأجهزة المتصلة ببعضها لتبادل البيانات والموارد. فهم الشبكات هو حجر الأساس للأمن السيبراني.</p>
-                <h3>2. بروتوكولات TCP و UDP</h3>
-                <p><b>TCP:</b> بروتوكول موثوق يضمن وصول البيانات بالترتيب. <br> <b>UDP:</b> بروتوكول سريع لكنه لا يضمن وصول البيانات.</p>
+                <h3>ماذا ستتعلم هنا؟</h3>
+                <ul>
+                    <li><b>البروتوكولات:</b> TCP/IP, OSI Model, UDP, HTTP, HTTPS, DNS.</li>
+                    <li><b>أدوات الحماية:</b> Firewalls, IDS/IPS, VPNs, WAF.</li>
+                    <li><b>هجمات الشبكات:</b> DDoS, MITM, ARP Spoofing.</li>
+                </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
             </div>
-            <div class="glass-box video-container">
-                <h3>شرح مرئي: أساسيات الشبكات</h3>
-                <iframe src="https://www.youtube.com/embed/qiQR5rTSshw" allowfullscreen></iframe>
-            </div>
-            <div class="glass-box quiz-box">
-                <h3>📝 امتحان الشبكات</h3>
-                <div class="question">
-                    <p>1. أي بروتوكول يعتبر أكثر موثوقية؟</p>
-                    <label><input type="radio" name="net_q1" value="correct"> TCP</label>
-                    <label><input type="radio" name="net_q1" value="wrong"> UDP</label>
-                </div>
-                <button class="btn check-quiz-btn">تصحيح الإجابات</button>
-                <div class="quiz-result"></div>
-            </div>
-        </section>
+        </div>
 
-        <!-- 4. أمن الويب -->
-        <section id="web" class="page-section" style="display: none;">
-            <h2 class="section-title">مسار <span>أمن الويب</span></h2>
+        <!-- 3. أمن التطبيقات -->
+        <div id="appsec" class="section-box">
+            <h2>3. أمن الويب والتطبيقات</h2>
+            <p class="subtitle">Application Security</p>
             <div class="glass-box">
-                <h3>1. ثغرة SQL Injection</h3>
-                <p>هي ثغرة خطيرة تحدث عندما يتم إدخال أوامر SQL خبيثة في حقول الإدخال، مما يسمح للمهاجم بالوصول لقاعدة البيانات.</p>
-                <p><b>الوقاية:</b> استخدام الاستعلامات المعلّمة (Prepared Statements).</p>
+                <h3>ماذا ستتعلم هنا؟</h3>
+                <ul>
+                    <li><b>ثغرات OWASP Top 10:</b> Broken Access Control, Injection, Cryptographic Failures, XSS, CSRF.</li>
+                    <li><b>تأمين الكود:</b> Secure Coding, Code Review, SAST/DAST.</li>
+                    <li><b>DevSecOps:</b> دمج الأمان في دورة تطوير البرمجيات.</li>
+                </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
             </div>
-            <div class="glass-box video-container">
-                <h3>شرح مرئي: أمن الويب</h3>
-                <iframe src="https://www.youtube.com/embed/W6NZfCO5SIk" allowfullscreen></iframe>
-            </div>
-            <div class="glass-box quiz-box">
-                <h3>📝 امتحان أمن الويب</h3>
-                <div class="question">
-                    <p>1. كيف نحمي الموقع من SQL Injection؟</p>
-                    <label><input type="radio" name="web_q1" value="wrong"> إخفاء صفحة تسجيل الدخول</label>
-                    <label><input type="radio" name="web_q1" value="correct"> استخدام Prepared Statements</label>
-                </div>
-                <button class="btn check-quiz-btn">تصحيح الإجابات</button>
-                <div class="quiz-result"></div>
-            </div>
-        </section>
+        </div>
 
-        <!-- 5. الفيديوهات العامة -->
-        <section id="videos" class="page-section" style="display: none;">
-            <h2 class="section-title">مكتبة <span>الفيديوهات</span></h2>
-            <div class="video-grid" id="ytGrid">
-                <p style="text-align:center; width:100%;">جاري تحميل الفيديوهات...</p>
+        <!-- 4. الهوية والوصول -->
+        <div id="iam" class="section-box">
+            <h2>4. أمن الهوية والوصول</h2>
+            <p class="subtitle">Identity & Access Management (IAM)</p>
+            <div class="glass-box">
+                <h3>ماذا ستتعلم هنا؟</h3>
+                <ul>
+                    <li><b>إدارة الهويات:</b> مستخدمين، أدوار، وصلاحيات.</li>
+                    <li><b>المصادقة:</b> MFA, SSO, Passwordless, OAuth, SAML.</li>
+                    <li><b>التحكم في الوصول:</b> RBAC, ABAC, Least Privilege.</li>
+                </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
             </div>
-        </section>
+        </div>
+
+        <!-- 5. العمليات الأمنية -->
+        <div id="soc" class="section-box">
+            <h2>5. العمليات الأمنية والدفاع</h2>
+            <p class="subtitle">Security Operations & Blue Team</p>
+            <div class="glass-box">
+                <h3>ماذا ستتعلم هنا؟</h3>
+                <ul>
+                    <li><b>مركز العمليات (SOC):</b> مراقبة التنبيهات وتحليلها.</li>
+                    <li><b>أدوات SIEM:</b> تحليل السجلات (Logs) وربط الأحداث.</li>
+                    <li><b>الاستجابة للحوادث:</b> Incident Response Lifecycle.</li>
+                    <li><b>التحقيق الجنائي الرقمي:</b> Digital Forensics & Evidence Handling.</li>
+                </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
+            </div>
+        </div>
+
+        <!-- 6. الاختراق الأخلاقي -->
+        <div id="offensive" class="section-box">
+            <h2>6. الاختراق الأخلاقي (الأمن الهجومي)</h2>
+            <p class="subtitle">Ethical Hacking / Offensive Security</p>
+            <div class="glass-box">
+                <h3>ماذا ستتعلم هنا؟</h3>
+                <ul>
+                    <li><b>منهجية الاختبار:</b> Reconnaissance, Scanning, Exploitation, Reporting.</li>
+                    <li><b>أدوات الاختراق:</b> Nmap, Metasploit, Burp Suite, Wireshark.</li>
+                    <li><b>إدارة الثغرات:</b> Vulnerability Assessment & Management.</li>
+                </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
+            </div>
+        </div>
+
+        <!-- 7. الحوكمة والمخاطر -->
+        <div id="grc" class="section-box">
+            <h2>7. الحوكمة والمخاطر والامتثال</h2>
+            <p class="subtitle">Governance, Risk & Compliance (GRC)</p>
+            <div class="glass-box">
+                <h3>ماذا ستتعلم هنا؟</h3>
+                <ul>
+                    <li><b>إدارة المخاطر:</b> Risk Assessment & Mitigation.</li>
+                    <li><b>السياسات:</b> Security Policies & Procedures.</li>
+                    <li><b>الامتثال:</b> ISO 27001, GDPR, PCI DSS, HIPAA.</li>
+                    <li><b>الجانب القانوني:</b> Cyber Laws & Ethics.</li>
+                </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
+            </div>
+        </div>
+
+        <!-- 8. الأمن السحابي -->
+        <div id="cloud" class="section-box">
+            <h2>8. الأمن السحابي</h2>
+            <p class="subtitle">Cloud Security</p>
+            <div class="glass-box">
+                <h3>ماذا ستتعلم هنا؟</h3>
+                <ul>
+                    <li><b>تأمين السحابة:</b> AWS, Azure, GCP Shared Responsibility Model.</li>
+                    <li><b>إدارة الهويات في السحابة:</b> Cloud IAM, Roles, Policies.</li>
+                    <li><b>أمن الحاويات:</b> Docker & Kubernetes Security.</li>
+                </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
+            </div>
+        </div>
+
+        <!-- 9. أنظمة التشغيل -->
+        <div id="endpoint" class="section-box">
+            <h2>9. أمن أنظمة التشغيل والأجهزة</h2>
+            <p class="subtitle">OS & Endpoint Security</p>
+            <div class="glass-box">
+                <h3>ماذا ستتعلم هنا؟</h3>
+                <ul>
+                    <li><b>تأمين الأنظمة:</b> Windows Security, Linux Hardening.</li>
+                    <li><b>حماية الأجهزة الطرفية:</b> Endpoint Detection & Response (EDR), Antivirus.</li>
+                    <li><b>أمن الأجهزة المحمولة:</b> Mobile Device Management (MDM).</li>
+                </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
+            </div>
+        </div>
+
+        <!-- 10. التقنيات الحديثة -->
+        <div id="emerging" class="section-box">
+            <h2>10. التقنيات الحديثة</h2>
+            <p class="subtitle">Emerging Technologies Security</p>
+            <div class="glass-box">
+                <h3>ماذا ستتعلم هنا؟</h3>
+                <ul>
+                    <li><b>أمن إنترنت الأشياء (IoT Security):</b> تأمين الأجهزة الذكية والأنظمة المدمجة.</li>
+                    <li><b>أمن الذكاء الاصطناعي (AI Security):</b> حماية نماذج AI من الهجمات.</li>
+                    <li><b>أمن سلاسل التوريد (Supply Chain Security):</b> تأمين المكونات والبرمجيات.</li>
+                </ul>
+                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
+            </div>
+        </div>
 
     </main>
 
     <script>
-        // 1. شاشة التحميل
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                if (loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => { loader.style.display = 'none'; }, 500);
-                }
-            }, 1500);
-        });
-
-        // 2. التنقل بين الصفحات (الأزرار)
-        function switchPage(targetId) {
-            // إخفاء كل الصفحات
-            document.querySelectorAll('.page-section').forEach(sec => sec.style.display = 'none');
-            // إظهار الصفحة المطلوبة
-            const target = document.getElementById(targetId);
-            if (target) {
-                target.style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-            // تحديث شكل الأزرار في القائمة
-            document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
-            const activeLink = document.querySelector(`nav a[data-target="${targetId}"]`);
-            if (activeLink) activeLink.classList.add('active');
-        }
-
-        // ربط أزرار القائمة
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                switchPage(link.getAttribute('data-target'));
-            });
-        });
-
-        // ربط زرار "ابدأ التعلم الآن"
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                switchPage(btn.getAttribute('data-target'));
-            });
-        });
-
-        // 3. تصحيح الامتحانات
-        document.querySelectorAll('.check-quiz-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const quizBox = this.closest('.quiz-box');
-                const questions = quizBox.querySelectorAll('.question');
-                let score = 0;
-                let total = questions.length;
-                let allAnswered = true;
-
-                questions.forEach(q => {
-                    const selected = q.querySelector('input[type="radio"]:checked');
-                    if (!selected) {
-                        allAnswered = false;
-                    } else if (selected.value === 'correct') {
-                        score++;
-                    }
-                });
-
-                const resultDiv = quizBox.querySelector('.quiz-result');
-                if (!allAnswered) {
-                    resultDiv.style.color = '#ff4545';
-                    resultDiv.textContent = '⚠️ من فضلك أجب على جميع الأسئلة أولاً.';
-                } else {
-                    resultDiv.style.color = 'var(--neon)';
-                    resultDiv.textContent = `✅ نتيجتك: ${score} من ${total} — ${score === total ? 'ممتاز! إجابات صحيحة تماماً.' : 'راجع المحتوى وحاول مرة أخرى.'}`;
-                }
-            });
-        });
-
-        // 4. جلب الفيديوهات من يوتيوب
-        const YT_API_KEY = "حط_مفتاح_اليوتيوب_هنا"; // <--- حط مفتاحك هنا
-        
-        async function fetchYouTubeVideos(query = "كورس برمجة") {
-            const grid = document.getElementById('ytGrid');
-            if(!grid) return;
-            
-            try {
-                const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=6&key=${YT_API_KEY}`);
-                const data = await response.json();
-                
-                if (data.error) {
-                    grid.innerHTML = `<p style="color:#ff4545; text-align:center; width:100%;">تأكد من إدخال مفتاح الـ API بشكل صحيح.</p>`;
-                    return;
-                }
-                
-                grid.innerHTML = data.items.map(item => `
-                    <div class="video-card" onclick="window.open('https://www.youtube.com/watch?v=${item.id.videoId}', '_blank')">
-                        <img src="${item.snippet.thumbnails.high.url}" alt="Video">
-                        <h3>${item.snippet.title}</h3>
-                    </div>
-                `).join('');
-            } catch (error) {
-                grid.innerHTML = '<p style="color:#ff4545; text-align:center; width:100%;">حدث خطأ في الاتصال بيوتيوب.</p>';
-            }
-        }
-        
-        // تشغيل جلب الفيديوهات لو المفتاح متغير
-        if(YT_API_KEY !== "حط_مفتاح_اليوتيوب_هنا" && YT_API_KEY !== "") {
-            fetchYouTubeVideos();
-        } else {
-            document.getElementById('ytGrid').innerHTML = '<p style="text-align:center; width:100%; color:#aaa;">(أضف مفتاح YouTube API في الكود لعرض الفيديوهات الحقيقية هنا)</p>';
+        function showPage(pageId, element) {
+            document.querySelectorAll('.section-box').forEach(box => box.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            if(target) target.classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            if(element) element.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>
