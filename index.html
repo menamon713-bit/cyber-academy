@@ -30,19 +30,27 @@
     <button class="active" data-nav="home" onclick="showSection('home')">الرئيسية</button>
     <button data-nav="paths" onclick="showSection('paths')">المسارات</button>
     <button data-nav="courses" onclick="showSection('courses')">الكورسات</button>
-    <button data-nav="videos" onclick="showSection('videos')">فيديوهات الشرح</button>
+    <button onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">فيديوهات الشرح</button>
   </nav>
   <div class="top-actions"><button class="secondary" onclick="showSection('quiz')"><i class="fa-solid fa-bolt"></i> اختبر نفسك</button></div>
 </header>
 <div class="layout">
 <aside class="sidebar" id="sidebar">
   <div class="profile"><div class="avatar"><i class="fa-solid fa-user-secret"></i></div><strong>متعلم سايبر</strong><span>مسار الأمن السيبراني</span></div>
+  
   <div class="side-label">مساحة التعلم</div>
   <button class="side-link active" data-section="home" onclick="showSection('home')"><i class="fa-solid fa-house"></i> لوحة التحكم</button>
   <button class="side-link" data-section="paths" onclick="showSection('paths')"><i class="fa-solid fa-route"></i> مسارات التعلم</button>
   <button class="side-link" data-section="courses" onclick="showSection('courses')"><i class="fa-solid fa-book-open"></i> مكتبة الكورسات</button>
-  <button class="side-link" data-section="videos" onclick="showSection('videos')"><i class="fa-solid fa-video"></i> فيديوهات الشرح</button>
+  
+  <!-- الزرار الجديد اللي بيوجه للقناة جوه القائمة -->
+  <button class="side-link" style="background: rgba(255, 0, 0, 0.05); border: 1px solid rgba(255, 0, 0, 0.2);" onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">
+      <i class="fa-brands fa-youtube" style="color:#ff0000; font-size:18px;"></i> 
+      <span style="font-weight: bold; color: #fff;">فيديوهات الشرح (القناة)</span>
+  </button>
+
   <button class="side-link" data-section="quiz" onclick="showSection('quiz')"><i class="fa-solid fa-circle-question"></i> الاختبارات</button>
+  
   <div class="side-label">المعلومات</div>
   <button class="side-link" data-section="challenges" onclick="showSection('challenges')"><i class="fa-solid fa-flag"></i> تحديات CTF</button>
   <button class="side-link" data-section="glossary" onclick="showSection('glossary')"><i class="fa-solid fa-book"></i> قاموس المصطلحات</button>
@@ -51,7 +59,7 @@
 </aside>
 <main class="main">
 <section id="home" class="view">
- <div class="welcome"><div><div class="eyebrow">من الصفر إلى الممارسة الآمنة</div><h1>أهلاً بك في <span>أكاديمية سايبر</span></h1><p>اتعلم الأمن السيبراني خطوة بخطوة: افهم الشبكات، أمّن التطبيقات، وتدرب من خلال فيديوهات شارحة واختبارات تفاعلية في بيئة آمنة.</p><button class="primary" onclick="showSection('paths')">ابدأ رحلة التعلم <i class="fa-solid fa-arrow-left"></i></button> <button class="secondary" onclick="showSection('videos')">شاهد الفيديوهات</button></div><div class="hero-art"><i class="fa-solid fa-shield-halved"></i></div></div>
+ <div class="welcome"><div><div class="eyebrow">من الصفر إلى الممارسة الآمنة</div><h1>أهلاً بك في <span>أكاديمية سايبر</span></h1><p>اتعلم الأمن السيبراني خطوة بخطوة: افهم الشبكات، أمّن التطبيقات، وتدرب من خلال فيديوهات شارحة واختبارات تفاعلية في بيئة آمنة.</p><button class="primary" onclick="showSection('paths')">ابدأ رحلة التعلم <i class="fa-solid fa-arrow-left"></i></button> <button class="secondary" onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">شاهد الفيديوهات <i class="fa-brands fa-youtube"></i></button></div><div class="hero-art"><i class="fa-solid fa-shield-halved"></i></div></div>
  <div class="stats">
   <div class="stat"><div class="stat-icon"><i class="fa-solid fa-book-open"></i></div><div><strong id="statCourses">12</strong><span>مسار وكورس</span></div></div>
   <div class="stat"><div class="stat-icon"><i class="fa-solid fa-list-check"></i></div><div><strong id="statLessons">36</strong><span>درس فيديو</span></div></div>
@@ -60,23 +68,6 @@
  </div>
  <div class="section"><div class="section-head"><div><h2>ابدأ من هنا</h2><p>مسارات مرتبة من الأساسيات إلى التخصص.</p></div><button class="textlink" onclick="showSection('paths')">كل المسارات ←</button></div><div class="path-grid" id="homePaths"></div></div>
  <div class="section"><div class="section-head"><div><h2>كورسات مقترحة</h2><p>محتوى تعليمي متكامل.</p></div><button class="textlink" onclick="showSection('courses')">عرض المكتبة ←</button></div><div class="grid" id="featuredCourses"></div></div>
-</section>
-
-<!-- قسم الفيديوهات الجديد (زرار للقناة) -->
-<section id="videos" class="view hidden">
-    <div class="section-head"><div><h2>شرح الأمن السيبراني كامل</h2><p>مكتبة الفيديوهات الكاملة متاحة الآن على قناتنا على يوتيوب.</p></div></div>
-    
-    <div class="card" style="text-align: center; padding: 50px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <div class="course-icon" style="width: 80px; height: 80px; font-size: 40px; margin-bottom: 20px; background: #ff000015; color: #ff0000; border-radius: 20px;">
-            <i class="fa-brands fa-youtube"></i>
-        </div>
-        <h3 style="font-size: 1.5rem; margin-bottom: 10px;">قناة Secure The Humans</h3>
-        <p style="font-size: 1.1rem; max-width: 500px; margin: 0 auto 30px; line-height: 1.8;">اضغط على الزرار أدناه لمشاهدة جميع الفيديوهات والدروس الخاصة بالأمن السيبراني مباشرة من قناتنا.</p>
-        
-        <a href="https://www.youtube.com/@SecureTheHumans" target="_blank" class="primary" style="display: inline-flex; align-items: center; gap: 10px; padding: 15px 40px; font-size: 1.2rem; border-radius: 12px; text-decoration: none; width: auto; box-shadow: 0 10px 30px rgba(255, 48, 75, 0.4);">
-            <i class="fa-brands fa-youtube"></i> الذهاب إلى القناة الآن
-        </a>
-    </div>
 </section>
 
 <section id="paths" class="view hidden"><div class="section-head"><div><h2>مسارات التعلم</h2><p>اختار التخصص المناسب لمستواك وابدأ بالترتيب المقترح.</p></div></div><div class="path-grid" id="allPaths"></div><div id="pathDetails" class="section"></div></section>
@@ -130,7 +121,7 @@ function openPath(id){let p=paths.find(x=>x.id===id);if(!p)return;showSection('p
 
 function openCourse(id){
   let c=courses.find(x=>x.id===id);if(!c)return;
-  showSection('videos'); 
+  window.open('https://www.youtube.com/@SecureTheHumans', '_blank');
 }
 
 function renderQuiz(){let q=quizQuestions[currentQuiz],box=document.getElementById('quizBox');answered=false;box.innerHTML=`<div class="eyebrow">السؤال ${currentQuiz+1} من ${quizQuestions.length}</div><div class="progress"><span style="width:${(currentQuiz+1)/quizQuestions.length*100}%"></span></div><div class="quiz-question">${q.q}</div><div class="answers">${q.a.map((a,i)=>`<button class="answer" onclick="answerQuiz(${i})">${['أ','ب','ج','د'][i]}. ${a}</button>`).join('')}</div><div id="quizFeedback"></div><div style="display:flex;justify-content:space-between;gap:10px;margin-top:15px"><span style="color:var(--muted);font-size:12px">النتيجة: ${score} صحيحة</span><button id="nextQuiz" class="primary hidden" onclick="nextQuestion()">${currentQuiz===quizQuestions.length-1?'إنهاء الاختبار':'السؤال التالي'} ←</button></div>`}
