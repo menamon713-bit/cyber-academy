@@ -27,7 +27,7 @@
 .modal-box .btn-group{display:flex;gap:10px;margin-top:15px}
 .modal-box .btn-group button{flex:1;padding:12px}
 .close-btn{position:absolute;top:15px;left:15px;background:transparent;border:none;color:var(--muted);font-size:20px;cursor:pointer}
-.auth-msg{text-align:center;font-size:13px;margin-top:15px;color:var(--green)}
+.auth-msg{text-align:center;font-size:13px;margin-top:15px;font-weight:bold;}
 
 @media(max-width:1050px){.layout{grid-template-columns:210px minmax(0,1fr)}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.path-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-art{display:none}}
 @media(max-width:720px){
@@ -48,14 +48,11 @@
     <button onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">قناة اليوتيوب <i class="fa-brands fa-youtube" style="color:#ff0000; margin-right:5px;"></i></button>
   </nav>
   <div class="top-actions">
-    <!-- زرار تسجيل الدخول -->
     <button id="loginBtn" class="primary" onclick="openAuthModal()">تسجيل الدخول</button>
-    <!-- زرار تسجيل الخروج (مخفي في البداية) -->
     <button id="logoutBtn" class="secondary hidden" onclick="handleLogout()">تسجيل الخروج</button>
   </div>
 </header>
 
-<!-- نافذة تسجيل الدخول -->
 <div class="modal-overlay" id="authModal">
   <div class="modal-box">
     <button class="close-btn" onclick="closeAuthModal()">✕</button>
@@ -75,7 +72,6 @@
 
 <div class="layout">
 <aside class="sidebar" id="sidebar">
-  <!-- البروفايل -->
   <div class="profile">
     <div class="avatar"><i class="fa-solid fa-user-secret"></i></div>
     <strong id="profileName">زائر (غير مسجل)</strong>
@@ -171,11 +167,13 @@ function handleSignup() {
         password: password
     }).then(function(res) {
         if (res.error) {
-            showAuthMsg(res.error.message, true);
+            showAuthMsg('إيرور: ' + res.error.message, true);
         } else {
-            showAuthMsg('تم إنشاء الحساب بنجاح! جاري الدخول...', false);
-            setTimeout(function() { closeAuthModal(); }, 1500);
+            showAuthMsg('تم إنشاء الحساب! (لو مطلبش تأكيد هيدخلك على طول)', false);
+            setTimeout(function() { closeAuthModal(); }, 3000);
         }
+    }).catch(function(err) {
+        showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
     });
 }
 
@@ -195,21 +193,23 @@ function handleLogin() {
         password: password
     }).then(function(res) {
         if (res.error) {
-            showAuthMsg(res.error.message, true);
+            showAuthMsg('إيرور: ' + res.error.message, true);
         } else {
             showAuthMsg('تم تسجيل الدخول بنجاح!', false);
             setTimeout(function() { closeAuthModal(); }, 1000);
         }
+    }).catch(function(err) {
+        showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
     });
 }
 
 function handleLogout() {
     supabaseClient.auth.signOut().then(function() {
-        // ممكن تحط كود هنا بعد تسجيل الخروج
+        // بعد الخروج
     });
 }
 
-// تحديث الواجهة بناءً على حالة المستخدم
+// تحديث الواجهة
 function updateUI(user) {
     var loginBtn = document.getElementById('loginBtn');
     var logoutBtn = document.getElementById('logoutBtn');
@@ -219,7 +219,6 @@ function updateUI(user) {
     if (user) {
         loginBtn.classList.add('hidden');
         logoutBtn.classList.remove('hidden');
-        // عرض اسم المستخدم من الإيميل
         var name = user.email.split('@')[0];
         profileName.textContent = name; 
         profileRole.textContent = 'طالب مسجل ✅';
@@ -231,24 +230,18 @@ function updateUI(user) {
     }
 }
 
-// الاستماع لحالة تسجيل الدخول
 if (supabaseClient) {
     supabaseClient.auth.onAuthStateChange(function(event, session) {
         updateUI(session ? session.user : null);
     });
-    
-    // التحقق من الجلسة الحالية عند تحميل الصفحة
     supabaseClient.auth.getSession().then(function(res) {
-        if (res.data && res.data.session) {
-            updateUI(res.data.session.user);
-        } else {
-            updateUI(null);
-        }
+        if (res.data && res.data.session) updateUI(res.data.session.user);
+        else updateUI(null);
     });
 }
 
 // ==========================================
-// 3. البيانات الأساسية والوظائف السابقة
+// 3. البيانات الأساسية والوظائف
 // ==========================================
 var paths = [
 {id:'basics',name:'أساسيات الأمن السيبراني',icon:'fa-shield-halved',level:'مبتدئ',desc:'المفاهيم الأساسية والتهديدات ومبادئ الحماية.',courses:['مقدمة الأمن السيبراني','إدارة الهوية وكلمات المرور','الخصوصية والأمان الرقمي']},
