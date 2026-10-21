@@ -65,7 +65,7 @@
  <div class="section"><div class="section-head"><div><h2>كورسات مقترحة</h2><p>محتوى تعليمي متكامل.</p></div><button class="textlink" onclick="showSection('courses')">عرض المكتبة ←</button></div><div class="grid" id="featuredCourses"></div></div>
 </section>
 
-<!-- قسم الفيديوهات الجديد -->
+<!-- قسم الفيديوهات -->
 <section id="videos" class="view hidden">
     <div class="section-head"><div><h2>شرح الأمن السيبراني كامل</h2><p>مكتبة فيديوهات من قناة Secure The Humans لشرح كل ما يخص الأمن السيبراني.</p></div></div>
     <div class="card" style="padding:0; background:transparent; border:none;">
@@ -129,11 +129,9 @@ function renderCourseTabs(){document.getElementById('courseTabs').innerHTML=`<bu
 function setCoursePath(id){selectedPath=id;renderCourseTabs();renderCourses()}
 function openPath(id){let p=paths.find(x=>x.id===id);if(!p)return;showSection('paths');document.getElementById('pathDetails').innerHTML=`<div class="section-head"><div><h2>${p.name}</h2><p>${p.desc}</p></div><span class="chip">${p.level}</span></div><div class="grid">${courses.filter(c=>c.pathId===id).map(courseCard).join('')}</div>`;document.getElementById('pathDetails').scrollIntoView({behavior:'smooth',block:'start'})}
 
-// دالة مبدئية للكورسات لو حبيت تربطها لاحقاً
 function openCourse(id){
   let c=courses.find(x=>x.id===id);if(!c)return;
-  showSection('videos'); // هيوديك لقسم الفيديوهات
-  // هنا تقدر تضيف منطق يغير الفيديو حسب الكورس لو حبيت
+  showSection('videos'); 
 }
 
 function renderQuiz(){let q=quizQuestions[currentQuiz],box=document.getElementById('quizBox');answered=false;box.innerHTML=`<div class="eyebrow">السؤال ${currentQuiz+1} من ${quizQuestions.length}</div><div class="progress"><span style="width:${(currentQuiz+1)/quizQuestions.length*100}%"></span></div><div class="quiz-question">${q.q}</div><div class="answers">${q.a.map((a,i)=>`<button class="answer" onclick="answerQuiz(${i})">${['أ','ب','ج','د'][i]}. ${a}</button>`).join('')}</div><div id="quizFeedback"></div><div style="display:flex;justify-content:space-between;gap:10px;margin-top:15px"><span style="color:var(--muted);font-size:12px">النتيجة: ${score} صحيحة</span><button id="nextQuiz" class="primary hidden" onclick="nextQuestion()">${currentQuiz===quizQuestions.length-1?'إنهاء الاختبار':'السؤال التالي'} ←</button></div>`}
