@@ -8,6 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- مكتبة Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg:#08090d;--panel:#101116;--panel2:#15161d;--line:#282a34;--text:#f5f5f7;--muted:#9a9ba8;--red:#ff304b;--red2:#b90e2a;--white:#fff;--green:#45d483;--radius:18px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#301019 0,transparent 35%),var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.hidden{display:none!important}
@@ -82,6 +84,16 @@
 </main>
 </div>
 <script>
+// ==========================================
+// 1. إعداد الاتصال بـ Supabase
+// ==========================================
+const supabaseUrl = 'https://dswtnragmdozgmvzaihj.supabase.co';
+const supabaseKey = 'sb_publishable_-UNaFL9Ud7phhTguV4_UFQ_zwYuZg5N';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+// ==========================================
+// 2. البيانات الأساسية
+// ==========================================
 const paths=[
 {id:'basics',name:'أساسيات الأمن السيبراني',icon:'fa-shield-halved',level:'مبتدئ',desc:'المفاهيم الأساسية والتهديدات ومبادئ الحماية.',courses:['مقدمة الأمن السيبراني','إدارة الهوية وكلمات المرور','الخصوصية والأمان الرقمي']},
 {id:'network',name:'أمن الشبكات',icon:'fa-network-wired',level:'مبتدئ — متوسط',desc:'تعلم الشبكات والبروتوكولات ومبادئ الدفاع.',courses:['أساسيات الشبكات','TCP/IP وDNS وHTTP','الجدران النارية ومراقبة الشبكات']},
@@ -96,7 +108,9 @@ const paths=[
 {id:'linux',name:'Linux وPython للأمن',icon:'fa-terminal',level:'مبتدئ',desc:'أدوات أساسية لفهم الأنظمة والبرمجة وتحليل البيانات.',courses:['مقدمة Linux','أساسيات Python','معالجة النصوص والسجلات']},
 {id:'incident',name:'إدارة المخاطر والاستجابة',icon:'fa-triangle-exclamation',level:'متوسط',desc:'تحديد المخاطر وترتيبها ووضع خطط الاستجابة والتعافي.',courses:['تقييم المخاطر','خطط الاستجابة','التعافي واستمرارية الأعمال']}
 ];
-const courses=paths.flatMap((p,pi)=>p.courses.map((name,i)=>({id:p.id+'-'+i,name,path:p.name,pathId:p.id,level:p.level,desc:p.desc,lessons:1,progress:0})));
+
+// تحويل الكورسات الثابتة لشكل متوافق مع الداتابيز كخطة بديلة لو الداتابيز فاضية
+let courses = paths.flatMap((p,pi)=>p.courses.map((name,i)=>({id:p.id+'-'+i,title:name,desc:p.desc,level:p.level,pathId:p.id})));
 
 const glossary=[
 ['Asset','أصل رقمي','جهاز أو نظام أو بيانات لها قيمة وتحتاج إلى حماية.'],['Threat','تهديد','شيء قد يسبب ضررًا لأصل أو نظام.'],['Vulnerability','ثغرة','نقطة ضعف في تصميم أو تنفيذ أو إعداد.'],['Risk','مخاطر','احتمال وقوع ضرر مع مراعاة أثره.'],['Firewall','جدار ناري','نظام يراقب حركة الشبكة ويسمح بها أو يمنعها وفق قواعد.'],['Encryption','تشفير','تحويل البيانات إلى صيغة لا تُقرأ دون المفتاح المناسب.'],['Hash','بصمة رقمية','ناتج دالة أحادية الاتجاه يستخدم للتحقق أو المقارنة.'],['MFA','مصادقة متعددة العوامل','استخدام أكثر من عامل للتحقق من الهوية.'],['Phishing','تصيد احتيالي','خداع المستخدم لدفعه لكشف معلومات أو تنفيذ إجراء.'],['Patch','تحديث إصلاحي','تحديث يعالج مشكلة أو ثغرة أو خطأ.'],['SOC','مركز عمليات الأمن','فريق أو مركز يراقب التنبيهات والأحداث الأمنية.'],['SIEM','إدارة معلومات وأحداث الأمن','منصة تجمع السجلات وتربط الأحداث لإنتاج تنبيهات.'],['CTF','التقاط العلم','تحديات تدريبية لحل ألغاز أمنية ضمن نطاق محدد.'],['Least Privilege','أقل صلاحية','منح الحد الأدنى من الأذونات اللازمة.'],['Incident Response','الاستجابة للحوادث','خطوات منظمة لاحتواء حادث أمني وتحليله والتعافي منه.'],['Zero-day','ثغرة غير معروفة أو غير معالَجة','ثغرة لا يتوفر لها إصلاح مناسب وقت استغلالها أو اكتشافها.']
@@ -111,36 +125,108 @@ const quizQuestions=[
 ];
 
 let currentQuiz=0,score=0,answered=false,selectedPath='all',completed=new Set(JSON.parse(localStorage.getItem('cyberCompleted')||'[]'));
+
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function pathCard(p){return `<div class="path-card" onclick="openPath('${p.id}')"><i class="fa-solid ${p.icon}"></i><b>${p.name}</b><small>${p.level}</small></div>`}
-function courseCard(c){let pct=completed.has(c.id)?100:0;return `<article class="card"><div class="course-icon"><i class="fa-solid ${paths.find(p=>p.id===c.pathId)?.icon||'fa-book'}"></i></div><div class="chips"><span class="chip">${c.level}</span><span class="chip">كورس</span></div><h3>${c.name}</h3><p>${c.desc}</p><div class="progress"><span style="width:${pct}%"></span></div><button class="primary" onclick="openCourse('${c.id}')">${pct?'مراجعة':'ابدأ التعلم'} <i class="fa-solid fa-arrow-left"></i></button></article>`}
-function renderPaths(){document.getElementById('homePaths').innerHTML=paths.slice(0,4).map(pathCard).join('');document.getElementById('allPaths').innerHTML=paths.map(pathCard).join('');document.getElementById('featuredCourses').innerHTML=courses.slice(0,3).map(courseCard).join('')}
-function renderCourses(){let q=(document.getElementById('courseSearch')?.value||'').trim().toLowerCase();let filtered=courses.filter(c=>(selectedPath==='all'||c.pathId===selectedPath)&&(c.name+' '+c.path+' '+c.desc).toLowerCase().includes(q));document.getElementById('courseGrid').innerHTML=filtered.length?filtered.map(courseCard).join(''):'<div class="empty">مفيش كورسات مطابقة للبحث.</div>'}
-function renderCourseTabs(){document.getElementById('courseTabs').innerHTML=`<button class="tab ${selectedPath==='all'?'active':''}" onclick="setCoursePath('all')">الكل</button>`+paths.map(p=>`<button class="tab ${selectedPath===p.id?'active':''}" onclick="setCoursePath('${p.id}')">${p.name}</button>`).join('')}
-function setCoursePath(id){selectedPath=id;renderCourseTabs();renderCourses()}
-function openPath(id){let p=paths.find(x=>x.id===id);if(!p)return;showSection('paths');document.getElementById('pathDetails').innerHTML=`<div class="section-head"><div><h2>${p.name}</h2><p>${p.desc}</p></div><span class="chip">${p.level}</span></div><div class="grid">${courses.filter(c=>c.pathId===id).map(courseCard).join('')}</div>`;document.getElementById('pathDetails').scrollIntoView({behavior:'smooth',block:'start'})}
 
-function openCourse(id){
-  let c=courses.find(x=>x.id===id);if(!c)return;
-  window.open('https://www.youtube.com/@SecureTheHumans', '_blank');
+// تعديل كارت الكورس عشان يستقبل بيانات الداتابيز (title, desc)
+function courseCard(c){
+    let pct = completed.has(c.id) ? 100 : 0;
+    let cLevel = c.level || 'عام';
+    let cPathId = c.pathId || 'all';
+    let pathIcon = paths.find(p=>p.id===cPathId)?.icon || 'fa-book';
+    
+    return `<article class="card">
+        <div class="course-icon"><i class="fa-solid ${pathIcon}"></i></div>
+        <div class="chips"><span class="chip">${cLevel}</span><span class="chip">كورس</span></div>
+        <h3>${c.title}</h3>
+        <p>${c.desc || 'لا يوجد وصف'}</p>
+        <div class="progress"><span style="width:${pct}%"></span></div>
+        <button class="primary" onclick="openCourse('${c.id}')">${pct?'مراجعة':'ابدأ التعلم'} <i class="fa-solid fa-arrow-left"></i></button>
+    </article>`;
 }
 
+function renderPaths(){document.getElementById('homePaths').innerHTML=paths.slice(0,4).map(pathCard).join('');document.getElementById('allPaths').innerHTML=paths.map(pathCard).join('');}
+function renderCourses(){
+    let q=(document.getElementById('courseSearch')?.value||'').trim().toLowerCase();
+    let filtered=courses.filter(c=>(selectedPath==='all'||c.pathId===selectedPath)&&(c.title+' '+c.desc).toLowerCase().includes(q));
+    document.getElementById('courseGrid').innerHTML=filtered.length?filtered.map(courseCard).join(''):'<div class="empty">مفيش كورسات مطابقة للبحث.</div>'
+}
+function renderFeatured(){document.getElementById('featuredCourses').innerHTML=courses.slice(0,3).map(courseCard).join('');}
+function renderCourseTabs(){document.getElementById('courseTabs').innerHTML=`<button class="tab ${selectedPath==='all'?'active':''}" onclick="setCoursePath('all')">الكل</button>`+paths.map(p=>`<button class="tab ${selectedPath===p.id?'active':''}" onclick="setCoursePath('${p.id}')">${p.name}</button>`).join('')}
+function setCoursePath(id){selectedPath=id;renderCourseTabs();renderCourses()}
+function openPath(id){
+    let p=paths.find(x=>x.id===id);if(!p)return;
+    showSection('paths');
+    document.getElementById('pathDetails').innerHTML=`<div class="section-head"><div><h2>${p.name}</h2><p>${p.desc}</p></div><span class="chip">${p.level}</span></div><div class="grid">${courses.filter(c=>c.pathId===id).map(courseCard).join('')}</div>`;
+    document.getElementById('pathDetails').scrollIntoView({behavior:'smooth',block:'start'})
+}
+function openCourse(id){
+    let c=courses.find(x=>x.id===id);if(!c)return;
+    window.open('https://www.youtube.com/@SecureTheHumans', '_blank');
+}
 function renderQuiz(){let q=quizQuestions[currentQuiz],box=document.getElementById('quizBox');answered=false;box.innerHTML=`<div class="eyebrow">السؤال ${currentQuiz+1} من ${quizQuestions.length}</div><div class="progress"><span style="width:${(currentQuiz+1)/quizQuestions.length*100}%"></span></div><div class="quiz-question">${q.q}</div><div class="answers">${q.a.map((a,i)=>`<button class="answer" onclick="answerQuiz(${i})">${['أ','ب','ج','د'][i]}. ${a}</button>`).join('')}</div><div id="quizFeedback"></div><div style="display:flex;justify-content:space-between;gap:10px;margin-top:15px"><span style="color:var(--muted);font-size:12px">النتيجة: ${score} صحيحة</span><button id="nextQuiz" class="primary hidden" onclick="nextQuestion()">${currentQuiz===quizQuestions.length-1?'إنهاء الاختبار':'السؤال التالي'} ←</button></div>`}
 function answerQuiz(i){if(answered)return;answered=true;let q=quizQuestions[currentQuiz],buttons=document.querySelectorAll('.answer');buttons[q.correct].classList.add('correct');if(i===q.correct){score++;document.getElementById('statScore').textContent=score}else buttons[i].classList.add('wrong');document.getElementById('quizFeedback').innerHTML=`<div class="feedback">${i===q.correct?'إجابة صحيحة!':'الإجابة الصحيحة: '+q.a[q.correct]}<br>${q.why}</div>`;document.getElementById('nextQuiz').classList.remove('hidden')}
 function nextQuestion(){if(currentQuiz<quizQuestions.length-1){currentQuiz++;renderQuiz()}else{document.getElementById('quizBox').innerHTML=`<div class="course-icon"><i class="fa-solid fa-trophy"></i></div><h2>خلصت الاختبار!</h2><p>إجاباتك الصحيحة: ${score} من ${quizQuestions.length}</p><div class="progress"><span style="width:${score/quizQuestions.length*100}%"></span></div><button class="primary" onclick="currentQuiz=0;score=0;renderQuiz()">إعادة الاختبار</button>`}}
 function renderGlossary(){let q=(document.getElementById('glossarySearch')?.value||'').toLowerCase();let arr=glossary.filter(x=>x.join(' ').toLowerCase().includes(q));document.getElementById('glossaryGrid').innerHTML=arr.map(x=>`<div class="card"><div class="eyebrow">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]}</p></div>`).join('')||'<div class="empty">مفيش مصطلحات مطابقة.</div>'}
-const challenges=[
-{title:'تحدي الهاش',desc:'حدد لماذا لا يُعد الهاش تشفيرًا قابلًا للفك.',hint:'فكر في الفرق بين دالة أحادية الاتجاه وخوارزمية تستخدم مفتاحًا.'},
-{title:'تحليل سجل دخول',desc:'راجع سجلًا تدريبيًا وحدد الحدث الذي يحتاج إلى مراجعة.',hint:'تكرار محاولات فاشلة في وقت قصير قد يستحق التحقيق، لكنه لا يثبت وحده وجود اختراق.'},
-{title:'اكتشاف رابط مشبوه',desc:'تعلم مؤشرات التصيد قبل فتح أي رابط.',hint:'افحص اسم النطاق، والسياق، والأخطاء الإملائية، واطلب تأكيدًا من مرسل موثوق.'}
-];
+const challenges=[{title:'تحدي الهاش',desc:'حدد لماذا لا يُعد الهاش تشفيرًا قابلًا للفك.',hint:'فكر في الفرق بين دالة أحادية الاتجاه وخوارزمية تستخدم مفتاحًا.'},{title:'تحليل سجل دخول',desc:'راجع سجلًا تدريبيًا وحدد الحدث الذي يحتاج إلى مراجعة.',hint:'تكرار محاولات فاشلة في وقت قصير قد يستحق التحقيق، لكنه لا يثبت وحده وجود اختراق.'},{title:'اكتشاف رابط مشبوه',desc:'تعلم مؤشرات التصيد قبل فتح أي رابط.',hint:'افحص اسم النطاق، والسياق، والأخطاء الإملائية، واطلب تأكيدًا من مرسل موثوق.'}];
 function renderChallenges(){document.getElementById('challengeGrid').innerHTML=challenges.map((c,i)=>`<div class="card"><div class="course-icon"><i class="fa-solid fa-flag"></i></div><h3>${c.title}</h3><p>${c.desc}</p><button class="secondary" onclick="challengeHint(${i})">عرض تلميح</button><p id="hint${i}" class="hidden" style="margin-top:12px;color:#ff9aa8">${c.hint}</p></div>`).join('')}
 function challengeHint(i){document.getElementById('hint'+i).classList.toggle('hidden')}
 function renderRoadmap(){let stages=[['1','الأساسيات','مفاهيم الأمن والخصوصية وأنظمة التشغيل'],['2','الشبكات','IP وDNS وHTTP ومبادئ TCP/IP'],['3','Linux وPython','الطرفية والبرمجة وتحليل النصوص'],['4','اختار تخصصًا','ويب أو دفاع سيبراني أو شبكات أو تحليل رقمي'],['5','تدريب آمن','مختبرات قانونية وتحديات CTF تعليمية'],['6','ملف أعمال','تقارير توثيقية ومشروعات دفاعية آمنة']];document.getElementById('roadmapList').innerHTML=stages.map(s=>`<div class="lesson"><div class="lesson-num">${s[0]}</div><div><b>${s[1]}</b><p>${s[2]}</p></div></div>`).join('')}
 function showSection(id){document.querySelectorAll('.view').forEach(s=>s.classList.toggle('hidden',s.id!==id));document.querySelectorAll('.side-link').forEach(b=>b.classList.toggle('active',b.dataset.section===id));document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));document.getElementById('sidebar').classList.remove('open');if(id==='quiz'&&!answered)renderQuiz();window.scrollTo({top:0,behavior:'smooth'})}
 function toggleMenu(){document.getElementById('sidebar').classList.toggle('open')}
 
-renderPaths();renderCourseTabs();renderCourses();renderQuiz();renderGlossary();renderChallenges();renderRoadmap();document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/12*100))+'%';
+// ==========================================
+// 3. جلب البيانات من Supabase
+// ==========================================
+async function fetchCoursesFromSupabase() {
+    try {
+        const { data, error } = await supabase
+            .from('courses')
+            .select('*')
+            .eq('is_published', true); // بنجيب الكورسات المنشورة بس
+
+        if (error) {
+            console.error('خطأ في جلب الكورسات:', error);
+            return; // لو حصل خطأ، هيفضل يستخدم الكورسات الثابتة
+        }
+
+        if (data && data.length > 0) {
+            // تحويل شكل البيانات الجاية من الداتابيز عشان تتوافق مع كود الـ HTML بتاعك
+            courses = data.map((c, index) => ({
+                id: c.id,
+                title: c.title,
+                desc: c.description || 'لا يوجد وصف متاح',
+                level: 'عام', // ممكن تغيرها بعدين لو ضفت عمود للمستوى
+                pathId: 'all' // ممكن تغيرها بعدين لو ضفت عمود للمسار
+            }));
+            
+            // إعادة رسم الكورسات بعد ما جبناها
+            renderFeatured();
+            renderCourses();
+            
+            // تحديث الإحصائيات
+            document.getElementById('statCourses').textContent = courses.length;
+        }
+    } catch (err) {
+        console.error('مشكلة في الاتصال:', err);
+    }
+}
+
+// ==========================================
+// 4. تشغيل الدوال عند تحميل الصفحة
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    renderPaths();
+    renderCourseTabs();
+    renderGlossary();
+    renderChallenges();
+    renderRoadmap();
+    document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/12*100))+'%';
+    
+    // تشغيل دالة جلب الكورسات من الداتابيز
+    fetchCoursesFromSupabase();
+});
 </script>
 </body>
 </html>
