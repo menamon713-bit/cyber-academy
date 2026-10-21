@@ -30,7 +30,8 @@
     <button class="active" data-nav="home" onclick="showSection('home')">الرئيسية</button>
     <button data-nav="paths" onclick="showSection('paths')">المسارات</button>
     <button data-nav="courses" onclick="showSection('courses')">الكورسات</button>
-    <button onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">فيديوهات الشرح</button>
+    <!-- زرار القناة في الهيدر -->
+    <button onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">قناة اليوتيوب <i class="fa-brands fa-youtube" style="color:#ff0000; margin-right:5px;"></i></button>
   </nav>
   <div class="top-actions"><button class="secondary" onclick="showSection('quiz')"><i class="fa-solid fa-bolt"></i> اختبر نفسك</button></div>
 </header>
@@ -43,10 +44,10 @@
   <button class="side-link" data-section="paths" onclick="showSection('paths')"><i class="fa-solid fa-route"></i> مسارات التعلم</button>
   <button class="side-link" data-section="courses" onclick="showSection('courses')"><i class="fa-solid fa-book-open"></i> مكتبة الكورسات</button>
   
-  <!-- الزرار الجديد اللي بيوجه للقناة جوه القائمة -->
-  <button class="side-link" style="background: rgba(255, 0, 0, 0.05); border: 1px solid rgba(255, 0, 0, 0.2);" onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">
-      <i class="fa-brands fa-youtube" style="color:#ff0000; font-size:18px;"></i> 
-      <span style="font-weight: bold; color: #fff;">فيديوهات الشرح (القناة)</span>
+  <!-- الزرار بتاع القناة اللي إنت طالبه (واضح جداً) -->
+  <button class="side-link" style="background: rgba(255, 0, 0, 0.1); border: 1px solid rgba(255, 0, 0, 0.3); margin-top: 10px;" onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">
+      <i class="fa-brands fa-youtube" style="color:#ff0000; font-size:20px;"></i> 
+      <span style="font-weight: 900; color: #fff;">فيديوهات الشرح (القناة)</span>
   </button>
 
   <button class="side-link" data-section="quiz" onclick="showSection('quiz')"><i class="fa-solid fa-circle-question"></i> الاختبارات</button>
@@ -59,7 +60,7 @@
 </aside>
 <main class="main">
 <section id="home" class="view">
- <div class="welcome"><div><div class="eyebrow">من الصفر إلى الممارسة الآمنة</div><h1>أهلاً بك في <span>أكاديمية سايبر</span></h1><p>اتعلم الأمن السيبراني خطوة بخطوة: افهم الشبكات، أمّن التطبيقات، وتدرب من خلال فيديوهات شارحة واختبارات تفاعلية في بيئة آمنة.</p><button class="primary" onclick="showSection('paths')">ابدأ رحلة التعلم <i class="fa-solid fa-arrow-left"></i></button> <button class="secondary" onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">شاهد الفيديوهات <i class="fa-brands fa-youtube"></i></button></div><div class="hero-art"><i class="fa-solid fa-shield-halved"></i></div></div>
+ <div class="welcome"><div><div class="eyebrow">من الصفر إلى الممارسة الآمنة</div><h1>أهلاً بك في <span>أكاديمية سايبر</span></h1><p>اتعلم الأمن السيبراني خطوة بخطوة: افهم الشبكات، أمّن التطبيقات، وتدرب من خلال فيديوهات شارحة واختبارات تفاعلية في بيئة آمنة.</p><button class="primary" onclick="showSection('paths')">ابدأ رحلة التعلم <i class="fa-solid fa-arrow-left"></i></button> <button class="secondary" onclick="window.open('https://www.youtube.com/@SecureTheHumans', '_blank')">شاهد الفيديوهات <i class="fa-brands fa-youtube" style="color:#ff0000;"></i></button></div><div class="hero-art"><i class="fa-solid fa-shield-halved"></i></div></div>
  <div class="stats">
   <div class="stat"><div class="stat-icon"><i class="fa-solid fa-book-open"></i></div><div><strong id="statCourses">12</strong><span>مسار وكورس</span></div></div>
   <div class="stat"><div class="stat-icon"><i class="fa-solid fa-list-check"></i></div><div><strong id="statLessons">36</strong><span>درس فيديو</span></div></div>
