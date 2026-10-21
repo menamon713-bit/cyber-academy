@@ -117,7 +117,6 @@
 </main>
 </div>
 
-<!-- سكريبت الواجهة (يعمل فوراً بدون انتظار النت) -->
 <script>
 var paths = [
 {id:'basics',name:'أساسيات الأمن السيبراني',icon:'fa-shield-halved',level:'مبتدئ',desc:'المفاهيم الأساسية والتهديدات ومبادئ الحماية.',courses:['مقدمة الأمن السيبراني','إدارة الهوية وكلمات المرور','الخصوصية والأمان الرقمي']},
@@ -278,40 +277,58 @@ renderPaths(); renderCourseTabs(); renderCourses(); renderQuiz(); renderGlossary
 document.getElementById('statDone').textContent = Math.min(100, Math.round(completed.size/12*100)) + '%';
 </script>
 
-<!-- سكريبت تحميل سوبابيز ونظام الدخول (بشكل منفصل) -->
+<!-- سكريبت تحميل سوبابيز ونظام الدخول (ذكي) -->
 <script>
 var supabaseClient = null;
 var supabaseUrl = 'https://dswtnragmdozgmvzaihj.supabase.co';
 var supabaseKey = 'sb_publishable_-UNaFL9Ud7phhTguV4_UFQ_zwYuZg5N';
 
 window.onload = function() {
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-    
-    script.onload = function() {
-        supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    var cdns = [
+        'https://cdnjs.cloudflare.com/ajax/libs/supabase-js/2.39.8/supabase.min.js',
+        'https://unpkg.com/@supabase/supabase-js@2',
+        'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2'
+    ];
+    var currentCdn = 0;
+
+    function tryLoad() {
+        if (currentCdn >= cdns.length) {
+            console.error("Failed to load Supabase from all CDNs.");
+            document.getElementById('loginBtn').onclick = function() {
+                alert('عذراً، نظام تسجيل الدخول غير متاح. المشكلة في شبكة الإنترنت الخاصة بك (تحجب تحميل مكتبات المبرمجين). جرب تفصل الواي فاي وتستخدم باقة الموبايل (أو العكس).');
+            };
+            return;
+        }
         
-        supabaseClient.auth.getSession().then(function(res) {
-            if (res.data && res.data.session) updateUI(res.data.session.user);
-            else updateUI(null);
-        });
+        var script = document.createElement('script');
+        script.src = cdns[currentCdn];
         
-        supabaseClient.auth.onAuthStateChange(function(event, session) {
-            updateUI(session ? session.user : null);
-        });
-        
-        fetchCoursesFromSupabase();
-    };
-    
-    script.onerror = function() {
-        console.error("Failed to load Supabase script.");
-        // تعطيل زرار الدخول لو سوبابيز مش متاحة
-        document.getElementById('loginBtn').onclick = function() {
-            alert('عذراً، نظام تسجيل الدخول غير متاح حالياً بسبب مشكلة في الاتصال بالسيرفر.');
+        script.onload = function() {
+            console.log("Loaded Supabase from: " + cdns[currentCdn]);
+            supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            
+            supabaseClient.auth.getSession().then(function(res) {
+                if (res.data && res.data.session) updateUI(res.data.session.user);
+                else updateUI(null);
+            });
+            
+            supabaseClient.auth.onAuthStateChange(function(event, session) {
+                updateUI(session ? session.user : null);
+            });
+            
+            fetchCoursesFromSupabase();
         };
-    };
+        
+        script.onerror = function() {
+            console.warn("Failed to load from: " + cdns[currentCdn]);
+            currentCdn++;
+            tryLoad();
+        };
+        
+        document.head.appendChild(script);
+    }
     
-    document.body.appendChild(script);
+    tryLoad();
 };
 
 function openAuthModal() {
@@ -335,7 +352,7 @@ async function handleSignup() {
     var password = document.getElementById('passwordInput').value;
     
     if (!email || !password) { alert('يرجى ملء جميع الحقول'); return; }
-    if (!supabaseClient) { alert('المكتبة لم يتم تحميلها بعد، استنى ثانية وجرب.'); return; }
+    if (!supabaseClient) { alert('جاري تحميل النظام... استنى ثانية وجرب تاني.'); return; }
     
     showAuthMsg('جاري إنشاء الحساب...', false);
     
@@ -360,7 +377,7 @@ async function handleLogin() {
     var password = document.getElementById('passwordInput').value;
     
     if (!email || !password) { alert('يرجى ملء جميع الحقول'); return; }
-    if (!supabaseClient) { alert('المكتبة لم يتم تحميلها بعد، استنى ثانية وجرب.'); return; }
+    if (!supabaseClient) { alert('جاري تحميل النظام... استنى ثانية وجرب تاني.'); return; }
     
     showAuthMsg('جاري تسجيل الدخول...', false);
     
