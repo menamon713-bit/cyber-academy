@@ -151,56 +151,76 @@ function showAuthMsg(msg, isError) {
     el.style.color = isError ? '#ff304b' : '#45d483';
 }
 
-function handleSignup() {
+async function handleSignup() {
     var email = document.getElementById('emailInput').value;
     var password = document.getElementById('passwordInput').value;
     
     if (!email || !password) {
-        showAuthMsg('يرجى ملء جميع الحقول', true);
+        alert('يرجى ملء جميع الحقول');
+        return;
+    }
+
+    if (!supabaseClient) {
+        alert('خطأ: مكتبة Supabase لم يتم تحميلها! (النت أو مانع الإعلانات بيمنعها)');
         return;
     }
     
     showAuthMsg('جاري إنشاء الحساب...', false);
     
-    supabaseClient.auth.signUp({
-        email: email,
-        password: password
-    }).then(function(res) {
-        if (res.error) {
-            showAuthMsg('إيرور: ' + res.error.message, true);
+    try {
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            alert('إيرور من سوبابيز: ' + error.message);
+            showAuthMsg('إيرور: ' + error.message, true);
         } else {
-            showAuthMsg('تم إنشاء الحساب! (لو مطلبش تأكيد هيدخلك على طول)', false);
-            setTimeout(function() { closeAuthModal(); }, 3000);
+            alert('تم إنشاء الحساب بنجاح!');
+            showAuthMsg('تم إنشاء الحساب بنجاح!', false);
+            setTimeout(function() { closeAuthModal(); }, 1000);
         }
-    }).catch(function(err) {
+    } catch (err) {
+        alert('مشكلة في الاتصال بالشبكة: ' + err.message);
         showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
-    });
+    }
 }
 
-function handleLogin() {
+async function handleLogin() {
     var email = document.getElementById('emailInput').value;
     var password = document.getElementById('passwordInput').value;
     
     if (!email || !password) {
-        showAuthMsg('يرجى ملء جميع الحقول', true);
+        alert('يرجى ملء جميع الحقول');
+        return;
+    }
+
+    if (!supabaseClient) {
+        alert('خطأ: مكتبة Supabase لم يتم تحميلها!');
         return;
     }
     
     showAuthMsg('جاري تسجيل الدخول...', false);
     
-    supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-    }).then(function(res) {
-        if (res.error) {
-            showAuthMsg('إيرور: ' + res.error.message, true);
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            alert('إيرور من سوبابيز: ' + error.message);
+            showAuthMsg('إيرور: ' + error.message, true);
         } else {
+            alert('تم تسجيل الدخول بنجاح!');
             showAuthMsg('تم تسجيل الدخول بنجاح!', false);
             setTimeout(function() { closeAuthModal(); }, 1000);
         }
-    }).catch(function(err) {
+    } catch (err) {
+        alert('مشكلة في الاتصال بالشبكة: ' + err.message);
         showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
-    });
+    }
 }
 
 function handleLogout() {
