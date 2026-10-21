@@ -11,35 +11,29 @@
         body { background-color: var(--dark); color: white; min-height: 100vh; }
         body::before { content: ""; position: fixed; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(0,255,65,0.08), transparent 70%); z-index: -1; }
         body::after { content: ""; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px); background-size: 40px 40px; z-index: -1; pointer-events: none; }
-
         header { display: flex; justify-content: space-between; align-items: center; padding: 12px 4%; background: var(--glass); border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; gap: 8px; }
         .logo { font-size: 1.3rem; font-weight: 900; }
         .logo span { color: var(--neon); }
         nav { display: flex; gap: 5px; flex-wrap: wrap; }
         nav a { color: #ccc; text-decoration: none; cursor: pointer; padding: 5px 8px; border-radius: 5px; font-size: 0.75rem; font-weight: 700; transition: 0.3s; }
         nav a:hover, nav a.active { color: var(--neon); background: rgba(0,255,65,0.1); }
-
         main { padding: 30px 4%; max-width: 1000px; margin: auto; }
         .section-box { display: none; animation: fadeIn 0.3s ease; }
         .section-box.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .glass-box { background: var(--glass); border: 1px solid #333; border-radius: 12px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         h2 { color: var(--neon); margin-bottom: 8px; font-size: 1.6rem; }
-        .subtitle { color: #888; margin-bottom: 20px; font-size: 0.9rem; }
         h3 { color: white; margin-bottom: 10px; font-size: 1.2rem; }
         p { line-height: 1.9; color: #ccc; margin-bottom: 12px; }
-        ul { padding-right: 20px; margin-bottom: 12px; }
-        li { line-height: 1.9; color: #ccc; margin-bottom: 6px; }
-        b { color: var(--neon); }
-
-        .placeholder { text-align: center; color: #555; margin-top: 25px; font-size: 1rem; border: 2px dashed #333; padding: 25px; border-radius: 10px; }
-
-        .quick-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 15px; }
-        .quick-card { background: #111; border: 1px solid #333; padding: 15px; border-radius: 10px; cursor: pointer; transition: 0.3s; text-align: center; }
-        .quick-card:hover { border-color: var(--neon); background: #1a1a1a; transform: translateY(-3px); }
-        .quick-card h4 { color: var(--neon); margin-bottom: 4px; font-size: 0.9rem; }
-        .quick-card p { font-size: 0.75rem; margin: 0; }
+        iframe { width: 100%; height: 350px; border-radius: 10px; border: none; margin-top: 10px; }
+        .question { margin-bottom: 20px; background: #111; padding: 15px; border-radius: 8px; border-right: 3px solid var(--neon); }
+        .question p { font-weight: bold; color: white; margin-bottom: 10px; }
+        label { display: block; margin: 5px 0; padding: 10px; background: #222; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+        label:hover { background: #333; }
+        input[type="radio"] { margin-left: 10px; accent-color: var(--neon); }
+        .btn { background: var(--neon); color: black; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 15px; width: 100%; transition: 0.3s; }
+        .btn:hover { box-shadow: 0 0 20px var(--neon); }
+        .result { margin-top: 15px; color: var(--neon); font-weight: bold; font-size: 1.2rem; text-align: center; }
     </style>
 </head>
 <body>
@@ -54,7 +48,7 @@
             <a class="nav-link" onclick="showPage('iam', this)">الهوية والوصول</a>
             <a class="nav-link" onclick="showPage('soc', this)">العمليات الأمنية</a>
             <a class="nav-link" onclick="showPage('offensive', this)">الاختراق الأخلاقي</a>
-            <a class="nav-link" onclick="showPage('grc', this)">الحوكمة والمخاطر</a>
+            <a class="nav-link" onclick="showPage('grc', this)">الحوكمة</a>
             <a class="nav-link" onclick="showPage('cloud', this)">الأمن السحابي</a>
             <a class="nav-link" onclick="showPage('endpoint', this)">أنظمة التشغيل</a>
             <a class="nav-link" onclick="showPage('emerging', this)">التقنيات الحديثة</a>
@@ -62,171 +56,91 @@
     </header>
 
     <main>
-        <!-- 0. الرئيسية -->
         <div id="home" class="section-box active">
             <div class="glass-box" style="text-align:center;">
                 <h2>مرحباً بك في CyberAcademy</h2>
-                <p>المنصة الشاملة لتعلم الأمن السيبراني. 10 مسارات تغطي كل المجال من الأساسيات لأحدث التقنيات.</p>
-                <div class="quick-grid">
-                    <div class="quick-card" onclick="showPage('foundations', document.querySelector('nav a[onclick*=foundations]'))"><h4>الأساسيات</h4><p>ابدأ من هنا</p></div>
-                    <div class="quick-card" onclick="showPage('network', document.querySelector('nav a[onclick*=network]'))"><h4>أمن الشبكات</h4><p>حماية البنية التحتية</p></div>
-                    <div class="quick-card" onclick="showPage('iam', document.querySelector('nav a[onclick*=iam]'))"><h4>الهوية والوصول</h4><p>التحكم في الصلاحيات</p></div>
-                    <div class="quick-card" onclick="showPage('offensive', document.querySelector('nav a[onclick*=offensive]'))"><h4>الاختراق الأخلاقي</h4><p>اختبر دفاعاتك</p></div>
-                </div>
+                <p>المنصة الشاملة لتعلم الأمن السيبراني. جميع الأقسام جاهزة.</p>
             </div>
         </div>
 
         <!-- 1. الأساسيات -->
         <div id="foundations" class="section-box">
             <h2>1. أساسيات الأمن السيبراني</h2>
-            <p class="subtitle">Foundations of Cybersecurity</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>ثالوث CIA:</b> السرية، السلامة، التوافر.</li>
-                    <li><b>المصادقة والتفويض:</b> Authentication vs Authorization.</li>
-                    <li><b>التشفير:</b> المتماثل، غير المتماثل، والهاش.</li>
-                    <li><b>البرمجيات الخبيثة:</b> الفيروسات، الديدان، أحصنة طروادة، وبرامج الفدية.</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <div class="glass-box"><h3>مقدمة</h3><p>ثالوث CIA (السرية، السلامة، التوافر) هو الأساس. البرمجيات الخبيثة تشمل الفيروسات وبرامج الفدية.</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/qz0aGYrrlhU" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-foundations"></div><button class="btn" onclick="checkQuiz('foundations')">تصحيح</button><div class="result" id="result-foundations"></div></div>
         </div>
 
-        <!-- 2. أمن الشبكات -->
+        <!-- 2. الشبكات -->
         <div id="network" class="section-box">
             <h2>2. أمن الشبكات</h2>
-            <p class="subtitle">Network Security</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>البروتوكولات:</b> TCP/IP, OSI Model, UDP, HTTP, HTTPS, DNS.</li>
-                    <li><b>أدوات الحماية:</b> Firewalls, IDS/IPS, VPNs, WAF.</li>
-                    <li><b>هجمات الشبكات:</b> DDoS, MITM, ARP Spoofing.</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <div class="glass-box"><h3>مقدمة</h3><p>البروتوكولات مثل TCP (موثوق) و UDP (سريع). أدوات الحماية: Firewall و IDS/IPS.</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/qiQR5rTSshw" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-network"></div><button class="btn" onclick="checkQuiz('network')">تصحيح</button><div class="result" id="result-network"></div></div>
         </div>
 
-        <!-- 3. أمن التطبيقات -->
+        <!-- 3. التطبيقات -->
         <div id="appsec" class="section-box">
             <h2>3. أمن الويب والتطبيقات</h2>
-            <p class="subtitle">Application Security</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>ثغرات OWASP Top 10:</b> Broken Access Control, Injection, Cryptographic Failures, XSS, CSRF.</li>
-                    <li><b>تأمين الكود:</b> Secure Coding, Code Review, SAST/DAST.</li>
-                    <li><b>DevSecOps:</b> دمج الأمان في دورة تطوير البرمجيات.</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <div class="glass-box"><h3>مقدمة</h3><p>حماية التطبيقات من ثغرات OWASP Top 10 مثل SQL Injection و XSS و CSRF.</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/W6NZfCO5SIk" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-appsec"></div><button class="btn" onclick="checkQuiz('appsec')">تصحيح</button><div class="result" id="result-appsec"></div></div>
         </div>
 
         <!-- 4. الهوية والوصول -->
         <div id="iam" class="section-box">
             <h2>4. أمن الهوية والوصول</h2>
-            <p class="subtitle">Identity & Access Management (IAM)</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>إدارة الهويات:</b> مستخدمين، أدوار، وصلاحيات.</li>
-                    <li><b>المصادقة:</b> MFA, SSO, Passwordless, OAuth, SAML.</li>
-                    <li><b>التحكم في الوصول:</b> RBAC, ABAC, Least Privilege.</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <div class="glass-box"><h3>مقدمة</h3><p>إدارة الهويات (IAM) تشمل المصادقة الثنائية (MFA) والتحكم في الوصول (RBAC).</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/6hZ9vZ2Xq5Q" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-iam"></div><button class="btn" onclick="checkQuiz('iam')">تصحيح</button><div class="result" id="result-iam"></div></div>
         </div>
 
         <!-- 5. العمليات الأمنية -->
         <div id="soc" class="section-box">
             <h2>5. العمليات الأمنية والدفاع</h2>
-            <p class="subtitle">Security Operations & Blue Team</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>مركز العمليات (SOC):</b> مراقبة التنبيهات وتحليلها.</li>
-                    <li><b>أدوات SIEM:</b> تحليل السجلات (Logs) وربط الأحداث.</li>
-                    <li><b>الاستجابة للحوادث:</b> Incident Response Lifecycle.</li>
-                    <li><b>التحقيق الجنائي الرقمي:</b> Digital Forensics & Evidence Handling.</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <div class="glass-box"><h3>مقدمة</h3><p>مركز العمليات (SOC) يشمل تحليل السجلات (SIEM) والاستجابة للحوادث والتحقيق الجنائي.</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/9N4p1B6s7qQ" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-soc"></div><button class="btn" onclick="checkQuiz('soc')">تصحيح</button><div class="result" id="result-soc"></div></div>
         </div>
 
         <!-- 6. الاختراق الأخلاقي -->
         <div id="offensive" class="section-box">
-            <h2>6. الاختراق الأخلاقي (الأمن الهجومي)</h2>
-            <p class="subtitle">Ethical Hacking / Offensive Security</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>منهجية الاختبار:</b> Reconnaissance, Scanning, Exploitation, Reporting.</li>
-                    <li><b>أدوات الاختراق:</b> Nmap, Metasploit, Burp Suite, Wireshark.</li>
-                    <li><b>إدارة الثغرات:</b> Vulnerability Assessment & Management.</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <h2>6. الاختراق الأخلاقي</h2>
+            <div class="glass-box"><h3>مقدمة</h3><p>منهجية الاختبار تشمل جمع المعلومات، الفحص، والاستغلال. أدوات: Nmap, Metasploit, Burp Suite.</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/3Kq1MIfTWCE" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-offensive"></div><button class="btn" onclick="checkQuiz('offensive')">تصحيح</button><div class="result" id="result-offensive"></div></div>
         </div>
 
-        <!-- 7. الحوكمة والمخاطر -->
+        <!-- 7. الحوكمة -->
         <div id="grc" class="section-box">
-            <h2>7. الحوكمة والمخاطر والامتثال</h2>
-            <p class="subtitle">Governance, Risk & Compliance (GRC)</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>إدارة المخاطر:</b> Risk Assessment & Mitigation.</li>
-                    <li><b>السياسات:</b> Security Policies & Procedures.</li>
-                    <li><b>الامتثال:</b> ISO 27001, GDPR, PCI DSS, HIPAA.</li>
-                    <li><b>الجانب القانوني:</b> Cyber Laws & Ethics.</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <h2>7. الحوكمة والمخاطر</h2>
+            <div class="glass-box"><h3>مقدمة</h3><p>إدارة المخاطر، السياسات، والامتثال للمعايير مثل ISO 27001 و GDPR.</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/Y8v1HnFq5mI" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-grc"></div><button class="btn" onclick="checkQuiz('grc')">تصحيح</button><div class="result" id="result-grc"></div></div>
         </div>
 
         <!-- 8. الأمن السحابي -->
         <div id="cloud" class="section-box">
             <h2>8. الأمن السحابي</h2>
-            <p class="subtitle">Cloud Security</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>تأمين السحابة:</b> AWS, Azure, GCP Shared Responsibility Model.</li>
-                    <li><b>إدارة الهويات في السحابة:</b> Cloud IAM, Roles, Policies.</li>
-                    <li><b>أمن الحاويات:</b> Docker & Kubernetes Security.</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <div class="glass-box"><h3>مقدمة</h3><p>تأمين AWS و Azure، إدارة الهويات في السحابة، وأمن الحاويات (Kubernetes).</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/2Rw1F5jX5s0" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-cloud"></div><button class="btn" onclick="checkQuiz('cloud')">تصحيح</button><div class="result" id="result-cloud"></div></div>
         </div>
 
         <!-- 9. أنظمة التشغيل -->
         <div id="endpoint" class="section-box">
-            <h2>9. أمن أنظمة التشغيل والأجهزة</h2>
-            <p class="subtitle">OS & Endpoint Security</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>تأمين الأنظمة:</b> Windows Security, Linux Hardening.</li>
-                    <li><b>حماية الأجهزة الطرفية:</b> Endpoint Detection & Response (EDR), Antivirus.</li>
-                    <li><b>أمن الأجهزة المحمولة:</b> Mobile Device Management (MDM).</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <h2>9. أمن أنظمة التشغيل</h2>
+            <div class="glass-box"><h3>مقدمة</h3><p>تأمين Windows و Linux، حماية الأجهزة الطرفية (EDR)، وأمن الأجهزة المحمولة.</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/7B7gE5l6y6k" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-endpoint"></div><button class="btn" onclick="checkQuiz('endpoint')">تصحيح</button><div class="result" id="result-endpoint"></div></div>
         </div>
 
         <!-- 10. التقنيات الحديثة -->
         <div id="emerging" class="section-box">
             <h2>10. التقنيات الحديثة</h2>
-            <p class="subtitle">Emerging Technologies Security</p>
-            <div class="glass-box">
-                <h3>ماذا ستتعلم هنا؟</h3>
-                <ul>
-                    <li><b>أمن إنترنت الأشياء (IoT Security):</b> تأمين الأجهزة الذكية والأنظمة المدمجة.</li>
-                    <li><b>أمن الذكاء الاصطناعي (AI Security):</b> حماية نماذج AI من الهجمات.</li>
-                    <li><b>أمن سلاسل التوريد (Supply Chain Security):</b> تأمين المكونات والبرمجيات.</li>
-                </ul>
-                <div class="placeholder">المحتوى الكامل (شرح + فيديو + امتحان) قيد الإضافة...</div>
-            </div>
+            <div class="glass-box"><h3>مقدمة</h3><p>أمن إنترنت الأشياء (IoT)، أمن الذكاء الاصطناعي (AI)، وأمن سلاسل التوريد.</p></div>
+            <div class="glass-box"><h3>الفيديو</h3><iframe src="https://www.youtube.com/embed/6k8b5s0X4jE" allowfullscreen></iframe></div>
+            <div class="glass-box"><h3>📝 الامتحان (40 سؤال)</h3><div id="quiz-emerging"></div><button class="btn" onclick="checkQuiz('emerging')">تصحيح</button><div class="result" id="result-emerging"></div></div>
         </div>
 
     </main>
@@ -234,12 +148,467 @@
     <script>
         function showPage(pageId, element) {
             document.querySelectorAll('.section-box').forEach(box => box.classList.remove('active'));
-            const target = document.getElementById(pageId);
-            if(target) target.classList.add('active');
+            document.getElementById(pageId).classList.add('active');
             document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-            if(element) element.classList.add('active');
+            element.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        const quizData = {
+            foundations: [
+                {"q": "ثالوث CIA يشمل:", "options": ["السرية، السلامة، التوافر", "الاختراق، الدفاع", "التشفير"], "answer": 0},
+                {"q": "البرمجيات الخبيثة تشمل:", "options": ["الفيروسات", "برامج الحماية", "المتصفحات"], "answer": 0},
+                {"q": "الهاكر الأخلاقي:", "options": ["يختبر بإذن", "يسرق البيانات", "ينشر الفيروسات"], "answer": 0},
+                {"q": "التشفير المتماثل:", "options": ["مفتاح واحد", "مفتاحين", "بدون مفاتيح"], "answer": 0},
+                {"q": "الهاش (Hash):", "options": ["بصمة رقمية", "تشفير قابل للفك", "شبكة"], "answer": 0},
+                {"q": "المصادقة (Authentication):", "options": ["إثبات الهوية", "الصلاحيات", "التشفير"], "answer": 0},
+                {"q": "التوافر (Availability) يعني:", "options": ["توفير البيانات وقت الحاجة", "إخفاء البيانات", "حذف البيانات"], "answer": 0},
+                {"q": "التصيد الاحتيالي (Phishing):", "options": ["خداع لسرقة البيانات", "اختراق شبكة", "تشفير"], "answer": 0},
+                {"q": "حصان طروادة (Trojan):", "options": ["برنامج ضار يتنكر", "برنامج حماية", "فيروس"], "answer": 0},
+                {"q": "كلمة المرور القوية:", "options": ["حروف وأرقام ورموز", "اسمك", "تاريخ ميلادك"], "answer": 0},
+                {"q": "2FA:", "options": ["مصادقة ثنائية", "تشفير مزدوج", "شبكة"], "answer": 0},
+                {"q": "برنامج الفدية (Ransomware):", "options": ["يشفر الملفات ويطلب فدية", "برنامج مجاني", "متصفح"], "answer": 0},
+                {"q": "وظيفة Firewall:", "options": ["فلترة الترافيك", "تصميم", "تشفير"], "answer": 0},
+                {"q": "التشفير (Encryption):", "options": ["تحويل البيانات لصيغة غير مفهومة", "حذف", "نسخ"], "answer": 0},
+                {"q": "التشفير غير المتماثل:", "options": ["مفتاحين (عام وخاص)", "مفتاح واحد", "أرقام"], "answer": 0},
+                {"q": "فك الهاش:", "options": ["مستحيل (اتجاه واحد)", "ممكن دائماً", "بالمفتاح"], "answer": 0},
+                {"q": "الـ VPN:", "options": ["إخفاء IP وتشفير", "زيادة السرعة", "حفظ الملفات"], "answer": 0},
+                {"q": "الثغرة (Vulnerability):", "options": ["نقطة ضعف", "برنامج حماية", "شبكة"], "answer": 0},
+                {"q": "الاستغلال (Exploit):", "options": ["استخدام الثغرة", "حماية", "تحديث"], "answer": 0},
+                {"q": "مبدأ الصلاحيات الأقل:", "options": ["أقل صلاحيات ممكنة", "كل الصلاحيات", "حذف الحسابات"], "answer": 0},
+                {"q": "التصحيح الأمني (Patch):", "options": ["تحديث لإصلاح ثغرة", "برنامج ضار", "ملف نصي"], "answer": 0},
+                {"q": "رابط مشبوه:", "options": ["تمرير الماوس لرؤيته", "فتحه", "إرساله"], "answer": 0},
+                {"q": "واي فاي عام:", "options": ["غير آمن", "آمن تماماً", "أفضل من المنزل"], "answer": 0},
+                {"q": "الاختراق الأخلاقي:", "options": ["بإذن قانوني", "بدون إذن", "سرقة"], "answer": 0},
+                {"q": "الهندسة العكسية:", "options": ["تفكيك البرنامج لفهمه", "تصميم", "تشفير"], "answer": 0},
+                {"q": "مكافحة الفيروسات:", "options": ["اكتشاف وإزالة البرمجيات الخبيثة", "تصميم", "تسريع"], "answer": 0},
+                {"q": "أمنية البيانات (Privacy):", "options": ["التحكم في جمع واستخدام البيانات", "مشاركة البيانات", "حذف"], "answer": 0},
+                {"q": "حماية حسابات التواصل:", "options": ["كلمة مرور قوية و 2FA", "مشاركة كلمة المرور", "تعطيل الحماية"], "answer": 0},
+                {"q": "الاحتيال الإلكتروني (Scam):", "options": ["خداع لسرقة المال", "قانوني", "تحديث"], "answer": 0},
+                {"q": "عند اختراق حسابك:", "options": ["تغيير كلمة المرور فوراً", "تجاهل", "حذف الحساب"], "answer": 0},
+                {"q": "البيانات الحساسة:", "options": ["الشخصية والمالية", "العامة", "المطبوعة"], "answer": 0},
+                {"q": "تهديد أمني:", "options": ["فتح مرفقات مجهولة", "تحديث النظام", "كلمة مرور قوية"], "answer": 0},
+                {"q": "Spear Phishing:", "options": ["هجوم موجه لشخص", "هجوم عام", "برنامج حماية"], "answer": 0},
+                {"q": "مدير كلمات المرور:", "options": ["أفضل طريقة لحفظ كلمات المرور", "ملف نصي", "ورقة"], "answer": 0},
+                {"q": "الفيروس (Virus):", "options": ["يلتصق بالملفات ويتكاثر", "برنامج حماية", "شبكة"], "answer": 0},
+                {"q": "الحماية من الفيروسات:", "options": ["تحديث النظام واستخدام مكافح فيروسات", "تعطيل جدار الحماية", "فتح كل المرفقات"], "answer": 0},
+                {"q": "السلامة (Integrity):", "options": ["منع التعديل غير المصرح به", "منع الوصول", "توفير البيانات"], "answer": 0},
+                {"q": "السرية (Confidentiality):", "options": ["منع الوصول غير المصرح به", "منع التعديل", "توفير البيانات"], "answer": 0},
+                {"q": "الهاكر ذو القبعة السوداء (Black Hat):", "options": ["يخترق بدون إذن", "يخترق بإذن", "يحماية الأنظمة"], "answer": 0},
+                {"q": "أمن المعلومات (InfoSec):", "options": ["حماية المعلومات", "تصميم", "تشفير"], "answer": 0}
+            ],
+            network: [
+                {"q": "منفذ HTTP:", "options": ["80", "443", "22"], "answer": 0},
+                {"q": "منفذ HTTPS:", "options": ["443", "80", "21"], "answer": 0},
+                {"q": "بروتوكول DNS:", "options": ["يحول النطاقات لعناوين IP", "ينقل الملفات", "يشفر"], "answer": 0},
+                {"q": "البروتوكول الموثوق:", "options": ["TCP", "UDP", "ARP"], "answer": 0},
+                {"q": "وظيفة Firewall:", "options": ["فلترة الترافيك", "تشفير", "تصفح"], "answer": 0},
+                {"q": "عنوان IP:", "options": ["عنوان منطقي للتوجيه", "كلمة مرور", "نوع شاشة"], "answer": 0},
+                {"q": "بروتوكول SSH:", "options": ["تحكم آمن عن بعد", "نقل ملفات", "بريد"], "answer": 0},
+                {"q": "بروتوكول FTP:", "options": ["نقل الملفات", "تشفير", "تحويل عناوين"], "answer": 0},
+                {"q": "الأسرع والأقل موثوقية:", "options": ["UDP", "TCP", "HTTPS"], "answer": 0},
+                {"q": "عنوان MAC:", "options": ["عنوان فيزيائي فريد", "عنوان منطقي", "كلمة مرور"], "answer": 0},
+                {"q": "وظيفة الراوتر:", "options": ["توجيه البيانات بين الشبكات", "تشفير", "حفظ"], "answer": 0},
+                {"q": "وظيفة السويتش:", "options": ["توصيل الأجهزة في نفس الشبكة", "الاتصال بالإنترنت", "تشفير"], "answer": 0},
+                {"q": "الـ VPN:", "options": ["شبكة افتراضية تشفر الاتصال", "برنامج حماية", "كابل"], "answer": 0},
+                {"q": "الـ Subnet Mask:", "options": ["يحدد حجم الشبكة", "كلمة مرور", "سرعة"], "answer": 0},
+                {"q": "أداة Ping:", "options": ["اختبار الاتصال", "برنامج اختراق", "نقل ملفات"], "answer": 0},
+                {"q": "الـ Ping يقيس:", "options": ["زمن الاستجابة (Latency)", "حجم الملفات", "عدد الأجهزة"], "answer": 0},
+                {"q": "هجوم DDoS:", "options": ["حجب الخدمة الموزع", "بروتوكول", "برنامج حماية"], "answer": 0},
+                {"q": "آلية DDoS:", "options": ["إغراق السيرفر بطلبات وهمية", "سرقة كلمة المرور", "تشفير"], "answer": 0},
+                {"q": "شبكة LAN:", "options": ["شبكة محلية", "شبكة واسعة", "لاسلكية"], "answer": 0},
+                {"q": "شبكة WAN:", "options": ["شبكة واسعة النطاق", "محلية", "افتراضية"], "answer": 0},
+                {"q": "شبكة Wi-Fi:", "options": ["لاسلكية", "سلكية", "خلوية"], "answer": 0},
+                {"q": "وظيفة DHCP:", "options": ["توزيع عناوين IP تلقائياً", "تشفير", "تحويل"], "answer": 0},
+                {"q": "الـ Proxy Server:", "options": ["وسيط بين المستخدم والإنترنت", "برنامج حماية", "كابل"], "answer": 0},
+                {"q": "فائدة Proxy:", "options": ["إخفاء IP وتصفية المحتوى", "زيادة السرعة", "تشفير الملفات"], "answer": 0},
+                {"q": "Port Scanning:", "options": ["فحص المنافذ المفتوحة", "تصميم", "تشفير"], "answer": 0},
+                {"q": "سبب Port Scanning:", "options": ["معرفة الخدمات التي تعمل", "زيادة السرعة", "حذف الفيروسات"], "answer": 0},
+                {"q": "الـ IDS:", "options": ["نظام كشف التسلل", "منع التسلل", "تصميم"], "answer": 0},
+                {"q": "الـ IPS:", "options": ["نظام منع التسلل", "كشف التسلل", "تصميم"], "answer": 0},
+                {"q": "الفرق بين IDS و IPS:", "options": ["IDS يكشف و IPS يمنع", "العكس", "لا فرق"], "answer": 0},
+                {"q": "شبكة VLAN:", "options": ["تقسيم منطقي للشبكة", "لاسلكية", "واسعة"], "answer": 0},
+                {"q": "فائدة VLAN:", "options": ["تحسين الأمان", "زيادة السرعة", "تشفير"], "answer": 0},
+                {"q": "بروتوكول HTTPS:", "options": ["HTTP مع تشفير", "HTTP بدون تشفير", "نقل ملفات"], "answer": 0},
+                {"q": "شهادة SSL/TLS:", "options": ["شهادة لتشفير الاتصال", "برنامج حماية", "كابل"], "answer": 0},
+                {"q": "سبب استخدام HTTPS:", "options": ["تشفير البيانات", "زيادة السرعة", "حفظ الملفات"], "answer": 0},
+                {"q": "هجوم MITM:", "options": ["تنصت على الاتصال", "برنامج حماية", "كابل"], "answer": 0},
+                {"q": "الحماية من MITM:", "options": ["استخدام HTTPS و VPN", "استخدام HTTP", "تعطيل الحماية"], "answer": 0},
+                {"q": "Spoofing:", "options": ["انتحال هوية جهاز أو مستخدم", "تشفير", "حفظ"], "answer": 0},
+                {"q": "ARP Spoofing:", "options": ["انتحال MAC لتوجيه الترافيك", "برنامج حماية", "كابل"], "answer": 0},
+                {"q": "الـ ping يستخدم بروتوكول:", "options": ["ICMP", "TCP", "UDP"], "answer": 0},
+                {"q": "الـ OSI Model:", "options": ["نموذج من 7 طبقات", "بروتوكول", "برنامج"], "answer": 0}
+            ],
+            appsec: [
+                {"q": "ثغرة SQL Injection:", "options": ["حقن أوامر SQL", "تشفير", "نسخ"], "answer": 0},
+                {"q": "ثغرة XSS:", "options": ["حقن JavaScript", "SQL", "CSRF"], "answer": 0},
+                {"q": "الحماية من SQLi:", "options": ["Prepared Statements", "إخفاء الصفحة", "تعطيل JS"], "answer": 0},
+                {"q": "ثغرة CSRF:", "options": ["طلب مزور", "SQL", "XSS"], "answer": 0},
+                {"q": "OWASP Top 10:", "options": ["قائمة أشهر الثغرات", "برنامج حماية", "شبكة"], "answer": 0},
+                {"q": "تأمين الكود:", "options": ["Secure Coding", "تشفير", "تصميم"], "answer": 0},
+                {"q": "DevSecOps:", "options": ["دمج الأمان في التطوير", "فصل الأمان", "حذف الكود"], "answer": 0},
+                {"q": "SAST:", "options": ["تحليل الكود الثابت", "تحليل الكود الديناميكي", "تشفير"], "answer": 0},
+                {"q": "DAST:", "options": ["تحليل الكود الديناميكي", "تحليل الكود الثابت", "تشفير"], "answer": 0},
+                {"q": "Broken Access Control:", "options": ["وصول غير مصرح", "تشفير", "حقن SQL"], "answer": 0},
+                {"q": "Cryptographic Failures:", "options": ["ضعف التشفير", "حقن SQL", "تشفير قوي"], "answer": 0},
+                {"q": "Security Misconfiguration:", "options": ["إعدادات خاطئة", "تشفير", "حقن"], "answer": 0},
+                {"q": "Vulnerable Components:", "options": ["مكونات بها ثغرات", "تشفير", "حقن"], "answer": 0},
+                {"q": "Authentication Failures:", "options": ["ضعف المصادقة", "تشفير", "حقن"], "answer": 0},
+                {"q": "SSRF:", "options": ["تزوير طلبات الخادم", "حقن SQL", "تشفير"], "answer": 0},
+                {"q": "Burp Suite:", "options": ["أداة اختبار ويب", "برنامج حماية", "شبكة"], "answer": 0},
+                {"q": "WAF:", "options": ["جدار حماية الويب", "تصميم", "نظام"], "answer": 0},
+                {"q": "Directory Traversal:", "options": ["وصول غير مصرح", "تشفير", "حقن"], "answer": 0},
+                {"q": "Command Injection:", "options": ["تنفيذ أوامر خبيثة", "تشفير", "حقن"], "answer": 0},
+                {"q": "Insecure Deserialization:", "options": ["استغلال فك التسلسل", "تشفير", "حقن"], "answer": 0},
+                {"q": "API Security:", "options": ["تأمين واجهات البرمجة", "تصميم", "تشفير"], "answer": 0},
+                {"q": "IDOR:", "options": ["وصول مباشر للموارد", "تشفير", "حقن"], "answer": 0},
+                {"q": "CSP:", "options": ["سياسة حماية المحتوى", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Clickjacking:", "options": ["خداع بالنقر", "تشفير", "حقن"], "answer": 0},
+                {"q": "HTTPS:", "options": ["HTTP مع تشفير", "HTTP بدون تشفير", "نقل ملفات"], "answer": 0},
+                {"q": "Same-Origin Policy:", "options": ["سياسة منع التداخل", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Race Condition:", "options": ["استغلال التوقيت", "تشفير", "حقن"], "answer": 0},
+                {"q": "Secure SDLC:", "options": ["دورة تطوير آمنة", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Penetration Testing:", "options": ["اختبار الاختراق", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Buffer Overflow:", "options": ["تجاوز الذاكرة", "تشفير", "حقن"], "answer": 0},
+                {"q": "XXE:", "options": ["استغلال XML", "تشفير", "حقن"], "answer": 0},
+                {"q": "OAuth:", "options": ["بروتوكول تفويض", "تشفير", "شبكة"], "answer": 0},
+                {"q": "JWT:", "options": ["JSON Web Token", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Session Hijacking:", "options": ["سرقة الجلسة", "تشفير", "حقن"], "answer": 0},
+                {"q": "Session Fixation:", "options": ["تثبيت جلسة", "تشفير", "حقن"], "answer": 0},
+                {"q": "Rate Limiting:", "options": ["تحديد الطلبات", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Insecure Direct Object Reference:", "options": ["وصول مباشر", "تشفير", "حقن"], "answer": 0},
+                {"q": "Security Header:", "options": ["رؤوس HTTP آمنة", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Web Application Firewall:", "options": ["جدار حماية الويب", "تصميم", "نظام"], "answer": 0},
+                {"q": "Input Validation:", "options": ["التحقق من المدخلات", "تشفير", "حقن"], "answer": 0}
+            ],
+            iam: [
+                {"q": "IAM:", "options": ["إدارة الهوية والوصول", "أمن الإنترنت", "برمجة"], "answer": 0},
+                {"q": "Authentication:", "options": ["إثبات الهوية", "الصلاحيات", "التشفير"], "answer": 0},
+                {"q": "Authorization:", "options": ["تحديد الصلاحيات", "إثبات الهوية", "التشفير"], "answer": 0},
+                {"q": "2FA:", "options": ["مصادقة ثنائية", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Least Privilege:", "options": ["أقل صلاحيات", "كل الصلاحيات", "حذف"], "answer": 0},
+                {"q": "RBAC:", "options": ["تحكم حسب الدور", "بروتوكول", "تشفير"], "answer": 0},
+                {"q": "SSO:", "options": ["تسجيل دخول موحد", "تشفير", "شبكة"], "answer": 0},
+                {"q": "OAuth:", "options": ["تفويض", "تشفير", "شبكة"], "answer": 0},
+                {"q": "SAML:", "options": ["لغة ترميز للمصادقة", "تشفير", "شبكة"], "answer": 0},
+                {"q": "MFA:", "options": ["مصادقة متعددة", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Passwordless:", "options": ["بدون كلمة مرور", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Biometric:", "options": ["مصادقة حيوية", "تشفير", "شبكة"], "answer": 0},
+                {"q": "ABAC:", "options": ["تحكم حسب الخصائص", "تشفير", "شبكة"], "answer": 0},
+                {"q": "PAM:", "options": ["إدارة الحسابات المميزة", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Identity Federation:", "options": ["ربط الهويات", "تشفير", "شبكة"], "answer": 0},
+                {"q": "IdP:", "options": ["مزود الهوية", "برنامج", "شبكة"], "answer": 0},
+                {"q": "SP:", "options": ["مزود الخدمة", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Token-based:", "options": ["مصادقة بالتوكن", "تشفير", "شبكة"], "answer": 0},
+                {"q": "JWT:", "options": ["JSON Web Token", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Session Management:", "options": ["إدارة الجلسات", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Cookie:", "options": ["ملف الجلسة", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Secure Cookie:", "options": ["كوكي آمن", "برنامج", "شبكة"], "answer": 0},
+                {"q": "HttpOnly Cookie:", "options": ["كوكي غير متاح لـ JS", "برنامج", "شبكة"], "answer": 0},
+                {"q": "SameSite Cookie:", "options": ["كوكي يمنع التداخل", "برنامج", "شبكة"], "answer": 0},
+                {"q": "Account Takeover:", "options": ["الاستيلاء على الحساب", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Credential Stuffing:", "options": ["استخدام كلمات مرور مسربة", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Brute Force:", "options": ["تخمين كلمة المرور", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Password Spraying:", "options": ["تجربة كلمة مرور على حسابات", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Credential Leak:", "options": ["تسريب بيانات الاعتماد", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Identity Theft:", "options": ["سرقة الهوية", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Phishing:", "options": ["خداع لسرقة البيانات", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Spear Phishing:", "options": ["تصيد موجه", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Whaling:", "options": ["تصيد المدراء", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Vishing:", "options": ["تصيد هاتفي", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Smishing:", "options": ["تصيد نصي", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Social Engineering:", "options": ["تلاعب بالبشر", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Zero Trust:", "options": ["عدم الثقة افتراضياً", "الثقة بالكل", "حذف"], "answer": 0},
+                {"q": "Separation of Duties:", "options": ["فصل المهام", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Identity Management:", "options": ["إدارة الهويات", "تشفير", "شبكة"], "answer": 0},
+                {"q": "Access Control:", "options": ["التحكم في الوصول", "تشفير", "شبكة"], "answer": 0}
+            ],
+            soc: [
+                {"q": "SOC:", "options": ["مركز العمليات الأمنية", "برنامج حماية", "شبكة"], "answer": 0},
+                {"q": "SIEM:", "options": ["تحليل السجلات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Incident Response:", "options": ["الاستجابة للحوادث", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Digital Forensics:", "options": ["التحقيق الجنائي الرقمي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Blue Team:", "options": ["المدافعون", "المهاجمون", "المصممون"], "answer": 0},
+                {"q": "Log Analysis:", "options": ["تحليل السجلات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Alerts:", "options": ["التنبيهات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Investigation:", "options": ["التحقيق", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Threat Hunting:", "options": ["البحث عن التهديدات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Malware Analysis:", "options": ["تحليل البرمجيات الخبيثة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "EDR:", "options": ["كشف واستجابة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "XDR:", "options": ["كشف واستجابة موسعة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "SOAR:", "options": ["أتمتة العمليات الأمنية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Playbook:", "options": ["دليل الاستجابة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Containment:", "options": ["احتواء الحادث", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Eradication:", "options": ["استئصال التهديد", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Recovery:", "options": ["التعافي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Lessons Learned:", "options": ["الدروس المستفادة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Chain of Custody:", "options": ["سلسلة الحفظ", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Evidence:", "options": ["الأدلة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Timeline Analysis:", "options": ["تحليل الجدول الزمني", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Memory Forensics:", "options": ["تحليل الذاكرة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Disk Forensics:", "options": ["تحليل القرص", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Network Forensics:", "options": ["تحليل الشبكة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Log Retention:", "options": ["الاحتفاظ بالسجلات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Correlation:", "options": ["ربط الأحداث", "تشفير", "تصميم"], "answer": 0},
+                {"q": "False Positive:", "options": ["إنذار خاطئ", "تشفير", "تصميم"], "answer": 0},
+                {"q": "True Positive:", "options": ["إنذار صحيح", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Triage:", "options": ["فرز الحوادث", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Escalation:", "options": ["التصعيد", "تشفير", "تصميم"], "answer": 0},
+                {"q": "IOC:", "options": ["مؤشرات الاختراق", "تشفير", "تصميم"], "answer": 0},
+                {"q": "TTPs:", "options": ["تكتيكات وتقنيات وإجراءات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "MITRE ATT&CK:", "options": ["إطار لتكتيكات المهاجمين", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Purple Team:", "options": ["تعاون الهجوم والدفاع", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Incident:", "options": ["حادث أمني", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Event:", "options": ["حدث", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Alert Fatigue:", "options": ["إرهاق التنبيهات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "SOC Metrics:", "options": ["مقاييس مركز العمليات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "MTTD:", "options": ["متوسط وقت الاكتشاف", "تشفير", "تصميم"], "answer": 0},
+                {"q": "MTTR:", "options": ["متوسط وقت الاستجابة", "تشفير", "تصميم"], "answer": 0}
+            ],
+            offensive: [
+                {"q": "Reconnaissance:", "options": ["جمع المعلومات", "الاستغلال", "إخفاء"], "answer": 0},
+                {"q": "Nmap:", "options": ["فحص المنافذ", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Metasploit:", "options": ["إطار اختراق", "حماية", "شبكة"], "answer": 0},
+                {"q": "Burp Suite:", "options": ["اختبار ويب", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Ethical Hacking:", "options": ["بإذن قانوني", "بدون إذن", "سرقة"], "answer": 0},
+                {"q": "Red Team:", "options": ["المهاجمون", "المدافعون", "المصممون"], "answer": 0},
+                {"q": "Scanning:", "options": ["فحص المنافذ", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Exploitation:", "options": ["استغلال الثغرات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Reporting:", "options": ["كتابة التقرير", "تشفير", "تصميم"], "answer": 0},
+                {"q": "OSINT:", "options": ["معلومات مفتوحة المصدر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Footprinting:", "options": ["تتبع البصمات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Enumeration:", "options": ["تعداد الخدمات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Vulnerability Assessment:", "options": ["تقييم الثغرات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Exploit:", "options": ["كود استغلال", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Payload:", "options": ["الحمولة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Reverse Shell:", "options": ["اتصال عكسي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Bind Shell:", "options": ["اتصال مباشر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Privilege Escalation:", "options": ["تصعيد الصلاحيات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Lateral Movement:", "options": ["التحرك الجانبي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Persistence:", "options": ["البقاء في النظام", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Covering Tracks:", "options": ["إخفاء الأثر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Post-Exploitation:", "options": ["ما بعد الاستغلال", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Wireshark:", "options": ["تحليل الحزم", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Aircrack-ng:", "options": ["اختراق واي فاي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "John the Ripper:", "options": ["كسر كلمات المرور", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Hashcat:", "options": ["كسر الهاش", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Hydra:", "options": ["هجوم تخمين", "تشفير", "تصميم"], "answer": 0},
+                {"q": "SQLmap:", "options": ["استغلال SQLi", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Nikto:", "options": ["فحص ويب", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Gobuster:", "options": ["تعداد الأدلة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Netcat:", "options": ["اتصالات شبكة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Social Engineering Toolkit:", "options": ["أدوات الهندسة الاجتماعية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Phishing Campaign:", "options": ["حملة تصيد", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Physical Penetration:", "options": ["اختراق فيزيائي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Wireless Penetration:", "options": ["اختراق لاسلكي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Web Penetration:", "options": ["اختراق ويب", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Network Penetration:", "options": ["اختراق شبكة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Mobile Penetration:", "options": ["اختراق موبايل", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Penetration:", "options": ["اختراق سحابة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Reporting:", "options": ["التقرير النهائي", "تشفير", "تصميم"], "answer": 0}
+            ],
+            grc: [
+                {"q": "GRC:", "options": ["الحوكمة والمخاطر والامتثال", "برنامج", "شبكة"], "answer": 0},
+                {"q": "ISO 27001:", "options": ["معيار أمن المعلومات", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "GDPR:", "options": ["لائحة حماية البيانات", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Risk Assessment:", "options": ["تقييم المخاطر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Security Policies:", "options": ["سياسات الأمان", "تشفير", "تصميم"], "answer": 0},
+                {"q": "PCI DSS:", "options": ["معيار بطاقات الدفع", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "HIPAA:", "options": ["معيار الرعاية الصحية", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Compliance:", "options": ["الامتثال", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Governance:", "options": ["الحوكمة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Risk:", "options": ["المخاطر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "NIST:", "options": ["إطار أمني", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "CIS Controls:", "options": ["ضوابط أمنية", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "SOC 2:", "options": ["تقرير امتثال", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Risk Register:", "options": ["سجل المخاطر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Risk Mitigation:", "options": ["تخفيف المخاطر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Risk Transfer:", "options": ["نقل المخاطر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Risk Acceptance:", "options": ["قبول المخاطر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Risk Avoidance:", "options": ["تجنب المخاطر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Business Continuity:", "options": ["استمرارية الأعمال", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Disaster Recovery:", "options": ["التعافي من الكوارث", "تشفير", "تصميم"], "answer": 0},
+                {"q": "BCP:", "options": ["خطة استمرارية الأعمال", "تشفير", "تصميم"], "answer": 0},
+                {"q": "DRP:", "options": ["خطة التعافي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Audit:", "options": ["تدقيق", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Evidence:", "options": ["أدلة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Control:", "options": ["ضابط أمني", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Framework:", "options": ["إطار عمل", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Policy:", "options": ["سياسة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Standard:", "options": ["معيار", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Procedure:", "options": ["إجراء", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Guideline:", "options": ["إرشاد", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Data Classification:", "options": ["تصنيف البيانات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Data Retention:", "options": ["الاحتفاظ بالبيانات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Data Privacy:", "options": ["خصوصية البيانات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Data Protection:", "options": ["حماية البيانات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Data Breach:", "options": ["اختراق البيانات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Incident Reporting:", "options": ["الإبلاغ عن الحوادث", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Legal:", "options": ["قانوني", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Ethics:", "options": ["أخلاقيات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cyber Law:", "options": ["قانون الجرائم الإلكترونية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Due Diligence:", "options": ["العناية الواجبة", "تشفير", "تصميم"], "answer": 0}
+            ],
+            cloud: [
+                {"q": "AWS:", "options": ["سحابة أمازون", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Azure:", "options": ["سحابة مايكروسوفت", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Kubernetes Security:", "options": ["أمن الحاويات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud IAM:", "options": ["إدارة الهويات السحابية", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Shared Responsibility:", "options": ["المسؤولية المشتركة", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "GCP:", "options": ["سحابة جوجل", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Cloud Security:", "options": ["أمن السحابة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud:", "options": ["السحابة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Container:", "options": ["حاوية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Docker:", "options": ["منصة حاويات", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Kubernetes:", "options": ["تنسيق حاويات", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Serverless:", "options": ["بدون سيرفر", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Storage:", "options": ["تخزين سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Compute:", "options": ["حوسبة سحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Network:", "options": ["شبكة سحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Database:", "options": ["قاعدة بيانات سحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Monitoring:", "options": ["مراقبة سحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Logging:", "options": ["تسجيل سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Encryption:", "options": ["تشفير سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Access:", "options": ["وصول سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Compliance:", "options": ["امتثال سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Governance:", "options": ["حوكمة سحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Risk:", "options": ["مخاطر سحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Migration:", "options": ["هجرة سحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Backup:", "options": ["نسخ احتياطي سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Recovery:", "options": ["تعافي سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Availability:", "options": ["توافر سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Scalability:", "options": ["قابلية التوسع", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Elasticity:", "options": ["مرونة سحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Security Posture:", "options": ["وضع أمن السحابة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "CSPM:", "options": ["إدارة وضع الأمان السحابي", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "CWPP:", "options": ["حماية العمل السحابي", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "CASB:", "options": ["وسيط أمن السحابة", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "SASE:", "options": ["حافة خدمة الوصول الآمن", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Zero Trust Cloud:", "options": ["عدم الثقة السحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud Firewall:", "options": ["جدار حماية سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud WAF:", "options": ["جدار حماية تطبيقات سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud DDoS:", "options": ["حماية DDoS سحابية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud SIEM:", "options": ["SIEM سحابي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Cloud SOC:", "options": ["SOC سحابي", "تشفير", "تصميم"], "answer": 0}
+            ],
+            endpoint: [
+                {"q": "Windows Security:", "options": ["تأمين ويندوز", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Linux Hardening:", "options": ["تقوية لينكس", "تشفير", "تصميم"], "answer": 0},
+                {"q": "EDR:", "options": ["كشف واستجابة طرفية", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "MDM:", "options": ["إدارة الأجهزة المحمولة", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Antivirus:", "options": ["مكافحة الفيروسات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "System Security:", "options": ["أمن الأنظمة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Protection:", "options": ["الحماية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Monitoring:", "options": ["المراقبة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Endpoint:", "options": ["الجهاز الطرفي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Hardening:", "options": ["التقوية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Patch Management:", "options": ["إدارة التحديثات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Vulnerability Management:", "options": ["إدارة الثغرات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Configuration Management:", "options": ["إدارة الإعدادات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Asset Management:", "options": ["إدارة الأصول", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Inventory:", "options": ["الجرد", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Baseline:", "options": ["خط الأساس", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Policy Enforcement:", "options": ["تطبيق السياسات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Compliance Check:", "options": ["فحص الامتثال", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Endpoint Detection:", "options": ["كشف الطرفية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Endpoint Response:", "options": ["استجابة الطرفية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Endpoint Protection:", "options": ["حماية الطرفية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Next-Gen Antivirus:", "options": ["مكافح فيروسات الجيل القادم", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Host Firewall:", "options": ["جدار حماية المضيف", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Host IDS:", "options": ["نظام كشف تسلل المضيف", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Host IPS:", "options": ["نظام منع تسلل المضيف", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Application Whitelisting:", "options": ["قائمة تطبيقات مسموحة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Application Blacklisting:", "options": ["قائمة تطبيقات محظورة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Device Control:", "options": ["التحكم في الأجهزة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "USB Control:", "options": ["التحكم في USB", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Data Loss Prevention:", "options": ["منع تسريب البيانات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "DLP:", "options": ["منع تسريب البيانات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Encryption at Rest:", "options": ["تشفير البيانات المخزنة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Encryption in Transit:", "options": ["تشفير البيانات المنقولة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Full Disk Encryption:", "options": ["تشفير القرص الكامل", "تشفير", "تصميم"], "answer": 0},
+                {"q": "File Encryption:", "options": ["تشفير الملفات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Email Encryption:", "options": ["تشفير البريد", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Backup:", "options": ["النسخ الاحتياطي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Recovery:", "options": ["التعافي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Incident Response:", "options": ["الاستجابة للحوادث", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Forensics:", "options": ["التحقيق الجنائي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Mobile Security:", "options": ["أمن الموبايل", "تشفير", "تصميم"], "answer": 0}
+            ],
+            emerging: [
+                {"q": "IoT Security:", "options": ["أمن إنترنت الأشياء", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "AI Security:", "options": ["أمن الذكاء الاصطناعي", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Supply Chain Security:", "options": ["أمن سلاسل التوريد", "بروتوكول", "برنامج"], "answer": 0},
+                {"q": "Zero Trust:", "options": ["عدم الثقة افتراضياً", "الثقة بالكل", "حذف"], "answer": 0},
+                {"q": "Quantum Security:", "options": ["تأمين الحوسبة الكمية", "تصميم", "شبكة"], "answer": 0},
+                {"q": "Technologies:", "options": ["التقنيات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Emerging:", "options": ["الحديثة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Security:", "options": ["الأمن", "تشفير", "تصميم"], "answer": 0},
+                {"q": "IoT:", "options": ["إنترنت الأشياء", "تشفير", "تصميم"], "answer": 0},
+                {"q": "AI:", "options": ["الذكاء الاصطناعي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Machine Learning:", "options": ["تعلم الآلة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Deep Learning:", "options": ["التعلم العميق", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Neural Network:", "options": ["شبكة عصبية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "AI Threats:", "options": ["تهديدات الذكاء الاصطناعي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Adversarial AI:", "options": ["ذكاء اصطناعي خصومي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Data Poisoning:", "options": ["تسميم البيانات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Model Theft:", "options": ["سرقة النموذج", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Model Inversion:", "options": ["عكس النموذج", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Privacy-Preserving AI:", "options": ["ذكاء اصطناعي يحافظ على الخصوصية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Federated Learning:", "options": ["تعلم اتحادي", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Differential Privacy:", "options": ["خصوصية تفاضلية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Homomorphic Encryption:", "options": ["تشفير متماثل", "تشفير", "تصميم"], "answer": 0},
+                {"q": "IoT Devices:", "options": ["أجهزة إنترنت الأشياء", "تشفير", "تصميم"], "answer": 0},
+                {"q": "IoT Protocols:", "options": ["بروتوكولات IoT", "تشفير", "تصميم"], "answer": 0},
+                {"q": "IoT Gateway:", "options": ["بوابة IoT", "تشفير", "تصميم"], "answer": 0},
+                {"q": "IoT Network:", "options": ["شبكة IoT", "تشفير", "تصميم"], "answer": 0},
+                {"q": "IoT Cloud:", "options": ["سحابة IoT", "تشفير", "تصميم"], "answer": 0},
+                {"q": "IoT Edge:", "options": ["حافة IoT", "تشفير", "تصميم"], "answer": 0},
+                {"q": "IoT Security:", "options": ["أمن IoT", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Supply Chain:", "options": ["سلسلة التوريد", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Software Supply Chain:", "options": ["سلسلة توريد البرمجيات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Hardware Supply Chain:", "options": ["سلسلة توريد الأجهزة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Third-Party Risk:", "options": ["مخاطر الطرف الثالث", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Vendor Risk:", "options": ["مخاطر الموردين", "تشفير", "تصميم"], "answer": 0},
+                {"q": "SBOM:", "options": ["قائمة مكونات البرمجيات", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Zero Trust Architecture:", "options": ["معمارية عدم الثقة", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Microsegmentation:", "options": ["تقسيم دقيق", "تشفير", "تصميم"], "answer": 0},
+                {"q": "SASE:", "options": ["حافة خدمة الوصول الآمن", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Quantum Computing:", "options": ["الحوسبة الكمية", "تشفير", "تصميم"], "answer": 0},
+                {"q": "Post-Quantum Cryptography:", "options": ["تشفير ما بعد الكم", "تشفير", "تصميم"], "answer": 0}
+            ]
+        };
+
+        function renderQuiz(section) {
+            const area = document.getElementById(`quiz-${section}`);
+            if (!area) return;
+            area.innerHTML = quizData[section].map((q, index) => `
+                <div class="question">
+                    <p>${index + 1}. ${q.q}</p>
+                    ${q.options.map((opt, i) => `
+                        <label><input type="radio" name="${section}_q${index}" value="${i}"> ${opt}</label>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function checkQuiz(section) {
+            let score = 0, allAnswered = true;
+            quizData[section].forEach((q, index) => {
+                const selected = document.querySelector(`input[name="${section}_q${index}"]:checked`);
+                if (!selected) allAnswered = false;
+                else if (parseInt(selected.value) === q.answer) score++;
+            });
+            const resultDiv = document.getElementById(`result-${section}`);
+            if (!allAnswered) {
+                resultDiv.style.color = '#ff4545';
+                resultDiv.innerText = '⚠️ أجب على جميع الأسئلة.';
+            } else {
+                resultDiv.style.color = 'var(--neon)';
+                resultDiv.innerText = `✅ نتيجتك: ${score} من ${quizData[section].length}`;
+            }
+        }
+
+        Object.keys(quizData).forEach(renderQuiz);
     </script>
 </body>
 </html>
