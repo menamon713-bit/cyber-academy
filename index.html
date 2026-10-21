@@ -83,16 +83,10 @@
 <footer class="footer">© 2026 Cyber Academy — منصة عربية للتعلم الآمن في الأمن السيبراني</footer>
 </main>
 </div>
+
 <script>
 // ==========================================
-// 1. إعداد الاتصال بـ Supabase
-// ==========================================
-const supabaseUrl = 'https://dswtnragmdozgmvzaihj.supabase.co';
-const supabaseKey = 'sb_publishable_-UNaFL9Ud7phhTguV4_UFQ_zwYuZg5N';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-// ==========================================
-// 2. البيانات الأساسية
+// 1. البيانات الأساسية (Static Fallback Data)
 // ==========================================
 const paths=[
 {id:'basics',name:'أساسيات الأمن السيبراني',icon:'fa-shield-halved',level:'مبتدئ',desc:'المفاهيم الأساسية والتهديدات ومبادئ الحماية.',courses:['مقدمة الأمن السيبراني','إدارة الهوية وكلمات المرور','الخصوصية والأمان الرقمي']},
@@ -109,7 +103,6 @@ const paths=[
 {id:'incident',name:'إدارة المخاطر والاستجابة',icon:'fa-triangle-exclamation',level:'متوسط',desc:'تحديد المخاطر وترتيبها ووضع خطط الاستجابة والتعافي.',courses:['تقييم المخاطر','خطط الاستجابة','التعافي واستمرارية الأعمال']}
 ];
 
-// تحويل الكورسات الثابتة لشكل متوافق مع الداتابيز كخطة بديلة لو الداتابيز فاضية
 let courses = paths.flatMap((p,pi)=>p.courses.map((name,i)=>({id:p.id+'-'+i,title:name,desc:p.desc,level:p.level,pathId:p.id})));
 
 const glossary=[
@@ -126,10 +119,12 @@ const quizQuestions=[
 
 let currentQuiz=0,score=0,answered=false,selectedPath='all',completed=new Set(JSON.parse(localStorage.getItem('cyberCompleted')||'[]'));
 
+// ==========================================
+// 2. دوال العرض
+// ==========================================
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function pathCard(p){return `<div class="path-card" onclick="openPath('${p.id}')"><i class="fa-solid ${p.icon}"></i><b>${p.name}</b><small>${p.level}</small></div>`}
 
-// تعديل كارت الكورس عشان يستقبل بيانات الداتابيز (title, desc) ويعرض الأيقونة الصح
 function courseCard(c){
     let pct = completed.has(c.id) ? 100 : 0;
     let cLevel = c.level || 'مبتدئ';
@@ -177,56 +172,52 @@ function showSection(id){document.querySelectorAll('.view').forEach(s=>s.classLi
 function toggleMenu(){document.getElementById('sidebar').classList.toggle('open')}
 
 // ==========================================
-// 3. جلب البيانات من Supabase
+// 3. التشغيل الفوري للصفحة (عشان الصفحة متبقاش فاضية أبداً)
 // ==========================================
-async function fetchCoursesFromSupabase() {
+renderPaths();
+renderCourseTabs();
+renderCourses();
+renderQuiz();
+renderGlossary();
+renderChallenges();
+renderRoadmap();
+document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/12*100))+'%';
+
+
+// ==========================================
+// 4. محاولة الاتصال بالداتابيز بأمان (بدون تعطيل الصفحة)
+// ==========================================
+setTimeout(async () => {
     try {
-        const { data, error } = await supabase
-            .from('courses')
-            .select('*')
-            .eq('is_published', true); // بنجيب الكورسات المنشورة بس
-
-        if (error) {
-            console.error('خطأ في جلب الكورسات:', error);
-            return; // لو حصل خطأ، هيفضل يستخدم الكورسات الثابتة
-        }
-
-        if (data && data.length > 0) {
-            // تحويل شكل البيانات الجاية من الداتابيز عشان تتوافق مع كود الـ HTML بتاعك
-            courses = data.map((c) => ({
-                id: c.id,
-                title: c.title,
-                desc: c.description || 'لا يوجد وصف متاح',
-                level: c.level || 'مبتدئ', 
-                pathId: c.path_id || 'all' 
-            }));
+        const supabaseUrl = 'https://dswtnragmdozgmvzaihj.supabase.co';
+        const supabaseKey = 'sb_publishable_-UNaFL9Ud7phhTguV4_UFQ_zwYuZg5N';
+        
+        // التأكد إن المكتبة اتحملت بنجاح
+        if (window.supabase) {
+            const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+            const { data, error } = await supabaseClient.from('courses').select('*').eq('is_published', true);
             
-            // إعادة رسم الكورسات
-            renderFeatured();
-            renderCourses();
-            
-            // تحديث الإحصائيات
-            document.getElementById('statCourses').textContent = courses.length;
+            if (!error && data && data.length > 0) {
+                // تحديث الكورسات بالبيانات الجديدة
+                courses = data.map((c) => ({
+                    id: c.id,
+                    title: c.title,
+                    desc: c.description || 'لا يوجد وصف متاح',
+                    level: c.level || 'مبتدئ', 
+                    pathId: c.path_id || 'all' 
+                }));
+                // إعادة رسم الكورسات بعد ما جبنا الداتا
+                renderFeatured();
+                renderCourses();
+                document.getElementById('statCourses').textContent = courses.length;
+            }
+        } else {
+            console.log('مكتبة Supabase لم يتم تحميلها، ولكن الصفحة تعمل بالبيانات الأساسية.');
         }
     } catch (err) {
-        console.error('مشكلة في الاتصال:', err);
+        console.log('مشكلة في الاتصال بالداتابيز:', err);
     }
-}
-
-// ==========================================
-// 4. تشغيل الدوال عند تحميل الصفحة
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    renderPaths();
-    renderCourseTabs();
-    renderGlossary();
-    renderChallenges();
-    renderRoadmap();
-    document.getElementById('statDone').textContent=Math.min(100,Math.round(completed.size/12*100))+'%';
-    
-    // تشغيل دالة جلب الكورسات من الداتابيز
-    fetchCoursesFromSupabase();
-});
+}, 500); // تأخير بسيط جداً للتأكد من تحميل المكتبة
 </script>
 </body>
 </html>
