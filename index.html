@@ -129,12 +129,12 @@ let currentQuiz=0,score=0,answered=false,selectedPath='all',completed=new Set(JS
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function pathCard(p){return `<div class="path-card" onclick="openPath('${p.id}')"><i class="fa-solid ${p.icon}"></i><b>${p.name}</b><small>${p.level}</small></div>`}
 
-// تعديل كارت الكورس عشان يستقبل بيانات الداتابيز (title, desc)
+// تعديل كارت الكورس عشان يستقبل بيانات الداتابيز (title, desc) ويعرض الأيقونة الصح
 function courseCard(c){
     let pct = completed.has(c.id) ? 100 : 0;
-    let cLevel = c.level || 'عام';
+    let cLevel = c.level || 'مبتدئ';
     let cPathId = c.pathId || 'all';
-    let pathIcon = paths.find(p=>p.id===cPathId)?.icon || 'fa-book';
+    let pathIcon = paths.find(p=>p.id===cPathId)?.icon || 'fa-shield-halved';
     
     return `<article class="card">
         <div class="course-icon"><i class="fa-solid ${pathIcon}"></i></div>
@@ -193,15 +193,15 @@ async function fetchCoursesFromSupabase() {
 
         if (data && data.length > 0) {
             // تحويل شكل البيانات الجاية من الداتابيز عشان تتوافق مع كود الـ HTML بتاعك
-            courses = data.map((c, index) => ({
+            courses = data.map((c) => ({
                 id: c.id,
                 title: c.title,
                 desc: c.description || 'لا يوجد وصف متاح',
-                level: 'عام', // ممكن تغيرها بعدين لو ضفت عمود للمستوى
-                pathId: 'all' // ممكن تغيرها بعدين لو ضفت عمود للمسار
+                level: c.level || 'مبتدئ', 
+                pathId: c.path_id || 'all' 
             }));
             
-            // إعادة رسم الكورسات بعد ما جبناها
+            // إعادة رسم الكورسات
             renderFeatured();
             renderCourses();
             
