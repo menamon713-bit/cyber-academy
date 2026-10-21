@@ -8,15 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<!-- مكتبة Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- السيرفر الجديد للمكتبة -->
+<script src="https://esm.sh/@supabase/supabase-js@2"></script>
 <style>
 :root{--bg:#08090d;--panel:#101116;--panel2:#15161d;--line:#282a34;--text:#f5f5f7;--muted:#9a9ba8;--red:#ff304b;--red2:#b90e2a;--white:#fff;--green:#45d483;--radius:18px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% 0%,#301019 0,transparent 35%),var(--bg);color:var(--text);font-family:'Cairo',sans-serif;min-height:100vh}button,input{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}.hidden{display:none!important}
 .topbar{height:72px;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:15px;padding:0 5%;background:#09090deF;backdrop-filter:blur(16px);border-bottom:1px solid #292a33}.brand{font-size:22px;font-weight:900;direction:ltr;white-space:nowrap}.brand b{color:var(--red)}.brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:2px;text-align:right}.navlinks{display:flex;gap:7px;align-items:center}.navlinks button,.iconbtn{border:1px solid transparent;background:transparent;color:#c9c9d2;padding:10px 13px;border-radius:10px}.navlinks button:hover,.navlinks button.active{background:#211117;color:white;border-color:#54212c}.top-actions{display:flex;gap:9px;align-items:center}.primary,.secondary{border:0;border-radius:11px;padding:11px 17px;font-weight:800}.primary{background:linear-gradient(135deg,var(--red),#c50e31);color:white;box-shadow:0 7px 25px #ff304b28}.secondary{background:#1b1c24;color:#eee;border:1px solid var(--line)}.iconbtn{font-size:19px;display:none}
 .layout{display:grid;grid-template-columns:250px minmax(0,1fr);max-width:1500px;margin:auto;min-height:calc(100vh - 72px)}.sidebar{border-left:1px solid var(--line);padding:25px 17px;position:sticky;top:72px;height:calc(100vh - 72px);overflow:auto;background:#0b0c11}.profile{padding:16px;background:linear-gradient(140deg,#241019,#12131a);border:1px solid #49202b;border-radius:16px;margin-bottom:23px;position:relative}.avatar{width:43px;height:43px;border-radius:13px;background:linear-gradient(135deg,#ff304b,#821127);display:grid;place-items:center;font-size:20px;margin-bottom:9px}.profile strong{display:block;font-size:14px;word-break:break-all}.profile span{font-size:12px;color:var(--muted)}.side-label{font-size:11px;color:#777986;font-weight:800;margin:20px 12px 8px}.side-link{width:100%;display:flex;align-items:center;gap:12px;text-align:right;color:#b9bac4;background:transparent;border:1px solid transparent;padding:12px 13px;border-radius:11px;margin:3px 0}.side-link i{width:19px;text-align:center;color:#92939f}.side-link:hover,.side-link.active{background:#241117;color:white;border-color:#49202b}.side-link.active i{color:var(--red)}.main{padding:30px clamp(16px,3vw,42px) 55px;min-width:0}.welcome{display:flex;justify-content:space-between;align-items:center;gap:25px;padding:clamp(22px,4vw,45px);border:1px solid #49202b;border-radius:24px;background:radial-gradient(circle at 15% 15%,#5a1024 0,transparent 45%),linear-gradient(120deg,#1a0d13,#111219 70%);position:relative;overflow:hidden}.welcome:after{content:"</>";position:absolute;left:4%;bottom:-28px;font-size:125px;font-weight:900;color:#ffffff08;direction:ltr}.eyebrow{color:#ff7485;font-size:12px;font-weight:800;letter-spacing:1px}.welcome h1{font-size:clamp(25px,4vw,43px);line-height:1.35;margin:12px 0}.welcome h1 span{color:var(--red)}.welcome p{color:#b5b5c0;max-width:650px;line-height:1.9;margin:0 0 22px}.hero-art{font-size:clamp(70px,10vw,130px);color:#ff304b;filter:drop-shadow(0 0 28px #ff304b55);padding:10px 25px}.section{margin-top:35px;scroll-margin-top:95px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:17px}.section-head h2{margin:0;font-size:22px}.section-head p{color:var(--muted);margin:5px 0 0;font-size:13px}.textlink{background:transparent;border:0;color:#ff687b}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:20px}.stat,.card{background:linear-gradient(145deg,#14151c,#101116);border:1px solid var(--line);border-radius:var(--radius)}.stat{padding:17px;display:flex;gap:13px;align-items:center}.stat-icon{width:43px;height:43px;display:grid;place-items:center;background:#28121a;color:#ff5268;border-radius:13px;font-size:18px}.stat strong{display:block;font-size:22px}.stat span{color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.card{padding:20px;transition:.2s;min-width:0}.card:hover{transform:translateY(-3px);border-color:#71303d}.course-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:#29121a;color:#ff5268;font-size:21px;margin-bottom:14px}.card h3{font-size:16px;margin:0 0 8px}.card p{font-size:13px;color:var(--muted);line-height:1.8;margin:0 0 16px}.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}.chip{font-size:11px;color:#c9c9d2;background:#20212a;padding:5px 9px;border-radius:7px}.card .secondary,.card .primary{width:100%;padding:9px}.progress{height:6px;background:#2a2b34;border-radius:99px;overflow:hidden;margin:12px 0}.progress span{height:100%;display:block;background:linear-gradient(90deg,var(--red2),var(--red));border-radius:99px}.path-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.path-card{padding:18px 14px;border:1px solid var(--line);background:#121319;border-radius:15px;text-align:center;cursor:pointer;transition:.2s}.path-card:hover{border-color:var(--red);background:#211117;transform:translateY(-3px)}.path-card i{font-size:27px;color:var(--red);margin-bottom:12px}.path-card b{display:block;font-size:13px}.path-card small{display:block;color:var(--muted);margin-top:7px}.searchbox{width:min(100%,330px);position:relative}.searchbox i{position:absolute;right:13px;top:14px;color:var(--muted)}.searchbox input{width:100%;background:#121319;border:1px solid var(--line);border-radius:11px;padding:10px 38px 10px 12px;color:white;outline:none}.searchbox input:focus{border-color:#a52a40}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);background:#13141a;color:#bdbdc7;border-radius:9px;padding:8px 13px;font-size:12px}.tab.active{background:#32131c;border-color:#7b2636;color:white}.lesson-list{display:grid;gap:10px}.lesson{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--line);background:#121319;border-radius:13px}.lesson-num{width:38px;height:38px;display:grid;place-items:center;background:#25121a;color:#ff5a70;border-radius:10px;flex-shrink:0}.lesson div:nth-child(2){flex:1}.lesson p{margin:3px 0 0;color:var(--muted);font-size:12px}.lesson button{background:#20212a;border:1px solid #333540;color:white;border-radius:9px;padding:7px 11px}.quiz-question{font-size:18px;font-weight:800;line-height:1.8}.answers{display:grid;gap:10px;margin:20px 0}.answer{padding:13px 15px;border:1px solid var(--line);border-radius:11px;background:#15161d;color:#eee;text-align:right}.answer:hover{border-color:#a12a40}.answer.correct{border-color:#2eaa70;background:#10251b}.answer.wrong{border-color:#d6324a;background:#2b1118}.feedback{padding:12px;border-radius:10px;background:#171820;color:#ddd;font-size:13px;line-height:1.8}.footer{border-top:1px solid var(--line);margin-top:45px;padding:22px 0;color:#777986;text-align:center;font-size:12px}.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed #343540;border-radius:13px;grid-column:1/-1}
 
-/* ستايل نافذة تسجيل الدخول */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:100;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:0.3s}
 .modal-overlay.active{opacity:1;pointer-events:auto}
 .modal-box{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:30px;width:90%;max-width:400px;position:relative}
@@ -122,18 +121,34 @@
 
 <script>
 // ==========================================
-// 1. إعداد Supabase
+// 1. إعداد Supabase 
 // ==========================================
 var supabaseUrl = 'https://dswtnragmdozgmvzaihj.supabase.co';
 var supabaseKey = 'sb_publishable_-UNaFL9Ud7phhTguV4_UFQ_zwYuZg5N';
 var supabaseClient = null;
 
-if (window.supabase) {
-    supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-}
+window.onload = function() {
+    if (window.supabase) {
+        supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+        supabaseClient.auth.getSession().then(function(res) {
+            if (res.data && res.data.session) updateUI(res.data.session.user);
+            else updateUI(null);
+        });
+        supabaseClient.auth.onAuthStateChange(function(event, session) {
+            updateUI(session ? session.user : null);
+        });
+        fetchCourses();
+    } else {
+        console.error("Supabase library failed to load.");
+        alert("تنبيه: مكتبة Supabase لم يتم تحميلها. جرب تحديث الصفحة أو تغيير المتصفح.");
+    }
+    
+    renderPaths(); renderCourseTabs(); renderCourses(); renderQuiz(); renderGlossary(); renderChallenges(); renderRoadmap();
+    document.getElementById('statDone').textContent = Math.min(100, Math.round(completed.size/12*100)) + '%';
+};
 
 // ==========================================
-// 2. نظام الحسابات (Authentication)
+// 2. نظام الحسابات 
 // ==========================================
 function openAuthModal() {
     document.getElementById('authModal').classList.add('active');
@@ -155,26 +170,15 @@ async function handleSignup() {
     var email = document.getElementById('emailInput').value;
     var password = document.getElementById('passwordInput').value;
     
-    if (!email || !password) {
-        alert('يرجى ملء جميع الحقول');
-        return;
-    }
-
-    if (!supabaseClient) {
-        alert('خطأ: مكتبة Supabase لم يتم تحميلها! (النت أو مانع الإعلانات بيمنعها)');
-        return;
-    }
+    if (!email || !password) { alert('يرجى ملء جميع الحقول'); return; }
+    if (!supabaseClient) { alert('مكتبة Supabase لم يتم تحميلها!'); return; }
     
     showAuthMsg('جاري إنشاء الحساب...', false);
     
     try {
-        const { data, error } = await supabaseClient.auth.signUp({
-            email: email,
-            password: password
-        });
-
+        const { data, error } = await supabaseClient.auth.signUp({ email: email, password: password });
         if (error) {
-            alert('إيرور من سوبابيز: ' + error.message);
+            alert('إيرور: ' + error.message);
             showAuthMsg('إيرور: ' + error.message, true);
         } else {
             alert('تم إنشاء الحساب بنجاح!');
@@ -182,7 +186,7 @@ async function handleSignup() {
             setTimeout(function() { closeAuthModal(); }, 1000);
         }
     } catch (err) {
-        alert('مشكلة في الاتصال بالشبكة: ' + err.message);
+        alert('مشكلة في الاتصال: ' + err.message);
         showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
     }
 }
@@ -191,26 +195,15 @@ async function handleLogin() {
     var email = document.getElementById('emailInput').value;
     var password = document.getElementById('passwordInput').value;
     
-    if (!email || !password) {
-        alert('يرجى ملء جميع الحقول');
-        return;
-    }
-
-    if (!supabaseClient) {
-        alert('خطأ: مكتبة Supabase لم يتم تحميلها!');
-        return;
-    }
+    if (!email || !password) { alert('يرجى ملء جميع الحقول'); return; }
+    if (!supabaseClient) { alert('مكتبة Supabase لم يتم تحميلها!'); return; }
     
     showAuthMsg('جاري تسجيل الدخول...', false);
     
     try {
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
-
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email: email, password: password });
         if (error) {
-            alert('إيرور من سوبابيز: ' + error.message);
+            alert('إيرور: ' + error.message);
             showAuthMsg('إيرور: ' + error.message, true);
         } else {
             alert('تم تسجيل الدخول بنجاح!');
@@ -218,18 +211,15 @@ async function handleLogin() {
             setTimeout(function() { closeAuthModal(); }, 1000);
         }
     } catch (err) {
-        alert('مشكلة في الاتصال بالشبكة: ' + err.message);
+        alert('مشكلة في الاتصال: ' + err.message);
         showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
     }
 }
 
 function handleLogout() {
-    supabaseClient.auth.signOut().then(function() {
-        // بعد الخروج
-    });
+    if(supabaseClient) supabaseClient.auth.signOut().then(function() {});
 }
 
-// تحديث الواجهة
 function updateUI(user) {
     var loginBtn = document.getElementById('loginBtn');
     var logoutBtn = document.getElementById('logoutBtn');
@@ -239,8 +229,7 @@ function updateUI(user) {
     if (user) {
         loginBtn.classList.add('hidden');
         logoutBtn.classList.remove('hidden');
-        var name = user.email.split('@')[0];
-        profileName.textContent = name; 
+        profileName.textContent = user.email.split('@')[0]; 
         profileRole.textContent = 'طالب مسجل ✅';
     } else {
         loginBtn.classList.remove('hidden');
@@ -248,16 +237,6 @@ function updateUI(user) {
         profileName.textContent = 'زائر (غير مسجل)';
         profileRole.textContent = 'سجل دخولك لحفظ تقدمك';
     }
-}
-
-if (supabaseClient) {
-    supabaseClient.auth.onAuthStateChange(function(event, session) {
-        updateUI(session ? session.user : null);
-    });
-    supabaseClient.auth.getSession().then(function(res) {
-        if (res.data && res.data.session) updateUI(res.data.session.user);
-        else updateUI(null);
-    });
 }
 
 // ==========================================
@@ -417,28 +396,20 @@ function showSection(id) {
 
 function toggleMenu(){ document.getElementById('sidebar').classList.toggle('open'); }
 
-// التشغيل الفوري
-renderPaths(); renderCourseTabs(); renderCourses(); renderQuiz(); renderGlossary(); renderChallenges(); renderRoadmap();
-document.getElementById('statDone').textContent = Math.min(100, Math.round(completed.size/12*100)) + '%';
-
-// جلب الكورسات من الداتابيز
-setTimeout(function() {
-    try {
-        if (supabaseClient) {
-            supabaseClient.from('courses').select('*').eq('is_published', true).then(function(res) {
-                if (!res.error && res.data && res.data.length > 0) {
-                    var newCourses = [];
-                    for(var i=0; i<res.data.length; i++) {
-                        var c = res.data[i];
-                        newCourses.push({ id: c.id, title: c.title, desc: c.description || 'لا يوجد وصف متاح', level: c.level || 'مبتدئ', pathId: c.path_id || 'all' });
-                    }
-                    courses = newCourses; renderFeatured(); renderCourses();
-                    document.getElementById('statCourses').textContent = courses.length;
-                }
-            });
+function fetchCourses() {
+    if (!supabaseClient) return;
+    supabaseClient.from('courses').select('*').eq('is_published', true).then(function(res) {
+        if (!res.error && res.data && res.data.length > 0) {
+            var newCourses = [];
+            for(var i=0; i<res.data.length; i++) {
+                var c = res.data[i];
+                newCourses.push({ id: c.id, title: c.title, desc: c.description || 'لا يوجد وصف متاح', level: c.level || 'مبتدئ', pathId: c.path_id || 'all' });
+            }
+            courses = newCourses; renderFeatured(); renderCourses();
+            document.getElementById('statCourses').textContent = courses.length;
         }
-    } catch(e) { console.log('Error fetching courses:', e); }
-}, 500);
+    }).catch(function(e) { console.log('Error fetching courses:', e); });
+}
 </script>
 </body>
 </html>
