@@ -117,288 +117,308 @@
 </main>
 </div>
 
-<!-- تحميل المكتبة بطريقة حديثة (ES Module) -->
-<script type="module">
-    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+<!-- سكريبت الواجهة (يعمل فوراً بدون انتظار النت) -->
+<script>
+var paths = [
+{id:'basics',name:'أساسيات الأمن السيبراني',icon:'fa-shield-halved',level:'مبتدئ',desc:'المفاهيم الأساسية والتهديدات ومبادئ الحماية.',courses:['مقدمة الأمن السيبراني','إدارة الهوية وكلمات المرور','الخصوصية والأمان الرقمي']},
+{id:'network',name:'أمن الشبكات',icon:'fa-network-wired',level:'مبتدئ — متوسط',desc:'تعلم الشبكات والبروتوكولات ومبادئ الدفاع.',courses:['أساسيات الشبكات','TCP/IP وDNS وHTTP','الجدران النارية ومراقبة الشبكات']},
+{id:'web',name:'أمن تطبيقات الويب',icon:'fa-code',level:'متوسط',desc:'فهم جلسات الدخول والتحقق من المدخلات والثغرات الشائعة.',courses:['أساسيات HTTP وواجهات API','التحقق من المدخلات','مقدمة OWASP Top 10']},
+{id:'ethical',name:'الاختراق الأخلاقي',icon:'fa-user-secret',level:'متوسط',desc:'منهجية اختبار مصرح بها وتوثيق النتائج وإصلاحها.',courses:['قواعد الاختبار المصرح','جمع المعلومات بشكل قانوني','كتابة تقرير الثغرات']},
+{id:'defense',name:'الدفاع السيبراني وSOC',icon:'fa-binoculars',level:'متوسط',desc:'مراقبة الأحداث وتحليل السجلات والاستجابة للحوادث.',courses:['مقدمة SOC','قراءة سجلات الأنظمة','الاستجابة للحوادث']},
+{id:'crypto',name:'التشفير وحماية البيانات',icon:'fa-key',level:'متوسط',desc:'التشفير والهاش والتوقيعات وإدارة المفاتيح.',courses:['مفاهيم التشفير','Hashing وDigital Signatures','إدارة المفاتيح']},
+{id:'forensics',name:'التحليل الجنائي الرقمي',icon:'fa-magnifying-glass-chart',level:'متوسط',desc:'جمع الأدلة الرقمية وفهم الخط الزمني للحوادث.',courses:['مبادئ الأدلة الرقمية','تحليل السجلات','بناء خط زمني']},
+{id:'cloud',name:'أمن السحابة وDevSecOps',icon:'fa-cloud',level:'متقدم',desc:'مبادئ تأمين الخدمات السحابية ودمج الأمن في التطوير.',courses:['مفاهيم أمن السحابة','إدارة الصلاحيات','مقدمة DevSecOps']},
+{id:'malware',name:'تحليل البرمجيات الخبيثة',icon:'fa-bug',level:'متقدم',desc:'التعرف على السلوكيات الخطرة والتحليل النظري داخل بيئة معزولة.',courses:['أنواع البرمجيات الخبيثة','مؤشرات الاختراق','مبادئ التحليل الآمن']},
+{id:'osint',name:'OSINT والاستخبارات المفتوحة',icon:'fa-magnifying-glass',level:'مبتدئ — متوسط',desc:'البحث والتحقق من المصادر العامة مع احترام الخصوصية والقانون.',courses:['تقييم المصادر','التحقق من المعلومات','أخلاقيات OSINT']},
+{id:'linux',name:'Linux وPython للأمن',icon:'fa-terminal',level:'مبتدئ',desc:'أدوات أساسية لفهم الأنظمة والبرمجة وتحليل البيانات.',courses:['مقدمة Linux','أساسيات Python','معالجة النصوص والسجلات']},
+{id:'incident',name:'إدارة المخاطر والاستجابة',icon:'fa-triangle-exclamation',level:'متوسط',desc:'تحديد المخاطر وترتيبها ووضع خطط الاستجابة والتعافي.',courses:['تقييم المخاطر','خطط الاستجابة','التعافي واستمرارية الأعمال']}
+];
 
-    const supabaseUrl = 'https://dswtnragmdozgmvzaihj.supabase.co';
-    const supabaseKey = 'sb_publishable_-UNaFL9Ud7phhTguV4_UFQ_zwYuZg5N';
-    const supabaseClient = createClient(supabaseUrl, supabaseKey);
+var courses = [];
+for (var i = 0; i < paths.length; i++) {
+    var p = paths[i];
+    for (var j = 0; j < p.courses.length; j++) {
+        courses.push({id: p.id + '-' + j, title: p.courses[j], desc: p.desc, level: p.level, pathId: p.id});
+    }
+}
 
-    // ربط الدوال بالنطاق العام (عشان زراير HTML تقدر تشوفها)
-    window.supabaseClient = supabaseClient;
-    window.openAuthModal = function() {
-        document.getElementById('authModal').classList.add('active');
-        document.getElementById('authMsg').textContent = '';
-        document.getElementById('emailInput').value = '';
-        document.getElementById('passwordInput').value = '';
-    };
-    window.closeAuthModal = function() {
-        document.getElementById('authModal').classList.remove('active');
+var glossary = [
+['Asset','أصل رقمي','جهاز أو نظام أو بيانات لها قيمة وتحتاج إلى حماية.'],['Threat','تهديد','شيء قد يسبب ضررًا لأصل أو نظام.'],['Vulnerability','ثغرة','نقطة ضعف في تصميم أو تنفيذ أو إعداد.'],['Risk','مخاطر','احتمال وقوع ضرر مع مراعاة أثره.'],['Firewall','جدار ناري','نظام يراقب حركة الشبكة ويسمح بها أو يمنعها وفق قواعد.'],['Encryption','تشفير','تحويل البيانات إلى صيغة لا تُقرأ دون المفتاح المناسب.'],['Hash','بصمة رقمية','ناتج دالة أحادية الاتجاه يستخدم للتحقق أو المقارنة.'],['MFA','مصادقة متعددة العوامل','استخدام أكثر من عامل للتحقق من الهوية.'],['Phishing','تصيد احتيالي','خداع المستخدم لدفعه لكشف معلومات أو تنفيذ إجراء.'],['Patch','تحديث إصلاحي','تحديث يعالج مشكلة أو ثغرة أو خطأ.'],['SOC','مركز عمليات الأمن','فريق أو مركز يراقب التنبيهات والأحداث الأمنية.'],['SIEM','إدارة معلومات وأحداث الأمن','منصة تجمع السجلات وتربط الأحداث لإنتاج تنبيهات.'],['CTF','التقاط العلم','تحديات تدريبية لحل ألغاز أمنية ضمن نطاق محدد.'],['Least Privilege','أقل صلاحية','منح الحد الأدنى من الأذونات اللازمة.'],['Incident Response','الاستجابة للحوادث','خطوات منظمة لاحتواء حادث أمني وتحليله والتعافي منه.'],['Zero-day','ثغرة غير معروفة أو غير معالَجة','ثغرة لا يتوفر لها إصلاح مناسب وقت استغلالها أو اكتشافها.']
+];
+
+var quizQuestions = [
+{q:'ما المقصود بالسرية في الأمن السيبراني؟',a:['إتاحة البيانات للجميع','وصول البيانات للمصرح لهم فقط','تسريع الشبكة','حذف النسخ الاحتياطية'],correct:1,why:'السرية تحد من الوصول إلى البيانات للأشخاص والأنظمة المصرح لهم.'},
+{q:'أي بروتوكول يساعد في تشفير اتصال الويب؟',a:['HTTP وحده','FTP وحده','TLS ضمن اتصال HTTPS','DNS وحده'],correct:2,why:'يستخدم HTTPS بروتوكول TLS لحماية الاتصال عند إعداده بشكل صحيح.'},
+{q:'ما أفضل ممارسة لتخزين كلمات المرور؟',a:['تخزينها كنص واضح','تشفيرها بمفتاح ثابت فقط','استخدام هاش مخصص لكلمات المرور مع salt','إرسالها بالبريد'],correct:2,why:'تستخدم خوارزميات مخصصة مثل Argon2 أو bcrypt مع salt فريد وإعدادات مناسبة.'},
+{q:'ما معنى مبدأ أقل صلاحية؟',a:['إعطاء الجميع صلاحيات المدير','منح أقل قدر لازم من الصلاحيات','إلغاء كل الحسابات','استخدام كلمة مرور واحدة'],correct:1,why:'تقليل الصلاحيات يقلل الأثر المحتمل عند إساءة الاستخدام أو اختراق الحساب.'},
+{q:'ماذا تفعل عند اكتشاف ثغرة في نظام لا تملكه؟',a:['تستغلها للتأكد','تنشر بيانات النظام','تلتزم بالنطاق المصرح وقناة الإفصاح المناسبة','تجرب كلمات مرور'],correct:2,why:'يجب الحصول على إذن واضح والالتزام بالنطاق والإبلاغ المسؤول.'}
+];
+
+var currentQuiz = 0, score = 0, answered = false, selectedPath = 'all';
+var completed = new Set(JSON.parse(localStorage.getItem('cyberCompleted') || '[]'));
+
+function pathCard(p) {
+    return '<div class="path-card" onclick="openPath(\'' + p.id + '\')"><i class="fa-solid ' + p.icon + '"></i><b>' + p.name + '</b><small>' + p.level + '</small></div>';
+}
+
+function courseCard(c) {
+    var pct = completed.has(c.id) ? 100 : 0;
+    var cLevel = c.level || 'مبتدئ';
+    var cPathId = c.pathId || 'all';
+    var pathIcon = 'fa-shield-halved';
+    for (var k = 0; k < paths.length; k++) {
+        if (paths[k].id === cPathId) { pathIcon = paths[k].icon; break; }
+    }
+    
+    return '<article class="card"><div class="course-icon"><i class="fa-solid ' + pathIcon + '"></i></div>' +
+        '<div class="chips"><span class="chip">' + cLevel + '</span><span class="chip">كورس</span></div>' +
+        '<h3>' + c.title + '</h3><p>' + (c.desc || 'لا يوجد وصف') + '</p>' +
+        '<div class="progress"><span style="width:' + pct + '%"></span></div>' +
+        '<button class="primary" onclick="openCourse(\'' + c.id + '\')">' + (pct ? 'مراجعة' : 'ابدأ التعلم') + ' <i class="fa-solid fa-arrow-left"></i></button></article>';
+}
+
+function renderPaths() {
+    var homeH = ''; for(var i=0; i<4; i++) homeH += pathCard(paths[i]);
+    document.getElementById('homePaths').innerHTML = homeH;
+    var allH = ''; for(var i=0; i<paths.length; i++) allH += pathCard(paths[i]);
+    document.getElementById('allPaths').innerHTML = allH;
+}
+
+function renderCourses() {
+    var input = document.getElementById('courseSearch');
+    var q = input ? input.value.trim().toLowerCase() : '';
+    var filtered = [];
+    for (var i=0; i<courses.length; i++) {
+        var c = courses[i];
+        if ((selectedPath === 'all' || c.pathId === selectedPath) && (c.title + ' ' + c.desc).toLowerCase().indexOf(q) !== -1) {
+            filtered.push(c);
+        }
+    }
+    var h = filtered.length > 0 ? filtered.map(courseCard).join('') : '<div class="empty">مفيش كورسات مطابقة للبحث.</div>';
+    document.getElementById('courseGrid').innerHTML = h;
+}
+
+function renderFeatured() {
+    var h = ''; for(var i=0; i<3; i++) h += courseCard(courses[i]);
+    document.getElementById('featuredCourses').innerHTML = h;
+}
+
+function renderCourseTabs() {
+    var h = '<button class="tab ' + (selectedPath==='all'?'active':'') + '" onclick="setCoursePath(\'all\')">الكل</button>';
+    for (var i=0; i<paths.length; i++) {
+        h += '<button class="tab ' + (selectedPath===paths[i].id?'active':'') + '" onclick="setCoursePath(\'' + paths[i].id + '\')">' + paths[i].name + '</button>';
+    }
+    document.getElementById('courseTabs').innerHTML = h;
+}
+
+function setCoursePath(id) { selectedPath = id; renderCourseTabs(); renderCourses(); }
+
+function openPath(id) {
+    var p = null; for (var i=0; i<paths.length; i++) if (paths[i].id === id) p = paths[i];
+    if(!p) return;
+    showSection('paths');
+    var h = ''; for (var i=0; i<courses.length; i++) if (courses[i].pathId === id) h += courseCard(courses[i]);
+    document.getElementById('pathDetails').innerHTML = '<div class="section-head"><div><h2>' + p.name + '</h2><p>' + p.desc + '</p></div><span class="chip">' + p.level + '</span></div><div class="grid">' + h + '</div>';
+    document.getElementById('pathDetails').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function openCourse(id) {
+    window.open('https://www.youtube.com/@SecureTheHumans', '_blank');
+}
+
+function renderQuiz() {
+    var q = quizQuestions[currentQuiz], box = document.getElementById('quizBox'); answered = false;
+    var answersH = ''; for (var i=0; i<q.a.length; i++) answersH += '<button class="answer" onclick="answerQuiz(' + i + ')">' + ['أ','ب','ج','د'][i] + '. ' + q.a[i] + '</button>';
+    box.innerHTML = '<div class="eyebrow">السؤال ' + (currentQuiz+1) + ' من ' + quizQuestions.length + '</div>' +
+    '<div class="progress"><span style="width:' + ((currentQuiz+1)/quizQuestions.length*100) + '%"></span></div>' +
+    '<div class="quiz-question">' + q.q + '</div><div class="answers">' + answersH + '</div><div id="quizFeedback"></div>' +
+    '<div style="display:flex;justify-content:space-between;gap:10px;margin-top:15px"><span style="color:var(--muted);font-size:12px">النتيجة: ' + score + ' صحيحة</span><button id="nextQuiz" class="primary hidden" onclick="nextQuestion()">' + (currentQuiz===quizQuestions.length-1?'إنهاء الاختبار':'السؤال التالي') + ' ←</button></div>';
+}
+
+function answerQuiz(i) {
+    if(answered) return; answered = true; var q = quizQuestions[currentQuiz];
+    var buttons = document.querySelectorAll('.answer'); buttons[q.correct].classList.add('correct');
+    if(i === q.correct) { score++; document.getElementById('statScore').textContent = score; } else { buttons[i].classList.add('wrong'); }
+    document.getElementById('quizFeedback').innerHTML = '<div class="feedback">' + (i===q.correct?'إجابة صحيحة!':'الإجابة الصحيحة: ' + q.a[q.correct]) + '<br>' + q.why + '</div>';
+    document.getElementById('nextQuiz').classList.remove('hidden');
+}
+
+function nextQuestion() {
+    if(currentQuiz < quizQuestions.length-1) { currentQuiz++; renderQuiz(); }
+    else { document.getElementById('quizBox').innerHTML = '<div class="course-icon"><i class="fa-solid fa-trophy"></i></div><h2>خلصت الاختبار!</h2><p>إجاباتك الصحيحة: ' + score + ' من ' + quizQuestions.length + '</p><div class="progress"><span style="width:' + (score/quizQuestions.length*100) + '%"></span></div><button class="primary" onclick="currentQuiz=0;score=0;renderQuiz()">إعادة الاختبار</button>'; }
+}
+
+function renderGlossary() {
+    var input = document.getElementById('glossarySearch'); var q = input ? input.value.toLowerCase() : ''; var h = '';
+    for(var i=0; i<glossary.length; i++) if (glossary[i].join(' ').toLowerCase().indexOf(q) !== -1) h += '<div class="card"><div class="eyebrow">' + glossary[i][0] + '</div><h3>' + glossary[i][1] + '</h3><p>' + glossary[i][2] + '</p></div>';
+    document.getElementById('glossaryGrid').innerHTML = h || '<div class="empty">مفيش مصطلحات مطابقة.</div>';
+}
+
+var challenges = [{title:'تحدي الهاش',desc:'حدد لماذا لا يُعد الهاش تشفيرًا قابلًا للفك.',hint:'فكر في الفرق بين دالة أحادية الاتجاه وخوارزمية تستخدم مفتاحًا.'},{title:'تحليل سجل دخول',desc:'راجع سجلًا تدريبيًا وحدد الحدث الذي يحتاج إلى مراجعة.',hint:'تكرار محاولات فاشلة في وقت قصير قد يستحق التحقيق، لكنه لا يثبت وحده وجود اختراق.'},{title:'اكتشاف رابط مشبوه',desc:'تعلم مؤشرات التصيد قبل فتح أي رابط.',hint:'افحص اسم النطاق، والسياق، والأخطاء الإملائية، واطلب تأكيدًا من مرسل موثوق.'}];
+function renderChallenges() { var h = ''; for(var i=0; i<challenges.length; i++) h += '<div class="card"><div class="course-icon"><i class="fa-solid fa-flag"></i></div><h3>' + challenges[i].title + '</h3><p>' + challenges[i].desc + '</p><button class="secondary" onclick="challengeHint(' + i + ')">عرض تلميح</button><p id="hint' + i + '" class="hidden" style="margin-top:12px;color:#ff9aa8">' + challenges[i].hint + '</p></div>'; document.getElementById('challengeGrid').innerHTML = h; }
+function challengeHint(i){ document.getElementById('hint'+i).classList.toggle('hidden'); }
+
+function renderRoadmap() {
+    var stages = [['1','الأساسيات','مفاهيم الأمن والخصوصية وأنظمة التشغيل'],['2','الشبكات','IP وDNS وHTTP ومبادئ TCP/IP'],['3','Linux وPython','الطرفية والبرمجة وتحليل النصوص'],['4','اختار تخصصًا','ويب أو دفاع سيبراني أو شبكات أو تحليل رقمي'],['5','تدريب آمن','مختبرات قانونية وتحديات CTF تعليمية'],['6','ملف أعمال','تقارير توثيقية ومشروعات دفاعية آمنة']];
+    var h = ''; for(var i=0; i<stages.length; i++) h += '<div class="lesson"><div class="lesson-num">' + stages[i][0] + '</div><div><b>' + stages[i][1] + '</b><p>' + stages[i][2] + '</p></div></div>';
+    document.getElementById('roadmapList').innerHTML = h;
+}
+
+function showSection(id) {
+    var views = document.querySelectorAll('.view'); for(var i=0; i<views.length; i++) { if(views[i].id === id) views[i].classList.remove('hidden'); else views[i].classList.add('hidden'); }
+    var links = document.querySelectorAll('.side-link'); for(var i=0; i<links.length; i++) { if(links[i].getAttribute('data-section') === id) links[i].classList.add('active'); else links[i].classList.remove('active'); }
+    var navs = document.querySelectorAll('[data-nav]'); for(var i=0; i<navs.length; i++) { if(navs[i].getAttribute('data-nav') === id) navs[i].classList.add('active'); else navs[i].classList.remove('active'); }
+    document.getElementById('sidebar').classList.remove('open'); if(id === 'quiz' && !answered) renderQuiz(); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleMenu(){ document.getElementById('sidebar').classList.toggle('open'); }
+
+// تشغيل الواجهة فوراً
+renderPaths(); renderCourseTabs(); renderCourses(); renderQuiz(); renderGlossary(); renderChallenges(); renderRoadmap();
+document.getElementById('statDone').textContent = Math.min(100, Math.round(completed.size/12*100)) + '%';
+</script>
+
+<!-- سكريبت تحميل سوبابيز ونظام الدخول (بشكل منفصل) -->
+<script>
+var supabaseClient = null;
+var supabaseUrl = 'https://dswtnragmdozgmvzaihj.supabase.co';
+var supabaseKey = 'sb_publishable_-UNaFL9Ud7phhTguV4_UFQ_zwYuZg5N';
+
+window.onload = function() {
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    
+    script.onload = function() {
+        supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+        
+        supabaseClient.auth.getSession().then(function(res) {
+            if (res.data && res.data.session) updateUI(res.data.session.user);
+            else updateUI(null);
+        });
+        
+        supabaseClient.auth.onAuthStateChange(function(event, session) {
+            updateUI(session ? session.user : null);
+        });
+        
+        fetchCoursesFromSupabase();
     };
     
-    window.showAuthMsg = function(msg, isError) {
-        var el = document.getElementById('authMsg');
-        el.textContent = msg;
-        el.style.color = isError ? '#ff304b' : '#45d483';
+    script.onerror = function() {
+        console.error("Failed to load Supabase script.");
+        // تعطيل زرار الدخول لو سوبابيز مش متاحة
+        document.getElementById('loginBtn').onclick = function() {
+            alert('عذراً، نظام تسجيل الدخول غير متاح حالياً بسبب مشكلة في الاتصال بالسيرفر.');
+        };
     };
+    
+    document.body.appendChild(script);
+};
 
-    window.handleSignup = async function() {
-        var email = document.getElementById('emailInput').value;
-        var password = document.getElementById('passwordInput').value;
-        if (!email || !password) { alert('يرجى ملء جميع الحقول'); return; }
-        
-        window.showAuthMsg('جاري إنشاء الحساب...', false);
-        try {
-            const { data, error } = await supabaseClient.auth.signUp({ email, password });
-            if (error) {
-                alert('إيرور: ' + error.message);
-                window.showAuthMsg('إيرور: ' + error.message, true);
-            } else {
-                alert('تم إنشاء الحساب بنجاح!');
-                window.showAuthMsg('تم إنشاء الحساب بنجاح!', false);
-                setTimeout(window.closeAuthModal, 1000);
-            }
-        } catch (err) {
-            alert('مشكلة في الاتصال: ' + err.message);
-            window.showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
-        }
-    };
+function openAuthModal() {
+    document.getElementById('authModal').classList.add('active');
+    document.getElementById('authMsg').textContent = '';
+    document.getElementById('emailInput').value = '';
+    document.getElementById('passwordInput').value = '';
+}
+function closeAuthModal() {
+    document.getElementById('authModal').classList.remove('active');
+}
 
-    window.handleLogin = async function() {
-        var email = document.getElementById('emailInput').value;
-        var password = document.getElementById('passwordInput').value;
-        if (!email || !password) { alert('يرجى ملء جميع الحقول'); return; }
-        
-        window.showAuthMsg('جاري تسجيل الدخول...', false);
-        try {
-            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error) {
-                alert('إيرور: ' + error.message);
-                window.showAuthMsg('إيرور: ' + error.message, true);
-            } else {
-                alert('تم تسجيل الدخول بنجاح!');
-                window.showAuthMsg('تم تسجيل الدخول بنجاح!', false);
-                setTimeout(window.closeAuthModal, 1000);
-            }
-        } catch (err) {
-            alert('مشكلة في الاتصال: ' + err.message);
-            window.showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
-        }
-    };
+function showAuthMsg(msg, isError) {
+    var el = document.getElementById('authMsg');
+    el.textContent = msg;
+    el.style.color = isError ? '#ff304b' : '#45d483';
+}
 
-    window.handleLogout = function() {
-        supabaseClient.auth.signOut().then(function() {});
-    };
-
-    window.updateUI = function(user) {
-        var loginBtn = document.getElementById('loginBtn');
-        var logoutBtn = document.getElementById('logoutBtn');
-        var profileName = document.getElementById('profileName');
-        var profileRole = document.getElementById('profileRole');
-
-        if (user) {
-            loginBtn.classList.add('hidden');
-            logoutBtn.classList.remove('hidden');
-            profileName.textContent = user.email.split('@')[0]; 
-            profileRole.textContent = 'طالب مسجل ✅';
+async function handleSignup() {
+    var email = document.getElementById('emailInput').value;
+    var password = document.getElementById('passwordInput').value;
+    
+    if (!email || !password) { alert('يرجى ملء جميع الحقول'); return; }
+    if (!supabaseClient) { alert('المكتبة لم يتم تحميلها بعد، استنى ثانية وجرب.'); return; }
+    
+    showAuthMsg('جاري إنشاء الحساب...', false);
+    
+    try {
+        const { data, error } = await supabaseClient.auth.signUp({ email: email, password: password });
+        if (error) {
+            alert('إيرور: ' + error.message);
+            showAuthMsg('إيرور: ' + error.message, true);
         } else {
-            loginBtn.classList.remove('hidden');
-            logoutBtn.classList.add('hidden');
-            profileName.textContent = 'زائر (غير مسجل)';
-            profileRole.textContent = 'سجل دخولك لحفظ تقدمك';
+            alert('تم إنشاء الحساب بنجاح!');
+            showAuthMsg('تم إنشاء الحساب بنجاح!', false);
+            setTimeout(function() { closeAuthModal(); }, 1000);
         }
-    };
-
-    // الاستماع لحالة الدخول
-    supabaseClient.auth.onAuthStateChange(function(event, session) {
-        window.updateUI(session ? session.user : null);
-    });
-    supabaseClient.auth.getSession().then(function(res) {
-        if (res.data && res.data.session) window.updateUI(res.data.session.user);
-        else window.updateUI(null);
-    });
-
-    // جلب الكورسات
-    function fetchCourses() {
-        supabaseClient.from('courses').select('*').eq('is_published', true).then(function(res) {
-            if (!res.error && res.data && res.data.length > 0) {
-                var newCourses = [];
-                for(var i=0; i<res.data.length; i++) {
-                    var c = res.data[i];
-                    newCourses.push({ id: c.id, title: c.title, desc: c.description || 'لا يوجد وصف متاح', level: c.level || 'مبتدئ', pathId: c.path_id || 'all' });
-                }
-                courses = newCourses; 
-                if (typeof renderFeatured === 'function') renderFeatured(); 
-                if (typeof renderCourses === 'function') renderCourses();
-                document.getElementById('statCourses').textContent = courses.length;
-            }
-        }).catch(function(e) { console.log('Error fetching courses:', e); });
+    } catch (err) {
+        alert('مشكلة في الاتصال: ' + err.message);
+        showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
     }
+}
 
-    // ==========================================
-    // البيانات الأساسية والوظائف العامة
-    // ==========================================
-    var paths = [
-    {id:'basics',name:'أساسيات الأمن السيبراني',icon:'fa-shield-halved',level:'مبتدئ',desc:'المفاهيم الأساسية والتهديدات ومبادئ الحماية.',courses:['مقدمة الأمن السيبراني','إدارة الهوية وكلمات المرور','الخصوصية والأمان الرقمي']},
-    {id:'network',name:'أمن الشبكات',icon:'fa-network-wired',level:'مبتدئ — متوسط',desc:'تعلم الشبكات والبروتوكولات ومبادئ الدفاع.',courses:['أساسيات الشبكات','TCP/IP وDNS وHTTP','الجدران النارية ومراقبة الشبكات']},
-    {id:'web',name:'أمن تطبيقات الويب',icon:'fa-code',level:'متوسط',desc:'فهم جلسات الدخول والتحقق من المدخلات والثغرات الشائعة.',courses:['أساسيات HTTP وواجهات API','التحقق من المدخلات','مقدمة OWASP Top 10']},
-    {id:'ethical',name:'الاختراق الأخلاقي',icon:'fa-user-secret',level:'متوسط',desc:'منهجية اختبار مصرح بها وتوثيق النتائج وإصلاحها.',courses:['قواعد الاختبار المصرح','جمع المعلومات بشكل قانوني','كتابة تقرير الثغرات']},
-    {id:'defense',name:'الدفاع السيبراني وSOC',icon:'fa-binoculars',level:'متوسط',desc:'مراقبة الأحداث وتحليل السجلات والاستجابة للحوادث.',courses:['مقدمة SOC','قراءة سجلات الأنظمة','الاستجابة للحوادث']},
-    {id:'crypto',name:'التشفير وحماية البيانات',icon:'fa-key',level:'متوسط',desc:'التشفير والهاش والتوقيعات وإدارة المفاتيح.',courses:['مفاهيم التشفير','Hashing وDigital Signatures','إدارة المفاتيح']},
-    {id:'forensics',name:'التحليل الجنائي الرقمي',icon:'fa-magnifying-glass-chart',level:'متوسط',desc:'جمع الأدلة الرقمية وفهم الخط الزمني للحوادث.',courses:['مبادئ الأدلة الرقمية','تحليل السجلات','بناء خط زمني']},
-    {id:'cloud',name:'أمن السحابة وDevSecOps',icon:'fa-cloud',level:'متقدم',desc:'مبادئ تأمين الخدمات السحابية ودمج الأمن في التطوير.',courses:['مفاهيم أمن السحابة','إدارة الصلاحيات','مقدمة DevSecOps']},
-    {id:'malware',name:'تحليل البرمجيات الخبيثة',icon:'fa-bug',level:'متقدم',desc:'التعرف على السلوكيات الخطرة والتحليل النظري داخل بيئة معزولة.',courses:['أنواع البرمجيات الخبيثة','مؤشرات الاختراق','مبادئ التحليل الآمن']},
-    {id:'osint',name:'OSINT والاستخبارات المفتوحة',icon:'fa-magnifying-glass',level:'مبتدئ — متوسط',desc:'البحث والتحقق من المصادر العامة مع احترام الخصوصية والقانون.',courses:['تقييم المصادر','التحقق من المعلومات','أخلاقيات OSINT']},
-    {id:'linux',name:'Linux وPython للأمن',icon:'fa-terminal',level:'مبتدئ',desc:'أدوات أساسية لفهم الأنظمة والبرمجة وتحليل البيانات.',courses:['مقدمة Linux','أساسيات Python','معالجة النصوص والسجلات']},
-    {id:'incident',name:'إدارة المخاطر والاستجابة',icon:'fa-triangle-exclamation',level:'متوسط',desc:'تحديد المخاطر وترتيبها ووضع خطط الاستجابة والتعافي.',courses:['تقييم المخاطر','خطط الاستجابة','التعافي واستمرارية الأعمال']}
-    ];
-
-    var courses = [];
-    for (var i = 0; i < paths.length; i++) {
-        var p = paths[i];
-        for (var j = 0; j < p.courses.length; j++) {
-            courses.push({id: p.id + '-' + j, title: p.courses[j], desc: p.desc, level: p.level, pathId: p.id});
-        }
-    }
-
-    var glossary = [
-    ['Asset','أصل رقمي','جهاز أو نظام أو بيانات لها قيمة وتحتاج إلى حماية.'],['Threat','تهديد','شيء قد يسبب ضررًا لأصل أو نظام.'],['Vulnerability','ثغرة','نقطة ضعف في تصميم أو تنفيذ أو إعداد.'],['Risk','مخاطر','احتمال وقوع ضرر مع مراعاة أثره.'],['Firewall','جدار ناري','نظام يراقب حركة الشبكة ويسمح بها أو يمنعها وفق قواعد.'],['Encryption','تشفير','تحويل البيانات إلى صيغة لا تُقرأ دون المفتاح المناسب.'],['Hash','بصمة رقمية','ناتج دالة أحادية الاتجاه يستخدم للتحقق أو المقارنة.'],['MFA','مصادقة متعددة العوامل','استخدام أكثر من عامل للتحقق من الهوية.'],['Phishing','تصيد احتيالي','خداع المستخدم لدفعه لكشف معلومات أو تنفيذ إجراء.'],['Patch','تحديث إصلاحي','تحديث يعالج مشكلة أو ثغرة أو خطأ.'],['SOC','مركز عمليات الأمن','فريق أو مركز يراقب التنبيهات والأحداث الأمنية.'],['SIEM','إدارة معلومات وأحداث الأمن','منصة تجمع السجلات وتربط الأحداث لإنتاج تنبيهات.'],['CTF','التقاط العلم','تحديات تدريبية لحل ألغاز أمنية ضمن نطاق محدد.'],['Least Privilege','أقل صلاحية','منح الحد الأدنى من الأذونات اللازمة.'],['Incident Response','الاستجابة للحوادث','خطوات منظمة لاحتواء حادث أمني وتحليله والتعافي منه.'],['Zero-day','ثغرة غير معروفة أو غير معالَجة','ثغرة لا يتوفر لها إصلاح مناسب وقت استغلالها أو اكتشافها.']
-    ];
-
-    var quizQuestions = [
-    {q:'ما المقصود بالسرية في الأمن السيبراني؟',a:['إتاحة البيانات للجميع','وصول البيانات للمصرح لهم فقط','تسريع الشبكة','حذف النسخ الاحتياطية'],correct:1,why:'السرية تحد من الوصول إلى البيانات للأشخاص والأنظمة المصرح لهم.'},
-    {q:'أي بروتوكول يساعد في تشفير اتصال الويب؟',a:['HTTP وحده','FTP وحده','TLS ضمن اتصال HTTPS','DNS وحده'],correct:2,why:'يستخدم HTTPS بروتوكول TLS لحماية الاتصال عند إعداده بشكل صحيح.'},
-    {q:'ما أفضل ممارسة لتخزين كلمات المرور؟',a:['تخزينها كنص واضح','تشفيرها بمفتاح ثابت فقط','استخدام هاش مخصص لكلمات المرور مع salt','إرسالها بالبريد'],correct:2,why:'تستخدم خوارزميات مخصصة مثل Argon2 أو bcrypt مع salt فريد وإعدادات مناسبة.'},
-    {q:'ما معنى مبدأ أقل صلاحية؟',a:['إعطاء الجميع صلاحيات المدير','منح أقل قدر لازم من الصلاحيات','إلغاء كل الحسابات','استخدام كلمة مرور واحدة'],correct:1,why:'تقليل الصلاحيات يقلل الأثر المحتمل عند إساءة الاستخدام أو اختراق الحساب.'},
-    {q:'ماذا تفعل عند اكتشاف ثغرة في نظام لا تملكه؟',a:['تستغلها للتأكد','تنشر بيانات النظام','تلتزم بالنطاق المصرح وقناة الإفصاح المناسبة','تجرب كلمات مرور'],correct:2,why:'يجب الحصول على إذن واضح والالتزام بالنطاق والإبلاغ المسؤول.'}
-    ];
-
-    var currentQuiz = 0, score = 0, answered = false, selectedPath = 'all';
-    var completed = new Set(JSON.parse(localStorage.getItem('cyberCompleted') || '[]'));
-
-    window.pathCard = function(p) {
-        return '<div class="path-card" onclick="openPath(\'' + p.id + '\')"><i class="fa-solid ' + p.icon + '"></i><b>' + p.name + '</b><small>' + p.level + '</small></div>';
-    };
-
-    window.courseCard = function(c) {
-        var pct = completed.has(c.id) ? 100 : 0;
-        var cLevel = c.level || 'مبتدئ';
-        var cPathId = c.pathId || 'all';
-        var pathIcon = 'fa-shield-halved';
-        for (var k = 0; k < paths.length; k++) {
-            if (paths[k].id === cPathId) { pathIcon = paths[k].icon; break; }
-        }
-        
-        return '<article class="card"><div class="course-icon"><i class="fa-solid ' + pathIcon + '"></i></div>' +
-            '<div class="chips"><span class="chip">' + cLevel + '</span><span class="chip">كورس</span></div>' +
-            '<h3>' + c.title + '</h3><p>' + (c.desc || 'لا يوجد وصف') + '</p>' +
-            '<div class="progress"><span style="width:' + pct + '%"></span></div>' +
-            '<button class="primary" onclick="openCourse(\'' + c.id + '\')">' + (pct ? 'مراجعة' : 'ابدأ التعلم') + ' <i class="fa-solid fa-arrow-left"></i></button></article>';
-    };
-
-    window.renderPaths = function() {
-        var homeH = ''; for(var i=0; i<4; i++) homeH += window.pathCard(paths[i]);
-        document.getElementById('homePaths').innerHTML = homeH;
-        var allH = ''; for(var i=0; i<paths.length; i++) allH += window.pathCard(paths[i]);
-        document.getElementById('allPaths').innerHTML = allH;
-    };
-
-    window.renderCourses = function() {
-        var input = document.getElementById('courseSearch');
-        var q = input ? input.value.trim().toLowerCase() : '';
-        var filtered = [];
-        for (var i=0; i<courses.length; i++) {
-            var c = courses[i];
-            if ((selectedPath === 'all' || c.pathId === selectedPath) && (c.title + ' ' + c.desc).toLowerCase().indexOf(q) !== -1) {
-                filtered.push(c);
-            }
-        }
-        var h = filtered.length > 0 ? filtered.map(window.courseCard).join('') : '<div class="empty">مفيش كورسات مطابقة للبحث.</div>';
-        document.getElementById('courseGrid').innerHTML = h;
-    };
-
-    window.renderFeatured = function() {
-        var h = ''; for(var i=0; i<3; i++) h += window.courseCard(courses[i]);
-        document.getElementById('featuredCourses').innerHTML = h;
-    };
-
-    window.renderCourseTabs = function() {
-        var h = '<button class="tab ' + (selectedPath==='all'?'active':'') + '" onclick="setCoursePath(\'all\')">الكل</button>';
-        for (var i=0; i<paths.length; i++) {
-            h += '<button class="tab ' + (selectedPath===paths[i].id?'active':'') + '" onclick="setCoursePath(\'' + paths[i].id + '\')">' + paths[i].name + '</button>';
-        }
-        document.getElementById('courseTabs').innerHTML = h;
-    };
-
-    window.setCoursePath = function(id) { selectedPath = id; window.renderCourseTabs(); window.renderCourses(); };
-
-    window.openPath = function(id) {
-        var p = null; for (var i=0; i<paths.length; i++) if (paths[i].id === id) p = paths[i];
-        if(!p) return;
-        window.showSection('paths');
-        var h = ''; for (var i=0; i<courses.length; i++) if (courses[i].pathId === id) h += window.courseCard(courses[i]);
-        document.getElementById('pathDetails').innerHTML = '<div class="section-head"><div><h2>' + p.name + '</h2><p>' + p.desc + '</p></div><span class="chip">' + p.level + '</span></div><div class="grid">' + h + '</div>';
-        document.getElementById('pathDetails').scrollIntoView({behavior:'smooth',block:'start'});
-    };
-
-    window.openCourse = function(id) {
-        window.open('https://www.youtube.com/@SecureTheHumans', '_blank');
-    };
-
-    window.renderQuiz = function() {
-        var q = quizQuestions[currentQuiz], box = document.getElementById('quizBox'); answered = false;
-        var answersH = ''; for (var i=0; i<q.a.length; i++) answersH += '<button class="answer" onclick="answerQuiz(' + i + ')">' + ['أ','ب','ج','د'][i] + '. ' + q.a[i] + '</button>';
-        box.innerHTML = '<div class="eyebrow">السؤال ' + (currentQuiz+1) + ' من ' + quizQuestions.length + '</div>' +
-        '<div class="progress"><span style="width:' + ((currentQuiz+1)/quizQuestions.length*100) + '%"></span></div>' +
-        '<div class="quiz-question">' + q.q + '</div><div class="answers">' + answersH + '</div><div id="quizFeedback"></div>' +
-        '<div style="display:flex;justify-content:space-between;gap:10px;margin-top:15px"><span style="color:var(--muted);font-size:12px">النتيجة: ' + score + ' صحيحة</span><button id="nextQuiz" class="primary hidden" onclick="nextQuestion()">' + (currentQuiz===quizQuestions.length-1?'إنهاء الاختبار':'السؤال التالي') + ' ←</button></div>';
-    };
-
-    window.answerQuiz = function(i) {
-        if(answered) return; answered = true; var q = quizQuestions[currentQuiz];
-        var buttons = document.querySelectorAll('.answer'); buttons[q.correct].classList.add('correct');
-        if(i === q.correct) { score++; document.getElementById('statScore').textContent = score; } else { buttons[i].classList.add('wrong'); }
-        document.getElementById('quizFeedback').innerHTML = '<div class="feedback">' + (i===q.correct?'إجابة صحيحة!':'الإجابة الصحيحة: ' + q.a[q.correct]) + '<br>' + q.why + '</div>';
-        document.getElementById('nextQuiz').classList.remove('hidden');
-    };
-
-    window.nextQuestion = function() {
-        if(currentQuiz < quizQuestions.length-1) { currentQuiz++; window.renderQuiz(); }
-        else { document.getElementById('quizBox').innerHTML = '<div class="course-icon"><i class="fa-solid fa-trophy"></i></div><h2>خلصت الاختبار!</h2><p>إجاباتك الصحيحة: ' + score + ' من ' + quizQuestions.length + '</p><div class="progress"><span style="width:' + (score/quizQuestions.length*100) + '%"></span></div><button class="primary" onclick="currentQuiz=0;score=0;renderQuiz()">إعادة الاختبار</button>'; }
-    };
-
-    window.renderGlossary = function() {
-        var input = document.getElementById('glossarySearch'); var q = input ? input.value.toLowerCase() : ''; var h = '';
-        for(var i=0; i<glossary.length; i++) if (glossary[i].join(' ').toLowerCase().indexOf(q) !== -1) h += '<div class="card"><div class="eyebrow">' + glossary[i][0] + '</div><h3>' + glossary[i][1] + '</h3><p>' + glossary[i][2] + '</p></div>';
-        document.getElementById('glossaryGrid').innerHTML = h || '<div class="empty">مفيش مصطلحات مطابقة.</div>';
-    };
-
-    var challenges = [{title:'تحدي الهاش',desc:'حدد لماذا لا يُعد الهاش تشفيرًا قابلًا للفك.',hint:'فكر في الفرق بين دالة أحادية الاتجاه وخوارزمية تستخدم مفتاحًا.'},{title:'تحليل سجل دخول',desc:'راجع سجلًا تدريبيًا وحدد الحدث الذي يحتاج إلى مراجعة.',hint:'تكرار محاولات فاشلة في وقت قصير قد يستحق التحقيق، لكنه لا يثبت وحده وجود اختراق.'},{title:'اكتشاف رابط مشبوه',desc:'تعلم مؤشرات التصيد قبل فتح أي رابط.',hint:'افحص اسم النطاق، والسياق، والأخطاء الإملائية، واطلب تأكيدًا من مرسل موثوق.'}];
-    window.renderChallenges = function() { var h = ''; for(var i=0; i<challenges.length; i++) h += '<div class="card"><div class="course-icon"><i class="fa-solid fa-flag"></i></div><h3>' + challenges[i].title + '</h3><p>' + challenges[i].desc + '</p><button class="secondary" onclick="challengeHint(' + i + ')">عرض تلميح</button><p id="hint' + i + '" class="hidden" style="margin-top:12px;color:#ff9aa8">' + challenges[i].hint + '</p></div>'; document.getElementById('challengeGrid').innerHTML = h; }
-    window.challengeHint = function(i){ document.getElementById('hint'+i).classList.toggle('hidden'); }
-
-    window.renderRoadmap = function() {
-        var stages = [['1','الأساسيات','مفاهيم الأمن والخصوصية وأنظمة التشغيل'],['2','الشبكات','IP وDNS وHTTP ومبادئ TCP/IP'],['3','Linux وPython','الطرفية والبرمجة وتحليل النصوص'],['4','اختار تخصصًا','ويب أو دفاع سيبراني أو شبكات أو تحليل رقمي'],['5','تدريب آمن','مختبرات قانونية وتحديات CTF تعليمية'],['6','ملف أعمال','تقارير توثيقية ومشروعات دفاعية آمنة']];
-        var h = ''; for(var i=0; i<stages.length; i++) h += '<div class="lesson"><div class="lesson-num">' + stages[i][0] + '</div><div><b>' + stages[i][1] + '</b><p>' + stages[i][2] + '</p></div></div>';
-        document.getElementById('roadmapList').innerHTML = h;
-    };
-
-    window.showSection = function(id) {
-        var views = document.querySelectorAll('.view'); for(var i=0; i<views.length; i++) { if(views[i].id === id) views[i].classList.remove('hidden'); else views[i].classList.add('hidden'); }
-        var links = document.querySelectorAll('.side-link'); for(var i=0; i<links.length; i++) { if(links[i].getAttribute('data-section') === id) links[i].classList.add('active'); else links[i].classList.remove('active'); }
-        var navs = document.querySelectorAll('[data-nav]'); for(var i=0; i<navs.length; i++) { if(navs[i].getAttribute('data-nav') === id) navs[i].classList.add('active'); else navs[i].classList.remove('active'); }
-        document.getElementById('sidebar').classList.remove('open'); if(id === 'quiz' && !answered) window.renderQuiz(); window.scrollTo({top:0,behavior:'smooth'});
-    };
-
-    window.toggleMenu = function(){ document.getElementById('sidebar').classList.toggle('open'); };
-
-    // التشغيل الأولي
-    window.renderPaths(); window.renderCourseTabs(); window.renderCourses(); window.renderQuiz(); window.renderGlossary(); window.renderChallenges(); window.renderRoadmap();
-    document.getElementById('statDone').textContent = Math.min(100, Math.round(completed.size/12*100)) + '%';
+async function handleLogin() {
+    var email = document.getElementById('emailInput').value;
+    var password = document.getElementById('passwordInput').value;
     
-    // بدء جلب الكورسات
-    fetchCourses();
+    if (!email || !password) { alert('يرجى ملء جميع الحقول'); return; }
+    if (!supabaseClient) { alert('المكتبة لم يتم تحميلها بعد، استنى ثانية وجرب.'); return; }
+    
+    showAuthMsg('جاري تسجيل الدخول...', false);
+    
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email: email, password: password });
+        if (error) {
+            alert('إيرور: ' + error.message);
+            showAuthMsg('إيرور: ' + error.message, true);
+        } else {
+            alert('تم تسجيل الدخول بنجاح!');
+            showAuthMsg('تم تسجيل الدخول بنجاح!', false);
+            setTimeout(function() { closeAuthModal(); }, 1000);
+        }
+    } catch (err) {
+        alert('مشكلة في الاتصال: ' + err.message);
+        showAuthMsg('مشكلة في الاتصال: ' + err.message, true);
+    }
+}
+
+function handleLogout() {
+    if(supabaseClient) supabaseClient.auth.signOut().then(function() {});
+}
+
+function updateUI(user) {
+    var loginBtn = document.getElementById('loginBtn');
+    var logoutBtn = document.getElementById('logoutBtn');
+    var profileName = document.getElementById('profileName');
+    var profileRole = document.getElementById('profileRole');
+
+    if (user) {
+        loginBtn.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
+        profileName.textContent = user.email.split('@')[0]; 
+        profileRole.textContent = 'طالب مسجل ✅';
+    } else {
+        loginBtn.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
+        profileName.textContent = 'زائر (غير مسجل)';
+        profileRole.textContent = 'سجل دخولك لحفظ تقدمك';
+    }
+}
+
+function fetchCoursesFromSupabase() {
+    if (!supabaseClient) return;
+    supabaseClient.from('courses').select('*').eq('is_published', true).then(function(res) {
+        if (!res.error && res.data && res.data.length > 0) {
+            var newCourses = [];
+            for(var i=0; i<res.data.length; i++) {
+                var c = res.data[i];
+                newCourses.push({ id: c.id, title: c.title, desc: c.description || 'لا يوجد وصف متاح', level: c.level || 'مبتدئ', pathId: c.path_id || 'all' });
+            }
+            courses = newCourses; 
+            if (typeof renderFeatured === 'function') renderFeatured(); 
+            if (typeof renderCourses === 'function') renderCourses();
+            document.getElementById('statCourses').textContent = courses.length;
+        }
+    }).catch(function(e) { console.log('Error fetching courses:', e); });
+}
 </script>
 </body>
 </html>
