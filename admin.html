@@ -16,38 +16,28 @@
         .delete-btn { background: #555; width: auto; padding: 5px 15px; font-size: 14px; margin: 0;}
         .delete-btn:hover { background: red; }
 
-        /* نافذة تسجيل الدخول */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 9, 13, 0.95); display: flex; justify-content: center; align-items: center; z-index: 1000; }
         .login-box { background: #15161d; padding: 30px; border-radius: 15px; border: 1px solid #ff304b; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 0 20px rgba(255, 48, 75, 0.2); }
         .login-box h2 { color: #ff304b; margin-top: 0; margin-bottom: 20px; font-size: 24px; }
         
-        /* تصميم خانة الباسورد وزرار العين */
         .pass-wrapper { position: relative; width: 100%; margin-bottom: 10px; }
         .pass-wrapper input { padding-left: 50px; text-align: center; font-size: 18px; margin: 0; height: 45px;}
         
-        /* زرار العين */
-        .eye-btn { 
-            position: absolute; left: 5px; top: 5px; bottom: 5px; width: 40px; 
-            background: transparent; border: none; color: #9a9ba8; 
-            font-size: 20px; cursor: pointer; padding: 0; margin: 0;
-            display: flex; justify-content: center; align-items: center;
-        }
+        .eye-btn { position: absolute; left: 5px; top: 5px; bottom: 5px; width: 40px; background: transparent; border: none; color: #9a9ba8; font-size: 20px; cursor: pointer; padding: 0; margin: 0; display: flex; justify-content: center; align-items: center;}
         .eye-btn:hover { background: rgba(255,255,255,0.05); }
-        
         .error-msg { background: #ff304b; color: white; font-size: 14px; padding: 10px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold;}
     </style>
 </head>
 <body>
 
-    <!-- نافذة تسجيل الدخول -->
     <div id="loginModal" class="modal-overlay">
         <div class="login-box">
             <h2>👑 لوحة تحكم المدير</h2>
             <p style="color:#9a9ba8; margin-bottom:15px;">أدخل كلمة المرور للدخول</p>
             
             <div class="pass-wrapper">
-                <!-- autocomplete="new-password" بتمنع المتصفح يحط باسورد لوحده -->
-                <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور" autocomplete="new-password">
+                <!-- type="text" مبدئياً عشان لو المتصفح عمل أوتوفيل تبان -->
+                <input type="text" id="adminPassword" placeholder="أدخل كلمة المرور" autocomplete="off">
                 <button type="button" class="eye-btn" id="eyeToggle" onclick="togglePassword()">👁️</button>
             </div>
             
@@ -56,7 +46,6 @@
         </div>
     </div>
 
-    <!-- لوحة التحكم -->
     <div class="container" id="adminContent">
         <h1>لوحة تحكم المدير</h1>
         
@@ -76,6 +65,94 @@
         <div id="courseList"></div>
     </div>
 
-    <script src="admin.js"></script>
+    <script>
+        // إظهار وإخفاء الباسورد
+        function togglePassword() {
+            let input = document.getElementById('adminPassword');
+            let btn = document.getElementById('eyeToggle');
+            
+            if (input.type === "text") {
+                input.type = "password";
+                btn.innerHTML = "🙈";
+            } else {
+                input.type = "text";
+                btn.innerHTML = "👁️";
+            }
+        }
+
+        // التحقق من الباسورد
+        function checkPassword() {
+            let pass = document.getElementById('adminPassword').value;
+            
+            // .trim() بتشيل أي مسافات مخفية
+            if (pass.trim() === "MinaAdmin2026") {
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+                renderAdminList(); 
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
+        // باقي دوال لوحة التحكم
+        let localCourses = JSON.parse(localStorage.getItem('customCourses')) || [];
+
+        function renderAdminList() {
+            let list = document.getElementById('courseList');
+            if(!list) return;
+            list.innerHTML = '';
+            if(localCourses.length === 0) {
+                list.innerHTML = '<p style="color:#777;">لا توجد كورسات مضافة حتى الآن.</p>';
+                return;
+            }
+            localCourses.forEach((course, index) => {
+                list.innerHTML += `
+                    <div class="course-item">
+                        <div>
+                            <strong style="color:#ff304b;">${course.title}</strong> <br>
+                            <small style="color:#9a9ba8;">${course.level} - ${course.desc}</small>
+                        </div>
+                        <button class="delete-btn" onclick="deleteCourse(${index})">حذف</button>
+                    </div>
+                `;
+            });
+        }
+
+        function addCourse() {
+            let title = document.getElementById('courseTitle').value;
+            let desc = document.getElementById('courseDesc').value;
+            let level = document.getElementById('courseLevel').value;
+
+            if (!title || !desc) {
+                alert("يرجى ملء جميع الحقول!");
+                return;
+            }
+
+            let newCourse = {
+                id: "custom-" + Date.now(),
+                title: title,
+                desc: desc,
+                level: level,
+                pathId: "basics"
+            };
+
+            localCourses.push(newCourse);
+            localStorage.setItem('customCourses', JSON.stringify(localCourses));
+            
+            document.getElementById('courseTitle').value = '';
+            document.getElementById('courseDesc').value = '';
+            
+            renderAdminList();
+            alert("تم إضافة الكورس بنجاح!");
+        }
+
+        function deleteCourse(index) {
+            if(confirm("هل أنت متأكد من حذف هذا الكورس؟")) {
+                localCourses.splice(index, 1);
+                localStorage.setItem('customCourses', JSON.stringify(localCourses));
+                renderAdminList();
+            }
+        }
+    </script>
 </body>
 </html>
