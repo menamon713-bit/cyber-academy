@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>لوحة تحكم المدير | Cyber Academy</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- مكتبة الأيقونات عشان زرار العين -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
     <style>
         body { font-family: 'Cairo', sans-serif; background: #08090d; color: white; padding: 20px; }
         .container { max-width: 800px; margin: auto; background: #15161d; padding: 25px; border-radius: 15px; border: 1px solid #282a34; display: none; }
@@ -20,24 +23,35 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 9, 13, 0.95); display: flex; justify-content: center; align-items: center; z-index: 1000; }
         .login-box { background: #15161d; padding: 30px; border-radius: 15px; border: 1px solid #ff304b; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 0 20px rgba(255, 48, 75, 0.2); }
         .login-box h2 { color: #ff304b; margin-top: 0; margin-bottom: 20px; font-size: 24px; }
-        .login-box input { text-align: center; font-size: 18px; letter-spacing: 2px; }
-        .error-msg { color: #ff304b; font-size: 14px; margin-top: 10px; display: none; }
+        
+        /* تصميم خانة الباسورد وزرار العين */
+        .pass-container { position: relative; width: 100%; margin-bottom: 10px; }
+        .pass-container input { padding-left: 40px; text-align: center; font-size: 18px; margin: 0; }
+        .eye-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9a9ba8; cursor: pointer; font-size: 18px; }
+        
+        .error-msg { color: #ff304b; font-size: 14px; margin-top: 5px; display: none; }
     </style>
 </head>
 <body>
 
-    <!-- نافذة تسجيل الدخول (تظهر أولاً) -->
+    <!-- نافذة تسجيل الدخول -->
     <div id="loginModal" class="modal-overlay">
         <div class="login-box">
             <h2>👑 لوحة تحكم المدير</h2>
             <p style="color:#9a9ba8; margin-bottom:15px;">أدخل كلمة المرور للدخول</p>
-            <input type="password" id="adminPassword" placeholder="••••••••">
+            
+            <div class="pass-container">
+                <input type="password" id="adminPassword" placeholder="••••••••">
+                <!-- أيقونة العين -->
+                <i class="fa-solid fa-eye eye-icon" id="eyeToggle" onclick="togglePassword()"></i>
+            </div>
+            
             <p id="loginError" class="error-msg">كلمة المرور خاطئة!</p>
             <button onclick="checkPassword()">دخول</button>
         </div>
     </div>
 
-    <!-- المحتوى الأساسي (مخفي لحد ما يدخل) -->
+    <!-- لوحة التحكم -->
     <div class="container" id="adminContent">
         <h1>لوحة تحكم المدير</h1>
         
