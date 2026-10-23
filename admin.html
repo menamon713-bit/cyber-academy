@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; background: #08090d; color: white; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: #15161d; padding: 25px; border-radius: 15px; border: 1px solid #282a34; }
+        .container { max-width: 800px; margin: auto; background: #15161d; padding: 25px; border-radius: 15px; border: 1px solid #282a34; display: none; }
         h1 { color: #ff304b; text-align: center; }
         input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; background: #101116; border: 1px solid #282a34; color: white; border-radius: 8px; font-family: inherit; box-sizing: border-box;}
         button { background: #ff304b; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; margin-top: 10px;}
@@ -15,11 +15,31 @@
         .course-item { background: #101116; border: 1px solid #282a34; padding: 15px; margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;}
         .delete-btn { background: #555; width: auto; padding: 5px 15px; font-size: 14px; margin: 0;}
         .delete-btn:hover { background: red; }
+
+        /* تصميم نافذة تسجيل الدخول */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 9, 13, 0.95); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .login-box { background: #15161d; padding: 30px; border-radius: 15px; border: 1px solid #ff304b; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 0 20px rgba(255, 48, 75, 0.2); }
+        .login-box h2 { color: #ff304b; margin-top: 0; margin-bottom: 20px; font-size: 24px; }
+        .login-box input { text-align: center; font-size: 18px; letter-spacing: 2px; }
+        .error-msg { color: #ff304b; font-size: 14px; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>👑 لوحة تحكم المدير</h1>
+
+    <!-- نافذة تسجيل الدخول (تظهر أولاً) -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="login-box">
+            <h2>👑 لوحة تحكم المدير</h2>
+            <p style="color:#9a9ba8; margin-bottom:15px;">أدخل كلمة المرور للدخول</p>
+            <input type="password" id="adminPassword" placeholder="••••••••">
+            <p id="loginError" class="error-msg">كلمة المرور خاطئة!</p>
+            <button onclick="checkPassword()">دخول</button>
+        </div>
+    </div>
+
+    <!-- المحتوى الأساسي (مخفي لحد ما يدخل) -->
+    <div class="container" id="adminContent">
+        <h1>لوحة تحكم المدير</h1>
         
         <h3>إضافة كورس جديد</h3>
         <input type="text" id="courseTitle" placeholder="اسم الكورس (مثال: أساسيات الأمن)">
