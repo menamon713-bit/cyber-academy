@@ -20,6 +20,11 @@
         .msg.success { background: rgba(69, 212, 131, 0.2); color: #45d483; display: block; }
         .hidden { display: none; }
         .back-link { display: block; text-align: center; margin-top: 15px; color: #9a9ba8; text-decoration: none; font-size: 14px;}
+        
+        /* تنسيق زرار العين */
+        .pass-wrapper { position: relative; }
+        .pass-wrapper input { padding-left: 40px; }
+        .eye-btn { position: absolute; left: 5px; top: 8px; background: transparent; border: none; color: #9a9ba8; cursor: pointer; width: auto; margin: 0; padding: 5px; font-size: 18px;}
     </style>
 </head>
 <body>
@@ -34,8 +39,16 @@
         <div id="loginForm">
             <h2>أهلاً بعودتك 👋</h2>
             <input type="email" id="loginEmail" placeholder="البريد الإلكتروني">
-            <input type="password" id="loginPassword" placeholder="كلمة المرور">
+            
+            <div class="pass-wrapper">
+                <input type="password" id="loginPassword" placeholder="كلمة المرور">
+                <button type="button" class="eye-btn" id="eyeLogin">👁️</button>
+            </div>
+            
             <button id="loginBtn">دخول</button>
+            <div style="text-align: center; margin-top: 10px;">
+                <a href="#" id="forgotPassLink" style="color: #ff304b; font-size: 13px; text-decoration: none;">نسيت كلمة المرور؟</a>
+            </div>
         </div>
 
         <!-- فورم إنشاء حساب -->
@@ -43,8 +56,29 @@
             <h2>إنشاء حساب جديد 🚀</h2>
             <input type="text" id="regUsername" placeholder="اسم المستخدم">
             <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
-            <input type="password" id="regPassword" placeholder="كلمة المرور">
+            
+            <div class="pass-wrapper">
+                <input type="password" id="regPassword" placeholder="كلمة المرور">
+                <button type="button" class="eye-btn" id="eyeReg">👁️</button>
+            </div>
+            
             <button id="registerBtn">إنشاء الحساب</button>
+        </div>
+
+        <!-- فورم استعادة كلمة المرور -->
+        <div id="resetForm" class="hidden">
+            <h2>استعادة الحساب 🔐</h2>
+            <input type="email" id="resetEmail" placeholder="البريد الإلكتروني المسجل">
+            
+            <div class="pass-wrapper">
+                <input type="password" id="resetNewPassword" placeholder="كلمة المرور الجديدة">
+                <button type="button" class="eye-btn" id="eyeReset">👁️</button>
+            </div>
+            
+            <button id="resetBtn">تغيير كلمة المرور</button>
+            <div style="text-align: center; margin-top: 10px;">
+                <a href="#" id="backToLoginLink" style="color: #9a9ba8; font-size: 13px; text-decoration: none;">العودة لتسجيل الدخول</a>
+            </div>
         </div>
 
         <div id="msgBox" class="msg"></div>
