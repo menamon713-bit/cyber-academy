@@ -36,13 +36,12 @@
             <p style="color:#9a9ba8; margin-bottom:15px;">أدخل كلمة المرور للدخول</p>
             
             <div class="pass-wrapper">
-                <!-- type="text" مبدئياً عشان لو المتصفح عمل أوتوفيل تبان -->
-                <input type="text" id="adminPassword" placeholder="أدخل كلمة المرور" autocomplete="off">
-                <button type="button" class="eye-btn" id="eyeToggle" onclick="togglePassword()">👁️</button>
+                <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور" autocomplete="off">
+                <button type="button" class="eye-btn" id="eyeToggle">👁️</button>
             </div>
             
             <p id="loginError" class="error-msg">كلمة المرور خاطئة!</p>
-            <button onclick="checkPassword()">دخول</button>
+            <button id="loginBtn">دخول</button>
         </div>
     </div>
 
@@ -57,7 +56,7 @@
             <option value="متوسط">متوسط</option>
             <option value="متقدم">متقدم</option>
         </select>
-        <button onclick="addCourse()">إضافة الكورس للموقع</button>
+        <button id="addCourseBtn">إضافة الكورس للموقع</button>
 
         <hr style="border-color: #282a34; margin: 30px 0;">
         
@@ -66,36 +65,41 @@
     </div>
 
     <script>
-        // إظهار وإخفاء الباسورد
-        function togglePassword() {
+        // --- 1. دوال إظهار/إخفاء الباسورد ---
+        document.getElementById('eyeToggle').addEventListener('click', function() {
             let input = document.getElementById('adminPassword');
-            let btn = document.getElementById('eyeToggle');
-            
-            if (input.type === "text") {
-                input.type = "password";
-                btn.innerHTML = "🙈";
-            } else {
+            if (input.type === "password") {
                 input.type = "text";
-                btn.innerHTML = "👁️";
+                this.innerHTML = "🙈";
+            } else {
+                input.type = "password";
+                this.innerHTML = "👁️";
             }
-        }
+        });
 
-        // التحقق من الباسورد
-        function checkPassword() {
+        // --- 2. دالة تسجيل الدخول ---
+        document.getElementById('loginBtn').addEventListener('click', function() {
             let pass = document.getElementById('adminPassword').value;
             
-            // .trim() بتشيل أي مسافات مخفية
-            if (pass.trim() === "MinaAdmin2026") {
+            // مسح المسافات الزايدة
+            pass = pass.trim(); 
+
+            if (pass === "MinaAdmin2026") {
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('adminContent').style.display = 'block';
                 renderAdminList(); 
             } else {
                 document.getElementById('loginError').style.display = 'block';
             }
-        }
+        });
 
-        // باقي دوال لوحة التحكم
-        let localCourses = JSON.parse(localStorage.getItem('customCourses')) || [];
+        // --- 3. دوال إدارة الكورسات ---
+        let localCourses = [];
+        try {
+            localCourses = JSON.parse(localStorage.getItem('customCourses')) || [];
+        } catch(e) {
+            console.log("Local storage error");
+        }
 
         function renderAdminList() {
             let list = document.getElementById('courseList');
@@ -118,7 +122,7 @@
             });
         }
 
-        function addCourse() {
+        document.getElementById('addCourseBtn').addEventListener('click', function() {
             let title = document.getElementById('courseTitle').value;
             let desc = document.getElementById('courseDesc').value;
             let level = document.getElementById('courseLevel').value;
@@ -144,7 +148,7 @@
             
             renderAdminList();
             alert("تم إضافة الكورس بنجاح!");
-        }
+        });
 
         function deleteCourse(index) {
             if(confirm("هل أنت متأكد من حذف هذا الكورس؟")) {
