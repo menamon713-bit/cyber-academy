@@ -10,10 +10,7 @@ export default async function handler(req, res) {
     // 1. GET: جلب الكورسات
     if (req.method === 'GET') {
         try {
-            const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest?t=${Date.now()}`, { 
-                headers,
-                cache: 'no-store' 
-            });
+            const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest?t=${Date.now()}`, { headers, cache: 'no-store' });
             const data = await response.json();
             res.status(200).json(data.record || []);
         } catch (error) {
@@ -46,20 +43,15 @@ export default async function handler(req, res) {
     // 3. DELETE: حذف كورس
     else if (req.method === 'DELETE') {
         try {
-            const courseId = req.query.id; // بناخد الـ ID من الرابط
-            if (!courseId) {
-                return res.status(400).json({ error: "Course ID is required" });
-            }
+            const courseId = req.query.id;
+            if (!courseId) return res.status(400).json({ error: "Course ID is required" });
 
-            // بنجيب الكورسات الحالية
             const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest?t=${Date.now()}`, { headers, cache: 'no-store' });
             const getData = await getResponse.json();
             let currentCourses = getData.record || [];
 
-            // بنفلتر ونشيل الكورس اللي عايزين نمسحه
             const updatedCourses = currentCourses.filter(course => course.id !== courseId);
 
-            // بنحفظ المصفوفة الجديدة
             await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                 method: 'PUT',
                 headers: headers,
@@ -70,8 +62,36 @@ export default async function handler(req, res) {
         } catch (error) {
             res.status(500).json({ error: "Failed to delete course" });
         }
+    }
+    
+    // 4. PUT: تعديل كورس موجود
+    else if (req.method === 'PUT') {
+        try {
+            const courseId = req.query.id;
+            const updatedCourseData = req.body;
+            if (!courseId) return res.status(400).json({ error: "Course ID is required" });
+
+            const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest?t=${Date.now()}`, { headers, cache: 'no-store' });
+            const getData = await getResponse.json();
+            let currentCourses = getData.record || [];
+
+            // بنعدل الكورس اللي ليه نفس الـ ID
+            const updatedCourses = currentCourses.map(course => 
+                course.id === courseId ? { ...course, ...updatedCourseData } : course
+            );
+
+            await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: 'PUT',
+                headers: headers,
+                body: JSON.stringify(updatedCourses)
+            });
+
+            res.status(200).json({ status: "success", message: "Course updated successfully" });
+        } catch (error) {
+            res.status(500).json({ error: "Failed to update course" });
+        }
     } else {
-        res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
+        res.setHeader('Allow', ['GET', 'POST', 'DELETE', 'PUT']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
