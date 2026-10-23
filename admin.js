@@ -24,22 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pass === "MinaAdmin2026") {
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('adminContent').style.display = 'block';
-                renderAdminList(); 
+                loadAdminCourses(); // بنجيب الكورسات من السيرفر
             } else {
                 document.getElementById('loginError').style.display = 'block';
             }
         });
     }
 
-    // 3. إدارة الكورسات
-    let localCourses = [];
-    try {
-        localCourses = JSON.parse(localStorage.getItem('customCourses')) || [];
-    } catch(e) {}
-
+    // 3. إضافة كورس جديد (للسيرفر)
     const addCourseBtn = document.getElementById('addCourseBtn');
     if(addCourseBtn) {
-        addCourseBtn.addEventListener('click', function() {
+        addCourseBtn.addEventListener('click', async function() {
             let title = document.getElementById('courseTitle').value;
             let desc = document.getElementById('courseDesc').value;
             let level = document.getElementById('courseLevel').value;
@@ -57,48 +52,68 @@ document.addEventListener('DOMContentLoaded', () => {
                 pathId: "basics"
             };
 
-            localCourses.push(newCourse);
-            localStorage.setItem('customCourses', JSON.stringify(localCourses));
-            
-            document.getElementById('courseTitle').value = '';
-            document.getElementById('courseDesc').value = '';
-            
-            renderAdminList();
-            alert("تم إضافة الكورس بنجاح!");
+            // بنبعت الكورس للـ API
+            try {
+                this.innerText = "جاري الإضافة...";
+                this.disabled = true;
+                
+                const response = await fetch('/api/courses', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newCourse)
+                });
+
+                if (response.ok) {
+                    document.getElementById('courseTitle').value = '';
+                    document.getElementById('courseDesc').value = '';
+                    alert("تم إضافة الكورس للسيرفر بنجاح!");
+                    loadAdminCourses(); // تحديث القائمة
+                } else {
+                    alert("حدث خطأ أثناء الإضافة.");
+                }
+            } catch (error) {
+                alert("خطأ في الاتصال بالسيرفر.");
+            } finally {
+                this.innerText = "إضافة الكورس للموقع";
+                this.disabled = false;
+            }
         });
     }
 });
 
-// دوال العرض (برة الـ DOMContentLoaded عشان تكون متاحة)
-function renderAdminList() {
+// دالة جلب الكورسات من السيرفر
+async function loadAdminCourses() {
     let list = document.getElementById('courseList');
     if(!list) return;
-    list.innerHTML = '';
+    list.innerHTML = '<p style="color:#777;">جاري تحميل الكورسات...</p>';
     
-    let localCourses = JSON.parse(localStorage.getItem('customCourses')) || [];
-    
-    if(localCourses.length === 0) {
-        list.innerHTML = '<p style="color:#777;">لا توجد كورسات مضافة حتى الآن.</p>';
-        return;
-    }
-    localCourses.forEach((course, index) => {
-        list.innerHTML += `
-            <div class="course-item">
-                <div>
-                    <strong style="color:#ff304b;">${course.title}</strong> <br>
-                    <small style="color:#9a9ba8;">${course.level} - ${course.desc}</small>
+    try {
+        const response = await fetch('/api/courses');
+        const courses = await response.json();
+        
+        list.innerHTML = '';
+        if(courses.length === 0) {
+            list.innerHTML = '<p style="color:#777;">لا توجد كورسات مضافة حتى الآن.</p>';
+            return;
+        }
+        
+        courses.forEach((course, index) => {
+            list.innerHTML += `
+                <div class="course-item">
+                    <div>
+                        <strong style="color:#ff304b;">${course.title}</strong> <br>
+                        <small style="color:#9a9ba8;">${course.level} - ${course.desc}</small>
+                    </div>
+                    <button class="delete-btn" onclick="deleteCourse(${index})">حذف</button>
                 </div>
-                <button class="delete-btn" onclick="deleteCourse(${index})">حذف</button>
-            </div>
-        `;
-    });
+            `;
+        });
+    } catch (error) {
+        list.innerHTML = '<p style="color:red;">فشل الاتصال بالسيرفر.</p>';
+    }
 }
 
+// دالة الحذف (مبدئياً هنخليها تحذف من الواجهة بس لحد ما نعمل API للحذف)
 function deleteCourse(index) {
-    if(confirm("هل أنت متأكد من حذف هذا الكورس؟")) {
-        let localCourses = JSON.parse(localStorage.getItem('customCourses')) || [];
-        localCourses.splice(index, 1);
-        localStorage.setItem('customCourses', JSON.stringify(localCourses));
-        renderAdminList();
-    }
+    alert("خاصية الحذف من السيرفر هتتضاف في التحديث القادم!");
 }
