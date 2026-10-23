@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+// 🛡️ إعدادات الحماية
 const rateLimitMap = new Map();
-const WINDOW_MS = 60 * 60 * 1000;
+const WINDOW_MS = 60 * 60 * 1000; // ساعة
 const MAX_REQUESTS = 50;
 
 const connectDB = async () => {
@@ -22,11 +23,12 @@ const User = mongoose.models.User || mongoose.model('User', UserSchema);
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: "Method not allowed" });
 
+    // 🛡️ فحص عدد الطلبات
     const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
     const now = Date.now();
     if (!rateLimitMap.has(ip)) rateLimitMap.set(ip, []);
     const requests = rateLimitMap.get(ip).filter(t => now - t < WINDOW_MS);
-    if (requests.length >= MAX_REQUESTS) return res.status(429).json({ error: "تجاوزت الحد الأقصى للطلبات. حاول لاحقاً." });
+    if (requests.length >= MAX_REQUESTS) return res.status(429).json({ error: "تجاوزت الحد الأقصى للطلبات (50 طلب/ساعة)." });
     requests.push(now);
     rateLimitMap.set(ip, requests);
 
