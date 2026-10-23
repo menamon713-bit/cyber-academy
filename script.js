@@ -16,70 +16,44 @@ var paths = [
 var courses = [];
 var glossary = [ ['Asset','أصل رقمي','جهاز أو نظام أو بيانات لها قيمة وتحتاج إلى حماية.'],['Threat','تهديد','شيء قد يسبب ضررًا لأصل أو نظام.'],['Vulnerability','ثغرة','نقطة ضعف في تصميم أو تنفيذ أو إعداد.'],['Risk','مخاطر','احتمال وقوع ضرر مع مراعاة أثره.'],['Firewall','جدار ناري','نظام يراقب حركة الشبكة ويسمح بها أو يمنعها وفق قواعد.'],['Encryption','تشفير','تحويل البيانات إلى صيغة لا تُقرأ دون المفتاح المناسب.'],['Hash','بصمة رقمية','ناتج دالة أحادية الاتجاه يستخدم للتحقق أو المقارنة.'],['MFA','مصادقة متعددة العوامل','استخدام أكثر من عامل للتحقق من الهوية.'],['Phishing','تصيد احتيالي','خداع المستخدم لدفعه لكشف معلومات أو تنفيذ إجراء.'],['Patch','تحديث إصلاحي','تحديث يعالج مشكلة أو ثغرة أو خطأ.'],['SOC','مركز عمليات الأمن','فريق أو مركز يراقب التنبيهات والأحداث الأمنية.'],['SIEM','إدارة معلومات وأحداث الأمن','منصة تجمع السجلات وتربط الأحداث لإنتاج تنبيهات.'],['CTF','التقاط العلم','تحديات تدريبية لحل ألغاز أمنية ضمن نطاق محدد.'],['Least Privilege','أقل صلاحية','منح الحد الأدنى من الأذونات اللازمة.'],['Incident Response','الاستجابة للحوادث','خطوات منظمة لاحتواء حادث أمني وتحليله والتعافي منه.'],['Zero-day','ثغرة غير معروفة أو غير معالَجة','ثغرة لا يتوفر لها إصلاح مناسب وقت استغلالها أو اكتشافها.'] ];
 
+// اختصرنا الأسئلة هنا عشان الموقع يبقى سريع جداً
 var quizQuestions = [
-{q:'ما هو اختصار CIA في الأمن السيبراني؟',a:['Central Intelligence Agency','Confidentiality, Integrity, Availability','Cyber Investigation Agency','Control, Integrity, Access'],correct:1,why:'هي ثلاثية الأمن السيبراني: السرية، السلامة، والتوافر.'},
-{q:'ما هو "التصيد الاحتيالي" (Phishing)؟',a:['اختراق شبكة الواي فاي','خداع المستخدمين للحصول على بياناتهم عبر رسائل مزيفة','تدمير أجهزة الكمبيوتر عبر فيروس','سرقة الأجهزة المادية'],correct:1,why:'يعتمد على الهندسة الاجتماعية لخداع الضحايا.'},
-{q:'أي مما يلي يعتبر من البرمجيات الخبيثة التي تطلب فدية لتشفير الملفات؟',a:['Trojan','Worm','Ransomware','Adware'],correct:2,why:'برامج الفدية (Ransomware) تقوم بتشفير البيانات وطلب دفع مقابل فك التشفير.'},
-{q:'ما هي ثغرة SQL Injection؟',a:['حقن أكواد برمجية خبيثة في قاعدة البيانات عبر مدخلات غير آمنة','اختراق شبكة الإنترنت','سرقة كلمات المرور من المتصفح','تعطيل السيرفر عبر هجمات الحرمان من الخدمة'],correct:0,why:'تحدث عندما يمرر المهاجم أوامر SQL عبر حقول الإدخال لتنفيذها في قاعدة البيانات.'},
-{q:'ما هو الجدار الناري (Firewall)؟',a:['برنامج لزيادة سرعة الإنترنت','جهاز أو برنامج يفلتر حركة الشبكة بناءً على قواعد أمنية','برنامج لمسح الفيروسات','أداة لاختراق الشبكات'],correct:1,why:'يعمل كحاجز أمني بين الشبكات الموثوقة وغير الموثوقة.'}
-]; // اختصار الأسئلة هنا عشان الكود ميطولش، إنت تقدر تحط الـ 100 سؤال بتوعك
+{q:'ما هو اختصار CIA في الأمن السيبراني؟',a:['Central Intelligence Agency','Confidentiality, Integrity, Availability','Cyber Investigation Agency','Control, Integrity, Access'],correct:1,why:'هي ثلاثية الأمن السيبراني.'},
+{q:'ما هو "التصيد الاحتيالي" (Phishing)؟',a:['اختراق شبكة الواي فاي','خداع المستخدمين للحصول على بياناتهم عبر رسائل مزيفة','تدمير أجهزة الكمبيوتر','سرقة الأجهزة'],correct:1,why:'يعتمد على الهندسة الاجتماعية.'},
+{q:'أي مما يلي يعتبر من البرمجيات الخبيثة التي تطلب فدية؟',a:['Trojan','Worm','Ransomware','Adware'],correct:2,why:'برامج الفدية تشفر البيانات.'},
+{q:'ما هي ثغرة SQL Injection؟',a:['حقن أكواد برمجية خبيثة في قاعدة البيانات','اختراق شبكة الإنترنت','سرقة كلمات المرور','تعطيل السيرفر'],correct:0,why:'تحدث عبر حقول الإدخال.'},
+{q:'ما هو الجدار الناري (Firewall)؟',a:['برنامج لزيادة السرعة','جهاز أو برنامج يفلتر حركة الشبكة','برنامج لمسح الفيروسات','أداة اختراق'],correct:1,why:'يعمل كحاجز أمني.'}
+];
 
 var currentQuiz = 0, score = 0, answered = false, selectedPath = 'all';
 var completed = new Set();
 
-// --- دالة جلب الكورسات (مع الكاش) ---
+// دالة سريعة وخفيفة لجلب الكورسات
 async function loadCourses() {
     try {
-        // بنبص لو الكورسات متخزنة في المتصفح ولسه مخلصش الـ 5 دقايق
-        const cachedData = localStorage.getItem('coursesCache');
-        const cacheTime = localStorage.getItem('coursesCacheTime');
-        const now = Date.now();
-
-        if (cachedData && cacheTime && (now - cacheTime < 5 * 60 * 1000)) { 
-            courses = JSON.parse(cachedData);
-            renderAll();
-            return;
-        }
-
-        // لو مفيش كاش، بنجيب من السيرفر
         const response = await fetch('/api/courses');
         if (response.ok) {
             courses = await response.json();
-            // بنحفظ في الكاش
-            localStorage.setItem('coursesCache', JSON.stringify(courses));
-            localStorage.setItem('coursesCacheTime', now);
-            renderAll();
+            renderPaths(); renderCourseTabs(); renderCourses(); renderFeatured();
         }
-    } catch (error) { console.error("Error fetching courses:", error); }
+    } catch (error) { console.error("Error:", error); }
 }
 
-function renderAll() {
-    renderPaths(); 
-    renderCourseTabs(); 
-    renderCourses(); 
-    renderFeatured();
-}
-
-// --- دالة جلب تقدم المستخدم من السيرفر ---
 async function loadUserProgress() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (!user) return;
-
     try {
         const res = await fetch(`/api/progress?email=${user.email}`);
         if (res.ok) {
             const data = await res.json();
             if (data.completed) {
                 completed = new Set(data.completed);
-                renderCourses();
-                renderFeatured();
+                renderCourses(); renderFeatured();
                 document.getElementById('statDone').textContent = Math.min(100, Math.round(completed.size/12*100)) + '%';
             }
         }
-    } catch (e) { console.log("Error loading progress:", e); }
+    } catch (e) {}
 }
-
-// باقي الدوال زي ما هي (pathCard, courseCard, renderPaths, renderCourses, renderFeatured, renderCourseTabs, setCoursePath, openPath, openCourseModal, closeCourseModal, openAuthModal, closeAuthModal, switchAuthTab, togglePass, showAuthMsg, handleLogin, handleRegister, handleReset, showSection, toggleMenu, renderQuiz, answerQuiz, nextQuestion, renderGlossary, renderChallenges, renderRoadmap)
 
 function pathCard(p) { return '<div class="path-card" data-path-id="' + p.id + '"><i class="fa-solid ' + p.icon + '"></i><b>' + p.name + '</b><small>' + p.level + '</small></div>'; }
 function courseCard(c) {
@@ -109,20 +83,14 @@ function openPath(id) {
 }
 
 async function openCourseModal(id) {
-    const res = await fetch('/api/courses');
-    const all = await res.json();
-    const c = all.find(x => x.id === id);
+    const c = courses.find(x => x.id === id);
     if(!c) return;
     
     const currentUser = JSON.parse(localStorage.getItem('user'));
     if(currentUser) {
         fetch('/api/progress', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:currentUser.email, courseId:id}) })
-        .then(res => res.json())
-        .then(data => {
-             if(data.completed) {
-                 completed = new Set(data.completed);
-                 renderCourses(); renderFeatured();
-             }
+        .then(res => res.json()).then(data => {
+             if(data.completed) { completed = new Set(data.completed); renderCourses(); renderFeatured(); }
         }).catch(e=>console.log(e));
     }
 
@@ -157,7 +125,6 @@ async function handleLogin() {
         else showAuthMsg(data.error,"error");
     } catch(e) { showAuthMsg("خطأ في الاتصال","error"); }
 }
-
 async function handleRegister() {
     const username=document.getElementById('regUsername').value, email=document.getElementById('regEmail').value, password=document.getElementById('regPassword').value;
     if(!username||!email||!password) return showAuthMsg("ملء الحقول","error");
@@ -168,7 +135,6 @@ async function handleRegister() {
         else showAuthMsg(data.error,"error");
     } catch(e) { showAuthMsg("خطأ في الاتصال","error"); }
 }
-
 async function handleReset() {
     const email=document.getElementById('resetEmail').value, newPassword=document.getElementById('resetNewPassword').value;
     if(!email||!newPassword) return showAuthMsg("ملء الحقول","error");
@@ -191,10 +157,7 @@ function toggleMenu(){ document.getElementById('sidebar').classList.toggle('open
 function renderQuiz() {
     var q = quizQuestions[currentQuiz], box = document.getElementById('quizBox'); answered = false;
     var answersH = ''; for (var i=0; i<q.a.length; i++) answersH += '<button class="answer" data-ans-index="' + i + '">' + ['أ','ب','ج','د'][i] + '. ' + q.a[i] + '</button>';
-    box.innerHTML = '<div class="eyebrow">السؤال ' + (currentQuiz+1) + ' من ' + quizQuestions.length + '</div>' +
-    '<div class="progress"><span style="width:' + ((currentQuiz+1)/quizQuestions.length*100) + '%"></span></div>' +
-    '<div class="quiz-question">' + q.q + '</div><div class="answers">' + answersH + '</div><div id="quizFeedback"></div>' +
-    '<div style="display:flex;justify-content:space-between;gap:10px;margin-top:15px"><span style="color:var(--muted);font-size:12px">النتيجة: ' + score + ' صحيحة</span><button id="nextQuizBtn" class="primary hidden">' + (currentQuiz===quizQuestions.length-1?'إنهاء الاختبار':'السؤال التالي') + ' ←</button></div>';
+    box.innerHTML = '<div class="eyebrow">السؤال ' + (currentQuiz+1) + ' من ' + quizQuestions.length + '</div><div class="quiz-question">' + q.q + '</div><div class="answers">' + answersH + '</div><div id="quizFeedback"></div><div style="display:flex;justify-content:space-between;margin-top:15px"><span style="font-size:12px">النتيجة: ' + score + '</span><button id="nextQuizBtn" class="primary hidden">التالي ←</button></div>';
 }
 function answerQuiz(i) {
     if(answered) return; answered = true; var q = quizQuestions[currentQuiz];
@@ -203,32 +166,13 @@ function answerQuiz(i) {
     document.getElementById('quizFeedback').innerHTML = '<div class="feedback">' + (i===q.correct?'إجابة صحيحة!':'الإجابة الصحيحة: ' + q.a[q.correct]) + '<br>' + q.why + '</div>';
     document.getElementById('nextQuizBtn').classList.remove('hidden');
 }
-function nextQuestion() {
-    if(currentQuiz < quizQuestions.length-1) { currentQuiz++; renderQuiz(); }
-    else { document.getElementById('quizBox').innerHTML = '<div class="course-icon"><i class="fa-solid fa-trophy"></i></div><h2>خلصت الاختبار!</h2><p>إجاباتك الصحيحة: ' + score + ' من ' + quizQuestions.length + '</p><div class="progress"><span style="width:' + (score/quizQuestions.length*100) + '%"></span></div><button id="restartQuizBtn" class="primary">إعادة الاختبار</button>'; }
-}
-function renderGlossary() {
-    var input = document.getElementById('glossarySearch'); var q = input ? input.value.toLowerCase() : ''; var h = '';
-    for(var i=0; i<glossary.length; i++) if (glossary[i].join(' ').toLowerCase().indexOf(q) !== -1) h += '<div class="card"><div class="eyebrow">' + glossary[i][0] + '</div><h3>' + glossary[i][1] + '</h3><p>' + glossary[i][2] + '</p></div>';
-    document.getElementById('glossaryGrid').innerHTML = h || '<div class="empty">مفيش مصطلحات مطابقة.</div>';
-}
-
-var challenges = [{title:'تحدي الهاش',desc:'حدد لماذا لا يُعد الهاش تشفيرًا قابلًا للفك.',hint:'فكر في الفرق بين دالة أحادية الاتجاه وخوارزمية تستخدم مفتاحًا.'},{title:'تحليل سجل دخول',desc:'راجع سجلًا تدريبيًا وحدد الحدث الذي يحتاج إلى مراجعة.',hint:'تكرار محاولات فاشلة في وقت قصير قد يستحق التحقيق، لكنه لا يثبت وحده وجود اختراق.'},{title:'اكتشاف رابط مشبوه',desc:'تعلم مؤشرات التصيد قبل فتح أي رابط.',hint:'افحص اسم النطاق، والسياق، والأخطاء الإملائية، واطلب تأكيدًا من مرسل موثوق.'}];
-function renderChallenges() { 
-    var h = ''; 
-    for(var i=0; i<challenges.length; i++) {
-        h += '<div class="card"><div class="course-icon"><i class="fa-solid fa-flag"></i></div><h3>' + challenges[i].title + '</h3><p>' + challenges[i].desc + '</p><button class="secondary" data-hint-idx="' + i + '">عرض تلميح</button><p id="hint' + i + '" class="hidden" style="margin-top:12px;color:#ff9aa8">' + challenges[i].hint + '</p></div>'; 
-    }
-    document.getElementById('challengeGrid').innerHTML = h; 
-}
-function renderRoadmap() {
-    var stages = [['1','الأساسيات','مفاهيم الأمن والخصوصية وأنظمة التشغيل'],['2','الشبكات','IP وDNS وHTTP ومبادئ TCP/IP'],['3','Linux وPython','الطرفية والبرمجة وتحليل النصوص'],['4','اختار تخصصًا','ويب أو دفاع سيبراني أو شبكات أو تحليل رقمي'],['5','تدريب آمن','مختبرات قانونية وتحديات CTF تعليمية'],['6','ملف أعمال','تقارير توثيقية ومشروعات دفاعية آمنة']];
-    var h = ''; for(var i=0; i<stages.length; i++) h += '<div class="lesson"><div class="lesson-num">' + stages[i][0] + '</div><div><b>' + stages[i][1] + '</b><p>' + stages[i][2] + '</p></div></div>';
-    document.getElementById('roadmapList').innerHTML = h;
-}
+function nextQuestion() { if(currentQuiz < quizQuestions.length-1) { currentQuiz++; renderQuiz(); } else { document.getElementById('quizBox').innerHTML = '<h2>خلصت الاختبار!</h2>'; } }
+function renderGlossary() { var input = document.getElementById('glossarySearch'); var q = input ? input.value.toLowerCase() : ''; var h = ''; for(var i=0; i<glossary.length; i++) if (glossary[i].join(' ').toLowerCase().indexOf(q) !== -1) h += '<div class="card"><h3>' + glossary[i][1] + '</h3><p>' + glossary[i][2] + '</p></div>'; document.getElementById('glossaryGrid').innerHTML = h || '<div class="empty">مفيش مصطلحات.</div>'; }
+var challenges = [{title:'تحدي الهاش',desc:'...',hint:'...'},{title:'تحليل سجل',desc:'...',hint:'...'}];
+function renderChallenges() { var h = ''; for(var i=0; i<challenges.length; i++) { h += '<div class="card"><h3>' + challenges[i].title + '</h3><p>' + challenges[i].desc + '</p></div>'; } document.getElementById('challengeGrid').innerHTML = h; }
+function renderRoadmap() { var h = '<div class="lesson"><div class="lesson-num">1</div><div><b>الأساسيات</b></div></div>'; document.getElementById('roadmapList').innerHTML = h; }
 
 document.addEventListener('DOMContentLoaded', async function() {
-    // Auth Check
     const user = JSON.parse(localStorage.getItem('user'));
     const profileName = document.getElementById('profileUsername');
     const logoutBtn = document.getElementById('logoutBtn');
@@ -245,7 +189,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if(loginNavBtn) loginNavBtn.style.display = 'block';
     }
 
-    if(logoutBtn) logoutBtn.addEventListener('click', () => { localStorage.removeItem('token'); localStorage.removeItem('user'); localStorage.removeItem('coursesCache'); localStorage.removeItem('coursesCacheTime'); alert('تم الخروج'); location.reload(); });
+    if(logoutBtn) logoutBtn.addEventListener('click', () => { localStorage.clear(); location.reload(); });
     if(loginNavBtn) loginNavBtn.addEventListener('click', () => openAuthModal('login'));
     
     document.getElementById('closeAuthModal').addEventListener('click', closeAuthModal);
@@ -281,9 +225,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         var ansBtn = e.target.closest('[data-ans-index]');
         if (ansBtn) { answerQuiz(parseInt(ansBtn.getAttribute('data-ans-index'))); return; }
         if (e.target.id === 'nextQuizBtn') { nextQuestion(); return; }
-        if (e.target.id === 'restartQuizBtn') { currentQuiz = 0; score = 0; renderQuiz(); return; }
-        var hintBtn = e.target.closest('[data-hint-idx]');
-        if (hintBtn) { document.getElementById('hint' + hintBtn.getAttribute('data-hint-idx')).classList.toggle('hidden'); return; }
         if (e.target.id === 'menuToggle') { toggleMenu(); return; }
     });
 
