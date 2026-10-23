@@ -10,10 +10,14 @@
         .container { max-width: 800px; margin: auto; background: #15161d; padding: 25px; border-radius: 15px; border: 1px solid #282a34; display: none; }
         h1 { color: #ff304b; text-align: center; }
         input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; background: #101116; border: 1px solid #282a34; color: white; border-radius: 8px; font-family: inherit; box-sizing: border-box;}
-        button { background: #ff304b; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; margin-top: 10px;}
-        button:hover { background: #b90e2a; }
+        .primary-btn { background: #ff304b; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; margin-top: 10px;}
+        .primary-btn:hover { background: #b90e2a; }
         .course-item { background: #101116; border: 1px solid #282a34; padding: 15px; margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;}
-        .delete-btn { background: #555; width: auto; padding: 5px 15px; font-size: 14px; margin: 0;}
+        
+        .action-btns { display: flex; gap: 5px; }
+        .edit-btn { background: #007bff; color: white; border: none; padding: 5px 15px; font-size: 14px; border-radius: 8px; cursor: pointer; font-weight: bold;}
+        .edit-btn:hover { background: #0056b3; }
+        .delete-btn { background: #555; color: white; border: none; padding: 5px 15px; font-size: 14px; border-radius: 8px; cursor: pointer; font-weight: bold;}
         .delete-btn:hover { background: red; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 9, 13, 0.95); display: flex; justify-content: center; align-items: center; z-index: 1000; }
@@ -30,6 +34,7 @@
 </head>
 <body>
 
+    <!-- نافذة تسجيل الدخول -->
     <div id="loginModal" class="modal-overlay">
         <div class="login-box">
             <h2>👑 لوحة تحكم المدير</h2>
@@ -41,14 +46,18 @@
             </div>
             
             <p id="loginError" class="error-msg">كلمة المرور خاطئة!</p>
-            <button id="loginBtn">دخول</button>
+            <button class="primary-btn" id="loginBtn">دخول</button>
         </div>
     </div>
 
+    <!-- لوحة التحكم -->
     <div class="container" id="adminContent">
         <h1>لوحة تحكم المدير</h1>
         
-        <h3>إضافة كورس جديد</h3>
+        <h3 id="formTitle">إضافة كورس جديد</h3>
+        <!-- خفينا الـ ID عشان نستخدمه في التعديل -->
+        <input type="hidden" id="editCourseId" value="">
+        
         <input type="text" id="courseTitle" placeholder="اسم الكورس (مثال: أساسيات الأمن)">
         <textarea id="courseDesc" placeholder="وصف الكورس" rows="3"></textarea>
         <select id="courseLevel">
@@ -56,15 +65,16 @@
             <option value="متوسط">متوسط</option>
             <option value="متقدم">متقدم</option>
         </select>
-        <button id="addCourseBtn">إضافة الكورس للموقع</button>
+        
+        <button class="primary-btn" id="addCourseBtn">إضافة الكورس للموقع</button>
+        <button class="primary-btn" id="cancelEditBtn" style="display:none; background:#555; margin-top:5px;">إلغاء التعديل</button>
 
         <hr style="border-color: #282a34; margin: 30px 0;">
         
-        <h3>الكورسات المضافة حالياً (في هذا المتصفح)</h3>
+        <h3>الكورسات المضافة حالياً (في قاعدة البيانات)</h3>
         <div id="courseList"></div>
     </div>
 
-    <!-- الربط بملف الجافاسكريبت الخارجي -->
     <script src="admin.js"></script>
 </body>
 </html>
