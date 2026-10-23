@@ -6,19 +6,15 @@ const connectDB = async () => {
     await mongoose.connect(process.env.MONGODB_URI);
 };
 
-const UserSchema = new mongoose.Schema({
-    username: String, email: String, password: String, completed: [String], createdAt: Date
-});
+const UserSchema = new mongoose.Schema({ username: String, email: String, password: String, completed: [String], createdAt: Date });
 const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') return res.status(405).json({ error: "Method not allowed" });
-    
     await connectDB();
 
     let { email, newPassword } = req.body;
     if (!email || !newPassword) return res.status(400).json({ error: "يرجى إدخال الإيميل والباسورد الجديد" });
-
     email = email.replace(/[<>'"]/g, '').trim();
 
     try {
@@ -31,7 +27,6 @@ export default async function handler(req, res) {
 
         res.status(200).json({ message: "تم تغيير كلمة المرور بنجاح! يمكنك تسجيل الدخول الآن." });
     } catch (error) {
-        console.error(error);
         res.status(500).json({ error: "حدث خطأ في السيرفر" });
     }
 }
