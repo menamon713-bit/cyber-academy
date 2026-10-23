@@ -28,6 +28,7 @@
     <button data-url="https://www.youtube.com/@SecureTheHumans">قناة اليوتيوب <i class="fa-brands fa-youtube" style="color:#ff0000; margin-right:5px;"></i></button>
   </nav>
   <div class="top-actions">
+    <a href="auth.html" class="secondary" id="loginNavBtn" style="padding: 10px; text-decoration: none; display: none;">تسجيل الدخول</a>
     <button class="primary" data-url="https://youtube.com/playlist?list=PLmtbbA6KEHqqxKS9JlsTLyJp7VKWi3mcA&si=mRbOXd5Oy3_vn7XN">ابدأ التعلم الآن</button>
   </div>
 </header>
@@ -36,8 +37,9 @@
 <aside class="sidebar" id="sidebar">
   <div class="profile">
     <div class="avatar"><i class="fa-solid fa-user-secret"></i></div>
-    <strong>متعلم سايبر</strong>
+    <strong id="profileUsername">متعلم سايبر</strong>
     <span>مسار الأمن السيبراني</span>
+    <button id="logoutBtn" class="secondary" style="margin-top: 10px; display: none; padding: 5px; font-size: 12px; width: 100%;">تسجيل خروج</button>
   </div>
   
   <div class="side-label">مساحة التعلم</div>
@@ -45,7 +47,6 @@
   <button class="side-link" data-target="paths"><i class="fa-solid fa-route"></i> مسارات التعلم</button>
   <button class="side-link" data-target="courses"><i class="fa-solid fa-book-open"></i> مكتبة الكورسات</button>
   
-  <!-- القنوات -->
   <button class="side-link" style="background: rgba(255, 0, 0, 0.1); border: 1px solid rgba(255, 0, 0, 0.3); margin-top: 10px;" data-url="https://www.youtube.com/@SecureTheHumans">
       <i class="fa-brands fa-youtube" style="color:#ff0000; font-size:20px;"></i> 
       <span style="font-weight: 900; color: #fff;">فيديوهات الشرح (القناة)</span>
@@ -94,7 +95,6 @@
 </main>
 </div>
 
-<!-- ربط ملف الجافاسكريبت الخارجي -->
-<script src="script.js" defer></script>
+<script src="script.js"></script>
 </body>
 </html>
