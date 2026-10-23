@@ -1,16 +1,14 @@
 // دالة إظهار وإخفاء الباسورد
 function togglePassword() {
     let input = document.getElementById('adminPassword');
-    let icon = document.getElementById('eyeToggle');
+    let btn = document.getElementById('eyeToggle');
     
     if (input.type === "password") {
         input.type = "text";
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash'); // شكل العين المشطوبة
+        btn.innerHTML = "🙈"; // إيموجي القرد
     } else {
         input.type = "password";
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye'); // شكل العين المفتوحة
+        btn.innerHTML = "👁️"; // إيموجي العين
     }
 }
 
@@ -18,7 +16,7 @@ function togglePassword() {
 function checkPassword() {
     let pass = document.getElementById('adminPassword').value;
     
-    // كلمة المرور الافتراضية
+    // كلمة المرور
     if (pass === "MinaAdmin2026") {
         document.getElementById('loginModal').style.display = 'none';
         document.getElementById('adminContent').style.display = 'block';
