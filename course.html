@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>تفاصيل الكورس | Cyber Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: #08090d; color: white; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh;}
+        .course-container { background: #15161d; border: 1px solid #282a34; border-radius: 20px; padding: 40px; max-width: 600px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .chip { background: #28121a; color: #ff304b; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; display: inline-block; margin-bottom: 20px;}
+        h1 { color: #ff304b; margin-bottom: 10px; font-size: 28px; }
+        p { color: #9a9ba8; line-height: 1.8; font-size: 16px; margin-bottom: 30px;}
+        .video-btn { background: #ff0000; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none; }
+        .video-btn:hover { background: #cc0000; }
+        .back-btn { background: transparent; color: #9a9ba8; border: 1px solid #282a34; padding: 10px 20px; border-radius: 10px; font-size: 14px; cursor: pointer; margin-top: 15px; width: 100%; text-decoration: none; display: inline-block;}
+        .back-btn:hover { background: #1a1b23; color: white; }
+        .loading { color: #ff304b; font-size: 20px; }
+    </style>
+</head>
+<body>
+    <div class="course-container" id="courseContent">
+        <div class="loading">جاري تحميل بيانات الكورس...</div>
+    </div>
+
+    <script src="course.js"></script>
+</body>
+</html>
