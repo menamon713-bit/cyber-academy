@@ -1,3 +1,4 @@
+// 1. مصفوفة المسارات (Hardcoded)
 var paths = [
 {id:'basics',name:'أساسيات الأمن السيبراني',icon:'fa-shield-halved',level:'مبتدئ',desc:'المفاهيم الأساسية والتهديدات ومبادئ الحماية.',courses:['مقدمة الأمن السيبراني','إدارة الهوية وكلمات المرور','الخصوصية والأمان الرقمي']},
 {id:'network',name:'أمن الشبكات',icon:'fa-network-wired',level:'مبتدئ — متوسط',desc:'تعلم الشبكات والبروتوكولات ومبادئ الدفاع.',courses:['أساسيات الشبكات','TCP/IP وDNS وHTTP','الجدران النارية ومراقبة الشبكات']},
@@ -13,15 +14,16 @@ var paths = [
 {id:'incident',name:'إدارة المخاطر والاستجابة',icon:'fa-triangle-exclamation',level:'متوسط',desc:'تحديد المخاطر وترتيبها ووضع خطط الاستجابة والتعافي.',courses:['تقييم المخاطر','خطط الاستجابة','التعافي واستمرارية الأعمال']}
 ];
 
-// هنا بنعرف المتغير فاضي، وبعدين الـ fetch هيملاه
+// 2. متغير الكورسات (هيتملى من الـ API)
 var courses = [];
 
+// 3. دالة جلب الكورسات من الـ Backend
 async function loadCourses() {
     try {
         const response = await fetch('/api/courses');
         if (response.ok) {
             courses = await response.json();
-            // بعد ما بنجيب البيانات من السيرفر، بنرسم الكورسات
+            // بعد ما بنجيب البيانات، بنرسم الصفحات
             renderPaths();
             renderCourseTabs();
             renderCourses();
@@ -186,8 +188,9 @@ function renderCourses() {
 }
 
 function renderFeatured() {
-    var h = ''; for(var i=0; i<3; i++) h += courseCard(courses[i]);
-    document.getElementById('featuredCourses').innerHTML = h;
+    var h = ''; for(var i=0; i<3 && i<courses.length; i++) h += courseCard(courses[i]);
+    var el = document.getElementById('featuredCourses');
+    if(el) el.innerHTML = h;
 }
 
 function renderCourseTabs() {
@@ -209,8 +212,9 @@ function openPath(id) {
     document.getElementById('pathDetails').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+// التعديل هنا: بنفتح صفحة الكورس بدل يوتيوب
 function openCourse(id) {
-    window.open('https://www.youtube.com/@SecureTheHumans', '_blank');
+    window.location.href = `course.html?id=${id}`;
 }
 
 function renderQuiz() {
@@ -267,7 +271,7 @@ function showSection(id) {
 function toggleMenu(){ document.getElementById('sidebar').classList.toggle('open'); }
 
 document.addEventListener('DOMContentLoaded', function() {
-    loadCourses(); // بنشغل جلب البيانات هنا
+    loadCourses(); // بنجيب الكورسات من الـ API هنا
     renderQuiz(); 
     renderGlossary(); 
     renderChallenges(); 
