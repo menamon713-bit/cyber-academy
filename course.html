@@ -8,30 +8,35 @@
     <style>
         body { font-family: 'Cairo', sans-serif; background: #08090d; color: white; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh;}
         .course-container { background: #15161d; border: 1px solid #282a34; border-radius: 20px; padding: 40px 20px; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .chip { background: #28121a; color: #ff304b; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; display: inline-block; margin-bottom: 20px;}
-        h1 { color: #ff304b; margin-bottom: 10px; font-size: 26px; }
+        
+        .chip { background: #28121a; color: #ff304b; padding: 5px 15px; border-radius: 20px; font-size: 13px; font-weight: bold; display: inline-block; margin-bottom: 20px;}
+        h1 { color: #ff304b; margin-bottom: 10px; font-size: 24px; }
         p { color: #9a9ba8; line-height: 1.8; font-size: 15px; margin-bottom: 30px;}
         
-        /* تعديل تصميم الأزرار */
+        /* تصميم الأزرار الصغيرة */
         .video-btn { 
-            background: #ff0000; color: white; border: none; padding: 12px 20px; border-radius: 10px; 
-            font-size: 16px; font-weight: bold; cursor: pointer; 
-            width: 100%; max-width: 280px; /* حددنا أقصى عرض */
-            margin: 0 auto 15px auto; /* سنترنا الزرار */
-            display: flex; justify-content: center; align-items: center; gap: 10px; text-decoration: none; 
+            background: #ff0000; color: white; border: none; 
+            padding: 8px 20px; /* مساحة داخلية أقل */
+            border-radius: 8px; 
+            font-size: 14px; /* خط أصغر */
+            font-weight: bold; cursor: pointer; 
+            display: inline-flex; justify-content: center; align-items: center; gap: 8px; 
+            text-decoration: none; 
+            margin-bottom: 15px;
         }
         .video-btn:hover { background: #cc0000; }
         
         .back-btn { 
-            background: transparent; color: #9a9ba8; border: 1px solid #282a34; padding: 10px 20px; 
-            border-radius: 10px; font-size: 14px; cursor: pointer; 
-            width: 100%; max-width: 280px; /* حددنا أقصى عرض */
-            margin: 0 auto; /* سنترنا الزرار */
-            display: block; text-align: center; text-decoration: none;
+            background: transparent; color: #9a9ba8; border: 1px solid #282a34; 
+            padding: 6px 15px; /* مساحة داخلية أقل */
+            border-radius: 8px; 
+            font-size: 13px; /* خط أصغر */
+            cursor: pointer; 
+            display: inline-block; text-align: center; text-decoration: none;
         }
         .back-btn:hover { background: #1a1b23; color: white; }
         
-        .loading { color: #ff304b; font-size: 20px; }
+        .loading { color: #ff304b; font-size: 18px; }
     </style>
 </head>
 <body>
