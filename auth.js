@@ -1,9 +1,17 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // ربط التبويبات والأزرار
+    document.getElementById('loginTab').addEventListener('click', () => switchTab('login'));
+    document.getElementById('registerTab').addEventListener('click', () => switchTab('register'));
+    document.getElementById('loginBtn').addEventListener('click', handleLogin);
+    document.getElementById('registerBtn').addEventListener('click', handleRegister);
+});
+
 function switchTab(tab) {
     document.getElementById('loginTab').classList.remove('active');
     document.getElementById('registerTab').classList.remove('active');
     document.getElementById('loginForm').classList.add('hidden');
     document.getElementById('registerForm').classList.add('hidden');
-    document.getElementById('msgBox').className = 'msg'; // اخفاء الرسائل
+    document.getElementById('msgBox').className = 'msg'; 
 
     if (tab === 'login') {
         document.getElementById('loginTab').classList.add('active');
@@ -35,11 +43,10 @@ async function handleLogin() {
         const data = await res.json();
 
         if (res.ok) {
-            // حفظ التوكن وبيانات المستخدم في المتصفح
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
             showMsg("تم الدخول بنجاح! جاري تحويلك...", "success");
-            setTimeout(() => window.location.href = '/', 1500); // تحويل للرئيسية
+            setTimeout(() => window.location.href = '/', 1500); 
         } else {
             showMsg(data.error || "حدث خطأ", "error");
         }
@@ -65,8 +72,8 @@ async function handleRegister() {
 
         if (res.ok) {
             showMsg("تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن.", "success");
-            switchTab('login'); // تحويله لصفحة الدخول
-            document.getElementById('loginEmail').value = email; // تعبئة الايميل تلقائياً
+            switchTab('login'); 
+            document.getElementById('loginEmail').value = email; 
         } else {
             showMsg(data.error || "حدث خطأ", "error");
         }
