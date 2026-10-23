@@ -78,6 +78,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // 4. تفويض الأحداث لزرار الحذف (عشان نتخطى حماية CSP)
+    const courseList = document.getElementById('courseList');
+    if(courseList) {
+        courseList.addEventListener('click', async (e) => {
+            // لو اللي اتضغط عليه هو زرار الحذف
+            if (e.target.classList.contains('delete-btn')) {
+                const courseId = e.target.getAttribute('data-id');
+                
+                if(confirm("هل أنت متأكد من حذف هذا الكورس نهائياً؟")) {
+                    try {
+                        e.target.innerText = "جاري الحذف...";
+                        e.target.disabled = true;
+
+                        const response = await fetch(`/api/courses?id=${courseId}`, {
+                            method: 'DELETE'
+                        });
+
+                        if (response.ok) {
+                            alert("تم حذف الكورس بنجاح!");
+                            loadAdminCourses(); // تحديث القائمة
+                        } else {
+                            alert("فشل حذف الكورس من السيرفر.");
+                            e.target.innerText = "حذف";
+                            e.target.disabled = false;
+                        }
+                    } catch (error) {
+                        alert("خطأ في الاتصال بالسيرفر.");
+                        e.target.innerText = "حذف";
+                        e.target.disabled = false;
+                    }
+                }
+            }
+        });
+    }
 });
 
 // دالة جلب الكورسات
@@ -97,38 +132,18 @@ async function loadAdminCourses() {
         }
         
         courses.forEach((course) => {
-            // هنا بنبعت الـ ID بتاع الكورس للدالة عشان تمسحه
+            // هنا بنحط الـ ID في data-id بدل onclick
             list.innerHTML += `
                 <div class="course-item">
                     <div>
                         <strong style="color:#ff304b;">${course.title}</strong> <br>
                         <small style="color:#9a9ba8;">${course.level} - ${course.desc}</small>
                     </div>
-                    <button class="delete-btn" onclick="deleteCourse('${course.id}')">حذف</button>
+                    <button class="delete-btn" data-id="${course.id}">حذف</button>
                 </div>
             `;
         });
     } catch (error) {
         list.innerHTML = '<p style="color:red;">فشل الاتصال بالسيرفر.</p>';
-    }
-}
-
-// دالة الحذف الحقيقية (بتبعت طلب للسيرفر)
-async function deleteCourse(courseId) {
-    if(!confirm("هل أنت متأكد من حذف هذا الكورس نهائياً؟")) return;
-
-    try {
-        const response = await fetch(`/api/courses?id=${courseId}`, {
-            method: 'DELETE'
-        });
-
-        if (response.ok) {
-            alert("تم حذف الكورس بنجاح!");
-            loadAdminCourses(); // تحديث القائمة
-        } else {
-            alert("فشل حذف الكورس من السيرفر.");
-        }
-    } catch (error) {
-        alert("خطأ في الاتصال بالسيرفر.");
     }
 }
