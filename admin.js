@@ -1,22 +1,35 @@
-// 1. دالة التحقق من كلمة المرور
+// دالة إظهار وإخفاء الباسورد
+function togglePassword() {
+    let input = document.getElementById('adminPassword');
+    let icon = document.getElementById('eyeToggle');
+    
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash'); // شكل العين المشطوبة
+    } else {
+        input.type = "password";
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye'); // شكل العين المفتوحة
+    }
+}
+
+// دالة التحقق من كلمة المرور
 function checkPassword() {
     let pass = document.getElementById('adminPassword').value;
     
+    // كلمة المرور الافتراضية
     if (pass === "MinaAdmin2026") {
-        // لو الباسورد صح: اخفي نافذة الدخول واظهر المحتوى
         document.getElementById('loginModal').style.display = 'none';
         document.getElementById('adminContent').style.display = 'block';
-        renderAdminList(); // تحميل الكورسات
+        renderAdminList(); 
     } else {
-        // لو غلط: اظهر رسالة الخطأ
         document.getElementById('loginError').style.display = 'block';
     }
 }
 
-// 2. تحميل الكورسات من الذاكرة المحلية
 let localCourses = JSON.parse(localStorage.getItem('customCourses')) || [];
 
-// 3. دالة عرض الكورسات في القائمة
 function renderAdminList() {
     let list = document.getElementById('courseList');
     if(!list) return;
@@ -38,7 +51,6 @@ function renderAdminList() {
     });
 }
 
-// 4. دالة إضافة كورس جديد
 function addCourse() {
     let title = document.getElementById('courseTitle').value;
     let desc = document.getElementById('courseDesc').value;
@@ -60,7 +72,6 @@ function addCourse() {
     localCourses.push(newCourse);
     localStorage.setItem('customCourses', JSON.stringify(localCourses));
     
-    // تفريغ الخانات بعد الإضافة
     document.getElementById('courseTitle').value = '';
     document.getElementById('courseDesc').value = '';
     
@@ -68,7 +79,6 @@ function addCourse() {
     alert("تم إضافة الكورس بنجاح!");
 }
 
-// 5. دالة الحذف
 function deleteCourse(index) {
     if(confirm("هل أنت متأكد من حذف هذا الكورس؟")) {
         localCourses.splice(index, 1);
