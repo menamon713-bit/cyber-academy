@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>لوحة تحكم المدير | Cyber Academy</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <!-- مكتبة الأيقونات عشان زرار العين -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
     <style>
         body { font-family: 'Cairo', sans-serif; background: #08090d; color: white; padding: 20px; }
         .container { max-width: 800px; margin: auto; background: #15161d; padding: 25px; border-radius: 15px; border: 1px solid #282a34; display: none; }
@@ -25,11 +22,19 @@
         .login-box h2 { color: #ff304b; margin-top: 0; margin-bottom: 20px; font-size: 24px; }
         
         /* تصميم خانة الباسورد وزرار العين */
-        .pass-container { position: relative; width: 100%; margin-bottom: 10px; }
-        .pass-container input { padding-left: 40px; text-align: center; font-size: 18px; margin: 0; }
-        .eye-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #9a9ba8; cursor: pointer; font-size: 18px; }
+        .pass-wrapper { position: relative; width: 100%; margin-bottom: 10px; }
+        .pass-wrapper input { padding-left: 50px; text-align: center; font-size: 18px; margin: 0; height: 45px;}
         
-        .error-msg { color: #ff304b; font-size: 14px; margin-top: 5px; display: none; }
+        /* زرار العين */
+        .eye-btn { 
+            position: absolute; left: 5px; top: 5px; bottom: 5px; width: 40px; 
+            background: transparent; border: none; color: #9a9ba8; 
+            font-size: 20px; cursor: pointer; padding: 0; margin: 0;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .eye-btn:hover { background: rgba(255,255,255,0.05); }
+        
+        .error-msg { background: #ff304b; color: white; font-size: 14px; padding: 10px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold;}
     </style>
 </head>
 <body>
@@ -40,10 +45,10 @@
             <h2>👑 لوحة تحكم المدير</h2>
             <p style="color:#9a9ba8; margin-bottom:15px;">أدخل كلمة المرور للدخول</p>
             
-            <div class="pass-container">
-                <input type="password" id="adminPassword" placeholder="••••••••">
-                <!-- أيقونة العين -->
-                <i class="fa-solid fa-eye eye-icon" id="eyeToggle" onclick="togglePassword()"></i>
+            <div class="pass-wrapper">
+                <!-- autocomplete="new-password" بتمنع المتصفح يحط باسورد لوحده -->
+                <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور" autocomplete="new-password">
+                <button type="button" class="eye-btn" id="eyeToggle" onclick="togglePassword()">👁️</button>
             </div>
             
             <p id="loginError" class="error-msg">كلمة المرور خاطئة!</p>
