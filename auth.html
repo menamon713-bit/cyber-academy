@@ -26,8 +26,8 @@
 
     <div class="auth-container">
         <div class="tabs">
-            <div class="tab active" id="loginTab" onclick="switchTab('login')">تسجيل الدخول</div>
-            <div class="tab" id="registerTab" onclick="switchTab('register')">حساب جديد</div>
+            <div class="tab active" id="loginTab">تسجيل الدخول</div>
+            <div class="tab" id="registerTab">حساب جديد</div>
         </div>
 
         <!-- فورم تسجيل الدخول -->
@@ -35,7 +35,7 @@
             <h2>أهلاً بعودتك 👋</h2>
             <input type="email" id="loginEmail" placeholder="البريد الإلكتروني">
             <input type="password" id="loginPassword" placeholder="كلمة المرور">
-            <button onclick="handleLogin()">دخول</button>
+            <button id="loginBtn">دخول</button>
         </div>
 
         <!-- فورم إنشاء حساب -->
@@ -44,7 +44,7 @@
             <input type="text" id="regUsername" placeholder="اسم المستخدم">
             <input type="email" id="regEmail" placeholder="البريد الإلكتروني">
             <input type="password" id="regPassword" placeholder="كلمة المرور">
-            <button onclick="handleRegister()">إنشاء الحساب</button>
+            <button id="registerBtn">إنشاء الحساب</button>
         </div>
 
         <div id="msgBox" class="msg"></div>
