@@ -1,4 +1,3 @@
-// 1. مصفوفة المسارات (Hardcoded)
 var paths = [
 {id:'basics',name:'أساسيات الأمن السيبراني',icon:'fa-shield-halved',level:'مبتدئ',desc:'المفاهيم الأساسية والتهديدات ومبادئ الحماية.',courses:['مقدمة الأمن السيبراني','إدارة الهوية وكلمات المرور','الخصوصية والأمان الرقمي']},
 {id:'network',name:'أمن الشبكات',icon:'fa-network-wired',level:'مبتدئ — متوسط',desc:'تعلم الشبكات والبروتوكولات ومبادئ الدفاع.',courses:['أساسيات الشبكات','TCP/IP وDNS وHTTP','الجدران النارية ومراقبة الشبكات']},
@@ -14,16 +13,13 @@ var paths = [
 {id:'incident',name:'إدارة المخاطر والاستجابة',icon:'fa-triangle-exclamation',level:'متوسط',desc:'تحديد المخاطر وترتيبها ووضع خطط الاستجابة والتعافي.',courses:['تقييم المخاطر','خطط الاستجابة','التعافي واستمرارية الأعمال']}
 ];
 
-// 2. متغير الكورسات (هيتملى من الـ API)
 var courses = [];
 
-// 3. دالة جلب الكورسات من الـ Backend
 async function loadCourses() {
     try {
         const response = await fetch('/api/courses');
         if (response.ok) {
             courses = await response.json();
-            // بعد ما بنجيب البيانات، بنرسم الصفحات
             renderPaths();
             renderCourseTabs();
             renderCourses();
@@ -212,7 +208,6 @@ function openPath(id) {
     document.getElementById('pathDetails').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// التعديل هنا: بنفتح صفحة الكورس بدل يوتيوب
 function openCourse(id) {
     window.location.href = `course.html?id=${id}`;
 }
@@ -271,7 +266,38 @@ function showSection(id) {
 function toggleMenu(){ document.getElementById('sidebar').classList.toggle('open'); }
 
 document.addEventListener('DOMContentLoaded', function() {
-    loadCourses(); // بنجيب الكورسات من الـ API هنا
+    // --- كود التحقق من تسجيل الدخول ---
+    function checkAuth() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const profileUsername = document.getElementById('profileUsername');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginNavBtn = document.getElementById('loginNavBtn');
+
+        if (user) {
+            if (profileUsername) profileUsername.textContent = user.username;
+            if (logoutBtn) logoutBtn.style.display = 'block';
+            if (loginNavBtn) loginNavBtn.style.display = 'none';
+        } else {
+            if (profileUsername) profileUsername.textContent = 'متعلم سايبر';
+            if (logoutBtn) logoutBtn.style.display = 'none';
+            if (loginNavBtn) loginNavBtn.style.display = 'block';
+        }
+    }
+    
+    checkAuth();
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            alert("تم تسجيل الخروج بنجاح.");
+            window.location.reload();
+        });
+    }
+    // --------------------------------
+
+    loadCourses();
     renderQuiz(); 
     renderGlossary(); 
     renderChallenges(); 
