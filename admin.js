@@ -1,16 +1,25 @@
-// 1. كلمة سر بسيطة (مؤقتة) لحماية الصفحة
-let password = prompt("أدخل كلمة مرور المدير:");
-if (password !== "MinaAdmin2026") {
-    document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:50px;'>ممنوع الدخول! أنت لست المدير.</h1>";
-    throw new Error("Unauthorized");
+// 1. دالة التحقق من كلمة المرور
+function checkPassword() {
+    let pass = document.getElementById('adminPassword').value;
+    
+    if (pass === "MinaAdmin2026") {
+        // لو الباسورد صح: اخفي نافذة الدخول واظهر المحتوى
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('adminContent').style.display = 'block';
+        renderAdminList(); // تحميل الكورسات
+    } else {
+        // لو غلط: اظهر رسالة الخطأ
+        document.getElementById('loginError').style.display = 'block';
+    }
 }
 
-// 2. تحميل الكورسات المضافة من ذاكرة المتصفح
+// 2. تحميل الكورسات من الذاكرة المحلية
 let localCourses = JSON.parse(localStorage.getItem('customCourses')) || [];
 
 // 3. دالة عرض الكورسات في القائمة
 function renderAdminList() {
     let list = document.getElementById('courseList');
+    if(!list) return;
     list.innerHTML = '';
     if(localCourses.length === 0) {
         list.innerHTML = '<p style="color:#777;">لا توجد كورسات مضافة حتى الآن.</p>';
@@ -56,7 +65,7 @@ function addCourse() {
     document.getElementById('courseDesc').value = '';
     
     renderAdminList();
-    alert("تم إضافة الكورس بنجاح! (محفوظ في متصفحك مؤقتاً)");
+    alert("تم إضافة الكورس بنجاح!");
 }
 
 // 5. دالة الحذف
@@ -67,6 +76,3 @@ function deleteCourse(index) {
         renderAdminList();
     }
 }
-
-// تشغيل الدالة أول ما الصفحة تفتح
-renderAdminList();
