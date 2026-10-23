@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // باقي كود الإضافة والتعديل والحذف زي ما هو
     const addCourseBtn = document.getElementById('addCourseBtn');
     const cancelEditBtn = document.getElementById('cancelEditBtn');
     const formTitle = document.getElementById('formTitle');
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (response.ok) { resetForm(); alert(idToEdit ? "تم التعديل!" : "تمت الإضافة!"); loadAdminCourses(); }
                 else alert("حدث خطأ.");
             } catch (error) { alert("خطأ في الاتصال."); } 
-            finally { this.disabled = false; }
+            finally { this.disabled = false; this.innerText = idToEdit ? "حفظ التعديلات" : "إضافة الكورس للموقع"; }
         });
     }
     if(cancelEditBtn) cancelEditBtn.addEventListener('click', resetForm);
@@ -75,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// دالة جلب الكورسات (زي ما هي)
 async function loadAdminCourses() {
     let list = document.getElementById('courseList');
     if(!list) return;
@@ -93,8 +91,8 @@ async function loadAdminCourses() {
                         <small style="color:#9a9ba8;">${course.level} - ${course.desc}</small>
                     </div>
                     <div class="action-btns">
-                        <button class="edit-btn" data-id="${course.id}" data-title="${course.title}" data-desc="${course.desc}" data-level="${course.level}">تعديل</button>
-                        <button class="delete-btn" data-id="${course.id}">حذف</button>
+                        <button class="edit-btn" data-id="${course._id}" data-title="${course.title}" data-desc="${course.desc}" data-level="${course.level}">تعديل</button>
+                        <button class="delete-btn" data-id="${course._id}">حذف</button>
                     </div>
                 </div>
             `;
@@ -102,21 +100,19 @@ async function loadAdminCourses() {
     } catch (error) { list.innerHTML = '<p style="color:red;">فشل الاتصال.</p>'; }
 }
 
-// دالة جديدة لجلب إحصائيات المستخدمين
 async function loadAdminStats() {
     try {
         const res = await fetch('/api/courses?admin_users=true&key=MinaAdmin2026');
         if(res.ok) {
             const data = await res.json();
-            document.getElementById('totalUsersCount').innerText = data.totalUsers;
+            const totalUsersEl = document.getElementById('totalUsersCount');
+            if (totalUsersEl) totalUsersEl.innerText = data.totalUsers || 0;
             
             let listHTML = '';
-            // بنعرض آخر 10 مستخدمين سجلوا
-            const recentUsers = data.users.slice(-10).reverse(); 
-            recentUsers.forEach(u => {
-                listHTML += `<div>👤 ${u.username} <span style="color:#777; font-size:11px;">(${u.email})</span></div>`;
-            });
-            document.getElementById('userListContainer').innerHTML = listHTML;
+            const recentUsers = (data.users || []).slice(-10).reverse(); 
+            recentUsers.forEach(u => { listHTML += `<div>👤 ${u.username} <span style="color:#777; font-size:11px;">(${u.email})</span></div>`; });
+            const userListEl = document.getElementById('userListContainer');
+            if (userListEl) userListEl.innerHTML = listHTML || '<p style="color:#777; font-size:12px;">لا يوجد مستخدمين بعد.</p>';
         }
     } catch(e) { console.log("Error loading stats", e); }
 }
