@@ -1,37 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. إظهار وإخفاء الباسورد
     const eyeBtn = document.getElementById('eyeToggle');
-    if(eyeBtn) {
-        eyeBtn.addEventListener('click', function() {
-            let input = document.getElementById('adminPassword');
-            if (input.type === "password") {
-                input.type = "text";
-                this.innerHTML = "🙈";
-            } else {
-                input.type = "password";
-                this.innerHTML = "👁️";
-            }
-        });
-    }
+    if(eyeBtn) eyeBtn.addEventListener('click', function() {
+        let input = document.getElementById('adminPassword');
+        input.type = input.type === "password" ? "text" : "password";
+        this.innerHTML = input.type === "password" ? "👁️" : "🙈";
+    });
 
-    // 2. تسجيل الدخول
     const loginBtn = document.getElementById('loginBtn');
-    if(loginBtn) {
-        loginBtn.addEventListener('click', function() {
-            let pass = document.getElementById('adminPassword').value.trim();
-            
-            if (pass === "MinaAdmin2026") {
-                document.getElementById('loginModal').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
-                loadAdminCourses();
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
-        });
-    }
+    if(loginBtn) loginBtn.addEventListener('click', function() {
+        if (document.getElementById('adminPassword').value.trim() === "MinaAdmin2026") {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            loadAdminStats(); // جلب إحصائيات المستخدمين
+            loadAdminCourses();
+        } else {
+            document.getElementById('loginError').style.display = 'block';
+        }
+    });
 
-    // 3. إضافة أو تعديل كورس
+    // باقي كود الإضافة والتعديل والحذف زي ما هو
     const addCourseBtn = document.getElementById('addCourseBtn');
     const cancelEditBtn = document.getElementById('cancelEditBtn');
     const formTitle = document.getElementById('formTitle');
@@ -43,131 +30,62 @@ document.addEventListener('DOMContentLoaded', () => {
             let desc = document.getElementById('courseDesc').value;
             let level = document.getElementById('courseLevel').value;
             let idToEdit = editCourseId.value;
+            if (!title || !desc) return alert("يرجى ملء جميع الحقول!");
+            this.innerText = "جاري الحفظ..."; this.disabled = true;
 
-            if (!title || !desc) {
-                alert("يرجى ملء جميع الحقول!");
-                return;
-            }
-
-            let courseData = {
-                title: title,
-                desc: desc,
-                level: level,
-                pathId: "basics"
-            };
-
+            let courseData = { title, desc, level, pathId: "basics" };
             try {
-                this.innerText = idToEdit ? "جاري الحفظ..." : "جاري الإضافة...";
-                this.disabled = true;
-                
-                let url = '/api/courses';
-                let method = 'POST';
-
-                if (idToEdit) {
-                    url = `/api/courses?id=${idToEdit}`;
-                    method = 'PUT';
-                }
-
-                const response = await fetch(url, {
-                    method: method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(courseData)
-                });
-
-                if (response.ok) {
-                    resetForm();
-                    alert(idToEdit ? "تم تعديل الكورس بنجاح!" : "تم إضافة الكورس بنجاح!");
-                    loadAdminCourses();
-                } else {
-                    alert("حدث خطأ.");
-                }
-            } catch (error) {
-                alert("خطأ في الاتصال بالسيرفر.");
-            } finally {
-                this.disabled = false;
-            }
+                let url = idToEdit ? `/api/courses?id=${idToEdit}` : '/api/courses';
+                let method = idToEdit ? 'PUT' : 'POST';
+                const response = await fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(courseData) });
+                if (response.ok) { resetForm(); alert(idToEdit ? "تم التعديل!" : "تمت الإضافة!"); loadAdminCourses(); }
+                else alert("حدث خطأ.");
+            } catch (error) { alert("خطأ في الاتصال."); } 
+            finally { this.disabled = false; }
         });
     }
-
-    if(cancelEditBtn) {
-        cancelEditBtn.addEventListener('click', resetForm);
-    }
-
+    if(cancelEditBtn) cancelEditBtn.addEventListener('click', resetForm);
     function resetForm() {
-        document.getElementById('courseTitle').value = '';
-        document.getElementById('courseDesc').value = '';
+        document.getElementById('courseTitle').value = ''; document.getElementById('courseDesc').value = '';
         document.getElementById('editCourseId').value = '';
-        formTitle.innerText = "إضافة كورس جديد";
-        addCourseBtn.innerText = "إضافة الكورس للموقع";
-        cancelEditBtn.style.display = 'none';
+        formTitle.innerText = "إضافة كورس جديد"; addCourseBtn.innerText = "إضافة الكورس للموقع"; cancelEditBtn.style.display = 'none';
     }
 
-    // 4. تفويض الأحداث لزرار الحذف والتعديل
     const courseList = document.getElementById('courseList');
     if(courseList) {
         courseList.addEventListener('click', async (e) => {
-            
-            // تعديل الكورس
             if (e.target.classList.contains('edit-btn')) {
                 document.getElementById('courseTitle').value = e.target.getAttribute('data-title');
                 document.getElementById('courseDesc').value = e.target.getAttribute('data-desc');
                 document.getElementById('courseLevel').value = e.target.getAttribute('data-level');
                 editCourseId.value = e.target.getAttribute('data-id');
-                
-                formTitle.innerText = "تعديل الكورس الحالي";
-                addCourseBtn.innerText = "حفظ التعديلات";
-                cancelEditBtn.style.display = 'block';
-                window.scrollTo({top: 0, behavior: 'smooth'}); // نطلع فوق عشان نشوف الفورم
+                formTitle.innerText = "تعديل الكورس"; addCourseBtn.innerText = "حفظ التعديلات"; cancelEditBtn.style.display = 'block';
+                window.scrollTo({top: 0, behavior: 'smooth'});
             }
-
-            // حذف الكورس
             if (e.target.classList.contains('delete-btn')) {
-                const courseId = e.target.getAttribute('data-id');
-                
-                if(confirm("هل أنت متأكد من حذف هذا الكورس نهائياً؟")) {
+                if(confirm("هل أنت متأكد من الحذف؟")) {
+                    const courseId = e.target.getAttribute('data-id');
                     try {
-                        e.target.innerText = "...";
-                        e.target.disabled = true;
-
                         const response = await fetch(`/api/courses?id=${courseId}`, { method: 'DELETE' });
-
-                        if (response.ok) {
-                            alert("تم حذف الكورس بنجاح!");
-                            loadAdminCourses();
-                        } else {
-                            alert("فشل الحذف.");
-                            e.target.innerText = "حذف";
-                            e.target.disabled = false;
-                        }
-                    } catch (error) {
-                        alert("خطأ في الاتصال.");
-                        e.target.innerText = "حذف";
-                        e.target.disabled = false;
-                    }
+                        if (response.ok) { alert("تم الحذف!"); loadAdminCourses(); }
+                    } catch (error) { alert("خطأ في الاتصال."); }
                 }
             }
         });
     }
 });
 
-// دالة جلب الكورسات
+// دالة جلب الكورسات (زي ما هي)
 async function loadAdminCourses() {
     let list = document.getElementById('courseList');
     if(!list) return;
-    list.innerHTML = '<p style="color:#777;">جاري تحميل الكورسات...</p>';
-    
+    list.innerHTML = '<p style="color:#777;">جاري التحميل...</p>';
     try {
         const response = await fetch('/api/courses');
         const courses = await response.json();
-        
         list.innerHTML = '';
-        if(courses.length === 0) {
-            list.innerHTML = '<p style="color:#777;">لا توجد كورسات مضافة حتى الآن.</p>';
-            return;
-        }
-        
+        if(courses.length === 0) return list.innerHTML = '<p>لا توجد كورسات.</p>';
         courses.forEach((course) => {
-            // بنبعت البيانات كـ data-attributes عشان الكود يقراها
             list.innerHTML += `
                 <div class="course-item">
                     <div>
@@ -181,7 +99,24 @@ async function loadAdminCourses() {
                 </div>
             `;
         });
-    } catch (error) {
-        list.innerHTML = '<p style="color:red;">فشل الاتصال بالسيرفر.</p>';
-    }
+    } catch (error) { list.innerHTML = '<p style="color:red;">فشل الاتصال.</p>'; }
+}
+
+// دالة جديدة لجلب إحصائيات المستخدمين
+async function loadAdminStats() {
+    try {
+        const res = await fetch('/api/courses?admin_users=true&key=MinaAdmin2026');
+        if(res.ok) {
+            const data = await res.json();
+            document.getElementById('totalUsersCount').innerText = data.totalUsers;
+            
+            let listHTML = '';
+            // بنعرض آخر 10 مستخدمين سجلوا
+            const recentUsers = data.users.slice(-10).reverse(); 
+            recentUsers.forEach(u => {
+                listHTML += `<div>👤 ${u.username} <span style="color:#777; font-size:11px;">(${u.email})</span></div>`;
+            });
+            document.getElementById('userListContainer').innerHTML = listHTML;
+        }
+    } catch(e) { console.log("Error loading stats", e); }
 }
