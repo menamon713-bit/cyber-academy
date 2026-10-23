@@ -16,7 +16,6 @@ var paths = [
 var courses = [];
 var glossary = [ ['Asset','أصل رقمي','جهاز أو نظام أو بيانات لها قيمة وتحتاج إلى حماية.'],['Threat','تهديد','شيء قد يسبب ضررًا لأصل أو نظام.'],['Vulnerability','ثغرة','نقطة ضعف في تصميم أو تنفيذ أو إعداد.'],['Risk','مخاطر','احتمال وقوع ضرر مع مراعاة أثره.'],['Firewall','جدار ناري','نظام يراقب حركة الشبكة ويسمح بها أو يمنعها وفق قواعد.'],['Encryption','تشفير','تحويل البيانات إلى صيغة لا تُقرأ دون المفتاح المناسب.'],['Hash','بصمة رقمية','ناتج دالة أحادية الاتجاه يستخدم للتحقق أو المقارنة.'],['MFA','مصادقة متعددة العوامل','استخدام أكثر من عامل للتحقق من الهوية.'],['Phishing','تصيد احتيالي','خداع المستخدم لدفعه لكشف معلومات أو تنفيذ إجراء.'],['Patch','تحديث إصلاحي','تحديث يعالج مشكلة أو ثغرة أو خطأ.'],['SOC','مركز عمليات الأمن','فريق أو مركز يراقب التنبيهات والأحداث الأمنية.'],['SIEM','إدارة معلومات وأحداث الأمن','منصة تجمع السجلات وتربط الأحداث لإنتاج تنبيهات.'],['CTF','التقاط العلم','تحديات تدريبية لحل ألغاز أمنية ضمن نطاق محدد.'],['Least Privilege','أقل صلاحية','منح الحد الأدنى من الأذونات اللازمة.'],['Incident Response','الاستجابة للحوادث','خطوات منظمة لاحتواء حادث أمني وتحليله والتعافي منه.'],['Zero-day','ثغرة غير معروفة أو غير معالَجة','ثغرة لا يتوفر لها إصلاح مناسب وقت استغلالها أو اكتشافها.'] ];
 
-// الـ 100 سؤال كاملين
 var quizQuestions = [
 {q:'ما هو اختصار CIA في الأمن السيبراني؟',a:['Central Intelligence Agency','Confidentiality, Integrity, Availability','Cyber Investigation Agency','Control, Integrity, Access'],correct:1,why:'هي ثلاثية الأمن السيبراني: السرية، السلامة، والتوافر.'},
 {q:'ما هو "التصيد الاحتيالي" (Phishing)؟',a:['اختراق شبكة الواي فاي','خداع المستخدمين للحصول على بياناتهم عبر رسائل مزيفة','تدمير أجهزة الكمبيوتر عبر فيروس','سرقة الأجهزة المادية'],correct:1,why:'يعتمد على الهندسة الاجتماعية لخداع الضحايا.'},
@@ -120,7 +119,6 @@ var quizQuestions = [
 {q:'ما هو تصادم الهاش (Hash Collision)؟',a:['عندما تنتج مدخلات مختلفة نفس البصمة (Hash)','برنامج تصميم','هجوم فيروسي','شبكة افتراضية'],correct:0,why:'يعتبر ضعفاً في خوارزمية الهاش ويجب استخدام خوارزميات قوية مثل SHA-256.'}
 ];
 
-// التحديات الستة CTF
 var challenges = [
     { title: 'تحدي الهاش (Hash Cracking)', desc: 'أمامك هاش MD5: `5f4dcc3b5aa765d61d8327deb882cf99`. حاول تفك التشفير وتعرف الباسورد الأصلي.', hint: 'الباسورد من أشهر كلمات المرور في العالم (موجودة في ملف rockyou.txt).' },
     { title: 'تحليل سجل دخول (Log Analysis)', desc: 'في سجل السيرفر، وجدت 100 محاولة دخول فاشلة لنفس المستخدم في دقيقة واحدة. ما نوع هذا الهجوم؟', hint: 'هجوم يعتمد على تجربة كلمات مرور كثيرة بسرعة.' },
@@ -161,7 +159,7 @@ async function loadUserProgress() {
 
 function pathCard(p) { return '<div class="path-card" data-path-id="' + p.id + '"><i class="fa-solid ' + p.icon + '"></i><b>' + p.name + '</b><small>' + p.level + '</small></div>'; }
 function courseCard(c) {
-    var pct = completed.has(c.id) ? 100 : 0;
+    var pct = completed.has(c._id) ? 100 : 0;
     var cLevel = c.level || 'مبتدئ';
     var cPathId = c.pathId || 'all';
     var pathIcon = 'fa-shield-halved';
@@ -170,7 +168,7 @@ function courseCard(c) {
         '<div class="chips"><span class="chip">' + cLevel + '</span><span class="chip">كورس</span></div>' +
         '<h3>' + c.title + '</h3><p>' + (c.desc || 'لا يوجد وصف') + '</p>' +
         '<div class="progress"><span style="width:' + pct + '%"></span></div>' +
-        '<button class="primary" data-course-id="' + c.id + '">' + (pct ? 'مراجعة' : 'ابدأ التعلم') + ' <i class="fa-solid fa-arrow-left"></i></button></article>';
+        '<button class="primary" data-course-id="' + c._id + '">' + (pct ? 'مراجعة' : 'ابدأ التعلم') + ' <i class="fa-solid fa-arrow-left"></i></button></article>';
 }
 
 function renderPaths() { var h=''; for(var i=0;i<4;i++) h+=pathCard(paths[i]); document.getElementById('homePaths').innerHTML=h; var a=''; for(var i=0;i<paths.length;i++) a+=pathCard(paths[i]); document.getElementById('allPaths').innerHTML=a; }
@@ -187,7 +185,7 @@ function openPath(id) {
 }
 
 async function openCourseModal(id) {
-    const c = courses.find(x => x.id === id);
+    const c = courses.find(x => x._id === id);
     if(!c) return;
     
     const currentUser = JSON.parse(localStorage.getItem('user'));
@@ -282,7 +280,6 @@ function renderGlossary() {
     for(var i=0; i<glossary.length; i++) if (glossary[i].join(' ').toLowerCase().indexOf(q) !== -1) h += '<div class="card"><div class="eyebrow">' + glossary[i][0] + '</div><h3>' + glossary[i][1] + '</h3><p>' + glossary[i][2] + '</p></div>';
     document.getElementById('glossaryGrid').innerHTML = h || '<div class="empty">مفيش مصطلحات مطابقة.</div>';
 }
-
 function renderChallenges() { 
     var h = ''; 
     for(var i=0; i<challenges.length; i++) {
