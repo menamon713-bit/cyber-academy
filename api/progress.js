@@ -1,70 +1,50 @@
+import mongoose from 'mongoose';
+
+const connectDB = async () => {
+    if (mongoose.connections[0].readyState) return;
+    await mongoose.connect(process.env.MONGODB_URI);
+};
+
+const UserSchema = new mongoose.Schema({
+    username: String, email: String, password: String, completed: [String], createdAt: Date
+});
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
+
 export default async function handler(req, res) {
-    const USERS_BIN_ID = process.env.JSONBIN_USERS_BIN_ID;
-    const MASTER_KEY = process.env.JSONBIN_MASTER_KEY;
-    
-    if (!USERS_BIN_ID || !MASTER_KEY) {
-        return res.status(500).json({ error: "Missing environment variables" });
-    }
+    await connectDB();
 
-    const headers = { "Content-Type": "application/json", "X-Master-Key": MASTER_KEY };
-
+    // 1. جلب تقدم المستخدم (GET)
     if (req.method === 'GET') {
         const { email } = req.query;
         if (!email) return res.status(400).json({ error: "Email is required" });
 
         try {
-            const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${USERS_BIN_ID}/latest?t=${Date.now()}`, { headers, cache: 'no-store' });
-            if (!getResponse.ok) throw new Error("JSONBin Error");
-            
-            const getData = await getResponse.json();
-            // حماية
-            let users = [];
-            if (getData && getData.record && Array.isArray(getData.record.users)) {
-                users = getData.record.users;
-            }
-
-            const user = users.find(u => u.email === email);
-            if (!user) return res.status(200).json({ completed: [] }); // لو مش لاقيه بنرجع فاضي بدل ما نضرب خطأ
+            const user = await User.findOne({ email });
+            if (!user) return res.status(200).json({ completed: [] });
 
             res.status(200).json({ completed: user.completed || [] });
         } catch (error) {
-            console.error("GET Progress Error:", error);
-            res.status(500).json({ error: "Internal Server Error" });
+            res.status(500).json({ error: "Server Error" });
         }
     } 
+    
+    // 2. حفظ تقدم المستخدم (POST)
     else if (req.method === 'POST') {
         const { email, courseId } = req.body;
         if (!email || !courseId) return res.status(400).json({ error: "Missing data" });
 
         try {
-            const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${USERS_BIN_ID}/latest?t=${Date.now()}`, { headers, cache: 'no-store' });
-            if (!getResponse.ok) throw new Error("JSONBin Error");
+            const user = await User.findOne({ email });
+            if (!user) return res.status(404).json({ error: "User not found" });
 
-            const getData = await getResponse.json();
-            let users = [];
-            if (getData && getData.record && Array.isArray(getData.record.users)) {
-                users = getData.record.users;
+            if (!user.completed.includes(courseId)) {
+                user.completed.push(courseId);
+                await user.save();
             }
 
-            const userIndex = users.findIndex(u => u.email === email);
-            if (userIndex === -1) return res.status(404).json({ error: "User not found" });
-
-            if (!users[userIndex].completed) users[userIndex].completed = [];
-            
-            if (!users[userIndex].completed.includes(courseId)) {
-                users[userIndex].completed.push(courseId);
-            }
-
-            await fetch(`https://api.jsonbin.io/v3/b/${USERS_BIN_ID}`, {
-                method: 'PUT',
-                headers: headers,
-                body: JSON.stringify({ users: users }) 
-            });
-
-            res.status(200).json({ message: "Progress saved", completed: users[userIndex].completed });
+            res.status(200).json({ message: "Progress saved", completed: user.completed });
         } catch (error) {
-            console.error("POST Progress Error:", error);
-            res.status(500).json({ error: "Internal Server Error" });
+            res.status(500).json({ error: "Server Error" });
         }
     } else {
         res.status(405).json({ error: "Method not allowed" });
