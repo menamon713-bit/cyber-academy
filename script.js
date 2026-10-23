@@ -120,7 +120,29 @@ var quizQuestions = [
 ];
 
 var currentQuiz = 0, score = 0, answered = false, selectedPath = 'all';
-var completed = new Set(JSON.parse(localStorage.getItem('cyberCompleted') || '[]'));
+var completed = new Set(); // هنبدأ فاضية وهنتملاها من السيرفر
+
+// --- دالة جلب تقدم المستخدم من السيرفر ---
+async function loadUserProgress() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) return; // لو مفيش مستخدم مسجل، مفيش تقدم من السيرفر
+
+    try {
+        const res = await fetch(`/api/progress?email=${user.email}`);
+        if (res.ok) {
+            const data = await res.json();
+            if (data.completed) {
+                completed = new Set(data.completed);
+                // تحديث واجهة المستخدم بعد جلب التقدم
+                renderCourses();
+                renderFeatured();
+                document.getElementById('statDone').textContent = Math.min(100, Math.round(completed.size/12*100)) + '%';
+            }
+        }
+    } catch (e) {
+        console.log("Error loading progress:", e);
+    }
+}
 
 async function loadCourses() {
     try {
@@ -167,7 +189,17 @@ async function openCourseModal(id) {
     
     const currentUser = JSON.parse(localStorage.getItem('user'));
     if(currentUser) {
-        fetch('/api/progress', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:currentUser.email, courseId:id}) }).catch(e=>console.log(e));
+        // بنحفظ التقدم في السيرفر
+        fetch('/api/progress', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email:currentUser.email, courseId:id}) })
+        .then(res => res.json())
+        .then(data => {
+             if(data.completed) {
+                 completed = new Set(data.completed);
+                 renderCourses(); // تحديث الواجهة فوراً
+                 renderFeatured();
+             }
+        })
+        .catch(e=>console.log(e));
     }
 
     document.getElementById('courseModalContent').innerHTML = `
@@ -281,7 +313,7 @@ function renderRoadmap() {
     document.getElementById('roadmapList').innerHTML = h;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Auth Check
     const user = JSON.parse(localStorage.getItem('user'));
     const profileName = document.getElementById('profileUsername');
@@ -292,19 +324,23 @@ document.addEventListener('DOMContentLoaded', function() {
         if(profileName) profileName.textContent = user.username;
         if(logoutBtn) logoutBtn.style.display = 'block';
         if(loginNavBtn) loginNavBtn.style.display = 'none';
+        
+        // بنجيب التقدم من السيرفر أول ما الصفحة تفتح
+        await loadUserProgress(); 
     } else {
         if(profileName) profileName.textContent = 'متعلم سايبر';
         if(logoutBtn) logoutBtn.style.display = 'none';
         if(loginNavBtn) loginNavBtn.style.display = 'block';
+        
+        // لو مفيش مستخدم، بنجيب التقدم المحلي (زي القديم)
+        completed = new Set(JSON.parse(localStorage.getItem('cyberCompleted') || '[]'));
     }
 
     if(logoutBtn) logoutBtn.addEventListener('click', () => { localStorage.removeItem('token'); localStorage.removeItem('user'); alert('تم الخروج'); location.reload(); });
-
     if(loginNavBtn) loginNavBtn.addEventListener('click', () => openAuthModal('login'));
     
     document.getElementById('closeAuthModal').addEventListener('click', closeAuthModal);
     document.getElementById('closeCourseModal').addEventListener('click', closeCourseModal);
-
     document.getElementById('loginTab').addEventListener('click', () => switchAuthTab('login'));
     document.getElementById('registerTab').addEventListener('click', () => switchAuthTab('register'));
     document.getElementById('forgotPassLink').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('loginForm').classList.add('hidden'); document.getElementById('resetForm').classList.remove('hidden'); });
@@ -319,7 +355,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('resetBtn').addEventListener('click', handleReset);
 
     loadCourses();
-    renderQuiz(); renderGlossary(); renderChallenges(); renderRoadmap(); document.getElementById('statDone').textContent = Math.min(100, Math.round(completed.size/12*100)) + '%';
+    renderQuiz(); renderGlossary(); renderChallenges(); renderRoadmap(); 
+    document.getElementById('statDone').textContent = Math.min(100, Math.round(completed.size/12*100)) + '%';
 
     document.body.addEventListener('click', function(e) {
         var target = e.target.closest('[data-target]');
