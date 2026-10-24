@@ -1,41 +1,55 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // بنجيب الـ ID من الرابط (مثلاً course.html?id=basics-0)
-    const urlParams = new URLSearchParams(window.location.search);
-    const courseId = urlParams.get('id');
-    
-    const container = document.getElementById('courseContent');
-
-    if (!courseId) {
-        container.innerHTML = '<h1>خطأ</h1><p>لم يتم تحديد كورس.</p><a href="/" class="back-btn">العودة للرئيسية</a>';
-        return;
-    }
+    const container = document.getElementById('coursesContainer');
+    if (!container) return;
 
     try {
-        // بنجيب كل الكورسات وبعدين ندور على الكورس اللي ليه نفس الـ ID
+        // بنجيب الكورسات من السيرفر (الـ API بتاعنا)
         const response = await fetch('/api/courses');
         const courses = await response.json();
-        
-        const course = courses.find(c => c.id === courseId);
 
-        if (!course) {
-            container.innerHTML = '<h1>غير موجود</h1><p>هذا الكورس غير موجود أو تم حذفه.</p><a href="/" class="back-btn">العودة للرئيسية</a>';
+        // لو مفيش كورسات
+        if (courses.length === 0) {
+            container.innerHTML = '<p class="loading" style="grid-column: 1/-1;">لا توجد كورسات متاحة حالياً. عد قريباً!</p>';
             return;
         }
 
-        // بنرسم الصفحة بالبيانات اللي لقيناها
-        container.innerHTML = `
-            <div class="chip">${course.level}</div>
-            <h1>${course.title}</h1>
-            <p>${course.desc}</p>
+        // بنفضي المكان من كلمة "جاري التحميل"
+        container.innerHTML = '';
+
+        // بنلف على كل كورس ونعمله كارت
+        courses.forEach(course => {
+            const card = document.createElement('div');
+            card.className = 'course-card';
             
-            <a href="https://www.youtube.com/@SecureTheHumans" target="_blank" class="video-btn">
-                <i class="fa-brands fa-youtube"></i> شاهد محتوى الكورس على يوتيوب
-            </a>
+            card.innerHTML = `
+                <div>
+                    <h3>${course.title}</h3>
+                    <p>${course.desc}</p>
+                </div>
+                <div class="course-meta">
+                    <span class="level-badge">${course.level}</span>
+                    <button class="start-btn" onclick="startCourse('${course._id}', '${course.title}')">ابدأ التعلم</button>
+                </div>
+            `;
             
-            <a href="/" class="back-btn">← العودة للصفحة الرئيسية</a>
-        `;
-        
+            container.appendChild(card);
+        });
+
     } catch (error) {
-        container.innerHTML = '<h1>خطأ</h1><p>حدث خطأ أثناء تحميل البيانات.</p><a href="/" class="back-btn">العودة للرئيسية</a>';
+        console.error("Error fetching courses:", error);
+        container.innerHTML = '<p class="loading" style="grid-column: 1/-1; color: #ff304b;">حدث خطأ في تحميل الكورسات. يرجى المحاولة لاحقاً.</p>';
     }
 });
+
+// دالة بتتنفذ لما الطالب يدوس "ابدأ التعلم"
+function startCourse(courseId, courseTitle) {
+    // هنا ممكن نوديه لصفحة الكورس نفسه، أو ننبهه
+    // دلوقتي هنعمل تنبيه بسيط للتجربة
+    alert(`أنت الآن على وشك بدء كورس: ${courseTitle}`);
+    
+    // ممكن تحفظ الكورس اللي اختاره في الـ sessionStorage
+    sessionStorage.setItem('currentCourseId', courseId);
+    
+    // أو تحوله لصفحة تانية (لو موجودة عندك)
+    // window.location.href = `/course-details.html?id=${courseId}`;
+}
