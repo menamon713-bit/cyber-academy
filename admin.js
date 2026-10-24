@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. الحماية: لو مفيش توكن في المتصفح، اطرد المستخدم لصفحة تسجيل الدخول فوراً
+    // 1. الحماية: لو مفيش توكن، اطرد المستخدم فوراً
     const token = sessionStorage.getItem('adminToken');
     if (!token) {
-        window.location.href = '/auth.html'; // طرده لصفحة الدخول
-        return; // وقف تنفيذ أي كود تاني
+        window.location.href = '/auth.html'; 
+        return; 
     }
 
-    // 2. لو فيه توكن، ابدأ حمل البيانات
+    // 2. لو فيه توكن، اعرض اللوحة
+    document.getElementById('adminContent').style.display = 'block';
     loadAdminStats();
     loadAdminCourses();
 
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: method, 
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` // بنبعت التوكن
+                        'Authorization': `Bearer ${token}`
                     }, 
                     body: JSON.stringify(courseData) 
                 });
@@ -102,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// دوال جلب البيانات
 async function loadAdminStats() {
     const token = sessionStorage.getItem('adminToken');
     if(!token) return;
