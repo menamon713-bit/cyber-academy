@@ -1,53 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. لو المستخدم عنده توكن متسجل من قبل، يفتحله اللوحة على طول
-    const savedToken = sessionStorage.getItem('adminToken');
-    if (savedToken) {
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('adminContent').style.display = 'block';
-        loadAdminStats();
-        loadAdminCourses();
+    // 1. حماية الصفحة: لو مفيش توكن، اطرد المستخدم بره الصفحة فوراً
+    const token = sessionStorage.getItem('adminToken');
+    if (!token) {
+        window.location.href = '/index.html'; // أو أي صفحة رئيسية عندك
+        return;
     }
 
-    // 2. زر العين (لإظهار/إخفاء الباسورد)
+    // 2. لو فيه توكن، اعرض اللوحة وخبي شاشة تسجيل الدخول
+    document.getElementById('loginModal').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    loadAdminStats();
+    loadAdminCourses();
+
+    // 3. زر العين (لإظهار/إخفاء الباسورد) - (اختياري لو حبيت تسيبه في حاله كان فيه شاشة تسجيل دخول)
     const eyeBtn = document.getElementById('eyeToggle');
     if(eyeBtn) eyeBtn.addEventListener('click', function() {
         let input = document.getElementById('adminPassword');
         input.type = input.type === "password" ? "text" : "password";
         this.innerHTML = input.type === "password" ? "👁️" : "🙈";
-    });
-
-    // 3. تسجيل الدخول (بياخد الإيميل والباسورد ويبعتهم للسيرفر)
-    const loginBtn = document.getElementById('loginBtn');
-    if(loginBtn) loginBtn.addEventListener('click', async function() {
-        const email = document.getElementById('adminEmail').value; 
-        const password = document.getElementById('adminPassword').value;
-        
-        this.innerText = "جاري التحقق...";
-        
-        try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
-            const data = await response.json();
-
-            // لو السيرفر قال إنه أدمن وادانا توكن
-            if (response.ok && data.role === 'admin') {
-                sessionStorage.setItem('adminToken', data.token); // بنحفظ التوكن
-                document.getElementById('loginModal').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
-                loadAdminStats();
-                loadAdminCourses();
-            } else {
-                document.getElementById('loginError').style.display = 'block';
-            }
-        } catch (error) {
-            alert("خطأ في الاتصال بالسيرفر");
-        } finally {
-            this.innerText = "دخول";
-        }
     });
 
     // 4. إضافة كورس جديد أو تعديل
@@ -76,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: method, 
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` // بنبعت التوكن هنا
+                        'Authorization': `Bearer ${token}` // بنبعت التوكن هنا عشان السيرفر يتأكد
                     }, 
                     body: JSON.stringify(courseData) 
                 });
@@ -134,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     try {
                         const response = await fetch(`/api/courses?id=${courseId}`, { 
                             method: 'DELETE',
-                            headers: { 'Authorization': `Bearer ${token}` }
+                            headers: { 'Authorization': `Bearer ${token}` } // بنبعت التوكن عشان الحذف
                         });
                         if (response.ok) { 
                             alert("تم الحذف!"); 
@@ -188,7 +159,7 @@ async function loadAdminStats() {
         } else if (res.status === 403) {
             alert("غير مصرح لك برؤية هذه البيانات.");
             sessionStorage.removeItem('adminToken');
-            location.reload();
+            window.location.href = '/index.html'; // اطرده بره لو التوكن باظ
         }
     } catch(e) { 
         console.log("Error loading stats", e); 
