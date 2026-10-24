@@ -1,19 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.querySelector('form') || document.getElementById('loginForm');
     
+    // دالة ذكية بتدور على الحقول مهما كان شكلها
+    const getField = (type, placeholder) => {
+        return document.querySelector(`input[type="${type}"]`) || 
+               document.querySelector(`input[placeholder*="${placeholder}"]`) || 
+               document.querySelector(`#${type}`);
+    };
+
+    // 1. تسجيل الدخول
+    const loginForm = document.querySelector('form');
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const emailInput = document.querySelector('input[type="email"]') || document.querySelector('input[placeholder*="الإلكتروني"]');
-            const passwordInput = document.querySelector('input[type="password"]');
+            const emailInput = getField('email', 'الإلكتروني') || getField('text', 'الإيميل');
+            const passwordInput = getField('password', 'المرور');
             
             const email = emailInput ? emailInput.value : '';
             const password = passwordInput ? passwordInput.value : '';
 
             if (!email || !password) return alert("يرجى إدخال الإيميل والباسورد");
 
-            const submitBtn = loginForm.querySelector('button[type="submit"]') || loginForm.querySelector('button');
+            const submitBtn = loginForm.querySelector('button');
             const originalText = submitBtn ? submitBtn.innerText : 'دخول';
             if (submitBtn) { submitBtn.innerText = "جاري الدخول..."; submitBtn.disabled = true; }
 
@@ -32,9 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (data.role === 'admin') {
                         sessionStorage.setItem('adminToken', data.token);
-                        window.location.href = '/admin.html'; // هيوديك للوحة التحكم
+                        window.location.href = '/admin.html'; // وديه للوحة التحكم
                     } else {
-                        window.location.href = '/course.html'; // هيوديك للكورسات
+                        window.location.href = '/course.html'; // وديه للكورسات
                     }
                 } else {
                     alert(data.message || "بيانات غير صحيحة");
