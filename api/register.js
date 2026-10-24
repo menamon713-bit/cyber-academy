@@ -1,4 +1,4 @@
-import connectDB from '../utils/db.js';
+import connectDB from '../db.js';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 
@@ -14,17 +14,14 @@ export default async function handler(req, res) {
     try {
         await connectDB();
 
-        // التأكد إن الإيميل مش متسجل قبل كده
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'هذا الإيميل مسجل بالفعل' });
         }
 
-        // تشفير الباسورد
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // حفظ المستخدم الجديد (الافتراضي طالب)
         const newUser = new User({
             username,
             email,
