@@ -10,24 +10,40 @@ const CourseSchema = new mongoose.Schema({
     desc: { type: String, required: true },
     level: { type: String, default: 'مبتدئ' },
     pathId: { type: String, default: 'basics' },
+    imageUrl: { type: String, default: '' },
     createdAt: { type: Date, default: Date.now }
 });
-
 const Course = mongoose.models.Course || mongoose.model('Course', CourseSchema);
+
+const UserSchema = new mongoose.Schema({ 
+    username: String, email: String, password: String, completed: [String], createdAt: Date 
+});
+const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
 export default async function handler(req, res) {
     await connectDB();
 
     if (req.method === 'GET') {
         try {
-            // طلب إحصائيات الأدمن
+            res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate');
+
             if (req.query.admin_users === 'true' && req.query.key === 'MinaAdmin2026') {
-                const UserSchema = new mongoose.Schema({ username: String, email: String, createdAt: Date });
-                const User = mongoose.models.User || mongoose.model('User', UserSchema);
-                const users = await User.find().sort({ createdAt: -1 });
-                return res.status(200).json({ totalUsers: users.length, users: users.map(u => ({ username: u.username, email: u.email, createdAt: u.createdAt })) });
+                const totalUsers = await User.countDocuments();
+                const totalCourses = await Course.countDocuments();
+                
+                const users = await User.find({}, 'completed');
+                let totalCompleted = 0;
+                users.forEach(u => { if (u.completed) totalCompleted += u.completed.length; });
+
+                const recentUsers = await User.find().sort({ createdAt: -1 }).limit(10);
+
+                return res.status(200).json({ 
+                    totalUsers, 
+                    totalCourses, 
+                    totalCompleted,
+                    users: recentUsers.map(u => ({ username: u.username, email: u.email, createdAt: u.createdAt })) 
+                });
             }
-            // طلب كورسات عادي
             const courses = await Course.find().sort({ createdAt: -1 });
             res.status(200).json(courses);
         } catch (error) {
