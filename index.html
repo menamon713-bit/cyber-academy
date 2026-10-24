@@ -44,6 +44,7 @@
     <button class="active" data-nav="home" data-target="home">الرئيسية</button>
     <button data-nav="paths" data-target="paths">المسارات</button>
     <button data-nav="courses" data-target="courses">الكورسات</button>
+    <button data-nav="contact" data-target="contact">تواصل معنا</button>
     <button data-url="https://www.youtube.com/@SecureTheHumans">قناة اليوتيوب <i class="fa-brands fa-youtube" style="color:#ff0000; margin-right:5px;"></i></button>
   </nav>
   <div class="top-actions">
@@ -83,6 +84,7 @@
   <button class="side-link" data-target="glossary"><i class="fa-solid fa-book"></i> قاموس المصطلحات</button>
   <button class="side-link" data-target="roadmap"><i class="fa-solid fa-map"></i> خريطة الطريق</button>
   <button class="side-link" data-target="about"><i class="fa-solid fa-shield-halved"></i> عن الأكاديمية</button>
+  <button class="side-link" data-target="contact"><i class="fa-solid fa-envelope"></i> تواصل معنا</button>
 </aside>
 <main class="main">
 <section id="home" class="view">
@@ -104,33 +106,52 @@
 </section>
 
 <section id="paths" class="view hidden"><div class="section-head"><div><h2>مسارات التعلم</h2><p>اختار التخصص المناسب لمستواك وابدأ بالترتيب المقترح.</p></div></div><div class="path-grid" id="allPaths"></div><div id="pathDetails" class="section"></div></section>
-<section id="courses" class="view hidden"><div class="section-head"><div><h2>مكتبة الكورسات</h2><p>ابحث في موضوعات الأمن السيبراني المتاحة.</p></div><div class="searchbox"><i class="fa-solid fa-magnifying-glass"></i><input id="courseSearch" placeholder="ابحث عن كورس..."></div></div><div class="tabs" id="courseTabs"></div><div class="grid" id="courseGrid"></div></section>
+
+<!-- قسم الكورسات (مع الحماية) -->
+<section id="courses" class="view hidden">
+    <div class="section-head"><div><h2>مكتبة الكورسات</h2><p>ابحث في موضوعات الأمن السيبراني المتاحة.</p></div><div class="searchbox"><i class="fa-solid fa-magnifying-glass"></i><input id="courseSearch" placeholder="ابحث عن كورس..."></div></div>
+    <div class="tabs" id="courseTabs"></div>
+    <div class="grid" id="courseGrid"></div>
+    <!-- ✨ رسالة تظهر لو مش مسجل دخول -->
+    <div id="loginRequiredMessage" class="card" style="display: none; text-align: center; padding: 40px;">
+        <i class="fa-solid fa-lock" style="font-size: 40px; color: #ff304b; margin-bottom: 15px;"></i>
+        <h3>عذراً، يجب تسجيل الدخول أولاً</h3>
+        <p>عشان تشوف الكورسات وتتعلم، لازم تعمل حساب وتسجل دخول.</p>
+        <button class="primary" id="goToLoginBtn" style="margin-top: 15px;">تسجيل الدخول الآن</button>
+    </div>
+</section>
+
 <section id="quiz" class="view hidden"><div class="section-head"><div><h2>اختبر معلوماتك</h2><p>100 سؤال شامل في الأمن السيبراني مع التصحيح.</p></div></div><div class="card" id="quizBox"></div></section>
 <section id="challenges" class="view hidden"><div class="section-head"><div><h2>تحديات CTF تعليمية</h2><p>ابدأ بتحليل النصوص والسجلات واكتشاف الأخطاء المنطقية.</p></div></div><div class="grid" id="challengeGrid"></div></section>
 <section id="glossary" class="view hidden"><div class="section-head"><div><h2>قاموس المصطلحات</h2><p>مصطلحات أساسية بالعربي والإنجليزي.</p></div><div class="searchbox"><i class="fa-solid fa-magnifying-glass"></i><input id="glossarySearch" placeholder="ابحث عن مصطلح..."></div></div><div class="grid" id="glossaryGrid"></div></section>
 <section id="roadmap" class="view hidden"><div class="section-head"><div><h2>خريطة الطريق</h2><p>ترتيب مقترح للتعلم من غير القفز على الأساسيات.</p></div></div><div class="lesson-list" id="roadmapList"></div></section>
 <section id="about" class="view hidden"><div class="welcome"><div><div class="eyebrow">LEARN • PRACTICE • DEFEND</div><h1>الأمن السيبراني يبدأ <span>بالفهم</span></h1><p>هدف الأكاديمية تقديم مسار عربي منظم للتعلم، مع فيديوهات شارحة، واختبارات تفاعلية ومحتوى قابل للتوسع.</p></div><div class="hero-art"><i class="fa-solid fa-user-shield"></i></div></div><div class="section grid"><div class="card"><div class="course-icon"><i class="fa-solid fa-scale-balanced"></i></div><h3>استخدام مسؤول</h3><p>اختبر فقط الأنظمة التي تملكها أو لديك إذن صريح لاختبارها. التعلم هدفه الحماية وليس الإضرار.</p></div><div class="card"><div class="course-icon"><i class="fa-solid fa-lock"></i></div><h3>خصوصية واضحة</h3><p>هذه الواجهة لا تنشئ حسابات حقيقية. لا تدخل كلمات مرور أو بيانات شخصية حساسة.</p></div><div class="card"><div class="course-icon"><i class="fa-solid fa-code"></i></div><h3>محتوى متكامل</h3><p>الأكاديمية تحتوي على مسارات تعليمية، دروس بالفيديو والكتابة، وامتحانات تفاعلية.</p></div></div></section>
+
+<!-- قسم تواصل معنا (جديد) -->
+<section id="contact" class="view hidden">
+    <div class="section-head"><div><h2>تواصل معنا</h2><p>عندك سؤال؟ إحنا هنا للمساعدة.</p></div></div>
+    <div class="card">
+        <p>تقدر تتواصل معانا عن طريق:</p>
+        <p><strong>واتساب:</strong> <a href="https://wa.me/201554416094" target="_blank" style="color: #ff304b;">اضغط هنا</a></p>
+        <p><strong>اتصال:</strong> <a href="tel:01554416094" style="color: #ff304b;">01554416094</a></p>
+    </div>
+</section>
+
 <footer class="footer" style="display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 35px 20px; border-top: 1px solid var(--line); margin-top: 45px; text-align: center;">
-    
     <p style="margin: 0; color: var(--muted); font-size: 13px;">© 2026 Cyber Academy — منصة عربية للتعلم الآمن في الأمن السيبراني</p>
-    
     <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-        <!-- زرار الاتصال -->
         <a href="tel:01554416094" class="secondary" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; text-decoration: none; border-radius: 8px; border: 1px solid var(--line); background: #15161d; color: white; font-weight: bold; font-family: inherit; transition: 0.2s;">
             <i class="fa-solid fa-phone" style="color: #45d483;"></i> اتصل بالدعم
         </a>
-        
-        <!-- زرار الواتساب -->
         <a href="https://wa.me/201554416094?text=مرحباً%20أكاديمية%20سايبر،%20أواجه%20مشكلة%20في%20المنصة%20وأحتاج%20مساعدتك." target="_blank" class="secondary" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; text-decoration: none; border-radius: 8px; border: 1px solid var(--line); background: #15161d; color: white; font-weight: bold; font-family: inherit; transition: 0.2s;">
             <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> واتساب الدعم
         </a>
     </div>
-
 </footer>
 </main>
 </div>
 
-<!-- المودال الخاص بتسجيل الدخول وإنشاء الحساب -->
+<!-- نافذة تسجيل الدخول / إنشاء الحساب / استعادة الباسورد -->
 <div id="authModal" class="modal-overlay hidden">
     <div class="modal-content">
         <button class="close-btn" id="closeAuthModal">×</button>
@@ -144,12 +165,10 @@
         <div id="loginForm">
             <h2 style="text-align:center; color:#ff304b; margin-bottom:20px;">أهلاً بعودتك 👋</h2>
             <input type="email" id="loginEmail" class="auth-input" placeholder="البريد الإلكتروني">
-            
             <div class="pass-wrapper">
                 <input type="password" id="loginPassword" class="auth-input" placeholder="كلمة المرور">
                 <button type="button" class="eye-btn" id="eyeLogin">👁️</button>
             </div>
-            
             <button id="loginBtn" class="auth-btn">دخول</button>
             <div style="text-align: center; margin-top: 10px;">
                 <a href="#" id="forgotPassLink" style="color: #ff304b; font-size: 13px; text-decoration: none;">نسيت كلمة المرور؟</a>
@@ -161,12 +180,10 @@
             <h2 style="text-align:center; color:#ff304b; margin-bottom:20px;">إنشاء حساب جديد 🚀</h2>
             <input type="text" id="regUsername" class="auth-input" placeholder="اسم المستخدم">
             <input type="email" id="regEmail" class="auth-input" placeholder="البريد الإلكتروني">
-            
             <div class="pass-wrapper">
                 <input type="password" id="regPassword" class="auth-input" placeholder="كلمة المرور">
                 <button type="button" class="eye-btn" id="eyeReg">👁️</button>
             </div>
-            
             <button id="registerBtn" class="auth-btn">إنشاء الحساب</button>
         </div>
 
@@ -174,12 +191,10 @@
         <div id="resetForm" class="hidden">
             <h2 style="text-align:center; color:#ff304b; margin-bottom:20px;">استعادة الحساب 🔐</h2>
             <input type="email" id="resetEmail" class="auth-input" placeholder="البريد الإلكتروني المسجل">
-            
             <div class="pass-wrapper">
                 <input type="password" id="resetNewPassword" class="auth-input" placeholder="كلمة المرور الجديدة">
                 <button type="button" class="eye-btn" id="eyeReset">👁️</button>
             </div>
-            
             <button id="resetBtn" class="auth-btn">تغيير كلمة المرور</button>
             <div style="text-align: center; margin-top: 10px;">
                 <a href="#" id="backToLoginLink" style="color: #9a9ba8; font-size: 13px; text-decoration: none;">العودة لتسجيل الدخول</a>
@@ -189,7 +204,7 @@
     </div>
 </div>
 
-<!-- المودال الخاص بتفاصيل الكورس -->
+<!-- نافذة تفاصيل الكورس -->
 <div id="courseModal" class="modal-overlay hidden">
     <div class="modal-content course-modal">
         <button class="close-btn" id="closeCourseModal">×</button>
