@@ -1,13 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // دالة ذكية بتدور على الحقول مهما كان شكلها
     const getField = (type, placeholder) => {
         return document.querySelector(`input[type="${type}"]`) || 
                document.querySelector(`input[placeholder*="${placeholder}"]`) || 
                document.querySelector(`#${type}`);
     };
 
-    // 1. تسجيل الدخول
     const loginForm = document.querySelector('form');
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -40,9 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (data.role === 'admin') {
                         sessionStorage.setItem('adminToken', data.token);
-                        window.location.href = '/admin.html'; // وديه للوحة التحكم
+                        window.location.href = '/admin.html'; 
                     } else {
-                        window.location.href = '/course.html'; // وديه للكورسات
+                        window.location.href = '/course.html'; 
                     }
                 } else {
                     alert(data.message || "بيانات غير صحيحة");
