@@ -1,15 +1,10 @@
 import mongoose from 'mongoose';
 
-const connectDB = async () => {
-    if (mongoose.connections[0].readyState) {
-        return;
-    }
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log("MongoDB Connected Successfully");
-    } catch (error) {
-        console.error("MongoDB connection error:", error);
-    }
-};
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: { type: String, default: 'student' } // student or admin
+});
 
-export default connectDB;
+export default mongoose.models.User || mongoose.model('User', userSchema);
