@@ -172,7 +172,34 @@ function courseCard(c) {
 }
 
 function renderPaths() { var h=''; for(var i=0;i<4;i++) h+=pathCard(paths[i]); document.getElementById('homePaths').innerHTML=h; var a=''; for(var i=0;i<paths.length;i++) a+=pathCard(paths[i]); document.getElementById('allPaths').innerHTML=a; }
-function renderCourses() { var input=document.getElementById('courseSearch'); var q=input?input.value.trim().toLowerCase():''; var f=[]; for(var i=0;i<courses.length;i++){var c=courses[i]; if((selectedPath==='all'||c.pathId===selectedPath)&&(c.title+' '+c.desc).toLowerCase().indexOf(q)!==-1) f.push(c);} document.getElementById('courseGrid').innerHTML = f.length>0?f.map(courseCard).join(''):'<div class="empty">مفيش كورسات مطابقة.</div>'; }
+
+function renderCourses() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const coursesGrid = document.getElementById('courseGrid');
+    const loginMessage = document.getElementById('loginRequiredMessage');
+    const tabs = document.getElementById('courseTabs');
+
+    if (!user) {
+        if (coursesGrid) coursesGrid.style.display = 'none';
+        if (tabs) tabs.style.display = 'none';
+        if (loginMessage) loginMessage.style.display = 'block';
+        return;
+    }
+
+    if (coursesGrid) coursesGrid.style.display = 'grid';
+    if (tabs) tabs.style.display = 'flex';
+    if (loginMessage) loginMessage.style.display = 'none';
+
+    var input = document.getElementById('courseSearch');
+    var q = input ? input.value.trim().toLowerCase() : '';
+    var f = [];
+    for (var i = 0; i < courses.length; i++) {
+        var c = courses[i];
+        if ((selectedPath === 'all' || c.pathId === selectedPath) && (c.title + ' ' + c.desc).toLowerCase().indexOf(q) !== -1) f.push(c);
+    }
+    if (coursesGrid) coursesGrid.innerHTML = f.length > 0 ? f.map(courseCard).join('') : '<div class="empty">مفيش كورسات مطابقة.</div>';
+}
+
 function renderFeatured() { var h=''; for(var i=0;i<3&&i<courses.length;i++) h+=courseCard(courses[i]); document.getElementById('featuredCourses').innerHTML=h; }
 function renderCourseTabs() { var h='<button class="tab '+(selectedPath==='all'?'active':'')+'" data-tab-path="all">الكل</button>'; for(var i=0;i<paths.length;i++) h+='<button class="tab '+(selectedPath===paths[i].id?'active':'')+'" data-tab-path="'+paths[i].id+'">'+paths[i].name+'</button>'; document.getElementById('courseTabs').innerHTML=h; }
 function setCoursePath(id) { selectedPath=id; renderCourseTabs(); renderCourses(); }
@@ -313,6 +340,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     if(logoutBtn) logoutBtn.addEventListener('click', () => { localStorage.clear(); location.reload(); });
     if(loginNavBtn) loginNavBtn.addEventListener('click', () => openAuthModal('login'));
     
+    // ✨ زرار تسجيل الدخول من رسالة الكورسات
+    const goToLoginBtn = document.getElementById('goToLoginBtn');
+    if (goToLoginBtn) {
+        goToLoginBtn.addEventListener('click', () => openAuthModal('login'));
+    }
+
     document.getElementById('closeAuthModal').addEventListener('click', closeAuthModal);
     document.getElementById('closeCourseModal').addEventListener('click', closeCourseModal);
     document.getElementById('loginTab').addEventListener('click', () => switchAuthTab('login'));
