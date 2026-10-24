@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الطالب | Cyber Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: #08090d; color: white; margin: 0; padding: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #282a34; padding-bottom: 15px; }
+        .header h1 { color: #ff304b; margin: 0; }
+        .logout-btn { background: #282a34; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .course-card { background: #15161d; border: 1px solid #282a34; padding: 20px; border-radius: 12px; }
+        .course-card h3 { color: #ff304b; margin-top: 0; }
+        .course-card p { color: #9a9ba8; font-size: 14px; }
+        .course-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+        .badge { background: #282a34; padding: 5px 10px; border-radius: 20px; font-size: 12px; }
+        .start-btn { background: #ff304b; color: white; border: none; padding: 8px 15px; border-radius: 8px; cursor: pointer; }
+        #lessonArea { margin-top: 40px; padding: 20px; background: #15161d; border-radius: 12px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>_CyberAcademy</h1>
+        <button class="logout-btn" onclick="logout()">تسجيل خروج</button>
+    </div>
+
+    <h2>الكورسات المتاحة لك</h2>
+    <div class="courses-grid" id="coursesContainer">
+        <p>جاري تحميل الكورسات...</p>
+    </div>
+
+    <!-- مكان مخصص للدروس والأسئلة -->
+    <div id="lessonArea">
+        <h3 id="lessonTitle"></h3>
+        <p id="lessonContent"></p>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
