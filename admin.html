@@ -25,10 +25,10 @@
         .error-msg { background: #ff304b; color: white; font-size: 14px; padding: 10px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold;}
         
         /* تنسيق الإحصائيات */
-        .stats-box { background: #101116; border: 1px solid #282a34; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center; }
-        .stats-box h2 { color: #45d483; margin: 0; font-size: 36px; }
+        .stats-box { background: #101116; border: 1px solid #282a34; padding: 20px; border-radius: 12px; text-align: center; }
+        .stats-box h2 { margin: 0; font-size: 36px; }
         .stats-box p { color: #9a9ba8; margin: 5px 0 0; font-size: 14px; }
-        .user-list { max-height: 200px; overflow-y: auto; text-align: right; margin-top: 15px; }
+        .user-list { max-height: 200px; overflow-y: auto; text-align: right; margin-top: 15px; background: #101116; border: 1px solid #282a34; border-radius: 12px; padding: 15px;}
         .user-list div { padding: 8px; border-bottom: 1px solid #282a34; font-size: 13px; color: #ccc; }
     </style>
 </head>
@@ -50,14 +50,24 @@
     <div class="container" id="adminContent">
         <h1>لوحة تحكم المدير</h1>
         
-        <!-- قسم الإحصائيات الجديد -->
-        <div class="stats-box">
-            <h2 id="totalUsersCount">0</h2>
-            <p>إجمالي الطلاب المسجلين في المنصة</p>
-            <div class="user-list" id="userListContainer"></div>
+        <!-- قسم الإحصائيات -->
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px;">
+            <div class="stats-box">
+                <h2 id="totalUsersCount" style="color: #45d483;">0</h2>
+                <p>إجمالي الطلاب</p>
+            </div>
+            <div class="stats-box">
+                <h2 id="totalCoursesCount" style="color: #3b82f6;">0</h2>
+                <p>إجمالي الكورسات</p>
+            </div>
+            <div class="stats-box">
+                <h2 id="totalCompletedCount" style="color: #a855f7;">0</h2>
+                <p>دروس مكتملة</p>
+            </div>
         </div>
+        <div class="user-list" id="userListContainer"></div>
         
-        <h3 id="formTitle">إضافة كورس جديد</h3>
+        <h3 id="formTitle" style="margin-top: 30px;">إضافة كورس جديد</h3>
         <input type="hidden" id="editCourseId" value="">
         <input type="text" id="courseTitle" placeholder="اسم الكورس">
         <textarea id="courseDesc" placeholder="وصف الكورس" rows="3"></textarea>
