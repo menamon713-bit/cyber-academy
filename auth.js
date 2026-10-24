@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const eyeBtn = document.getElementById('eyeToggle');
+    const passwordInput = document.getElementById('loginPassword');
+    const emailInput = document.getElementById('loginEmail');
+
     // 1. زرار العين
-    const eyeBtn = document.querySelector('.eye-btn') || document.getElementById('eyeToggle');
-    const passwordInput = document.querySelector('input[type="password"]');
     if (eyeBtn && passwordInput) {
         eyeBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -11,20 +15,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. تسجيل الدخول
-    const loginBtn = document.querySelector('button[type="submit"]') || document.getElementById('loginBtn');
-    const emailInput = document.querySelector('input[type="email"]') || document.querySelector('input[placeholder*="الإلكتروني"]');
-
-    if (loginBtn) {
-        loginBtn.addEventListener('click', async function(e) {
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const email = emailInput ? emailInput.value : '';
-            const password = passwordInput ? passwordInput.value : '';
+            
+            const email = emailInput.value;
+            const password = passwordInput.value;
 
             if (!email || !password) return alert("يرجى إدخال الإيميل والباسورد");
 
-            const originalText = this.innerText;
-            this.innerText = "جاري الدخول...";
-            this.disabled = true;
+            const originalText = loginBtn.innerText;
+            loginBtn.innerText = "جاري الدخول...";
+            loginBtn.disabled = true;
 
             try {
                 const response = await fetch('/api/login', {
@@ -36,24 +38,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    // حفظ التوكن باسم adminToken عشان صفحة الأدمن تلاقيه
-                    sessionStorage.setItem('adminToken', data.token);
+                    // حفظ التوكن
+                    sessionStorage.setItem('token', data.token);
                     sessionStorage.setItem('role', data.role);
                     
                     if (data.role === 'admin') {
-                        window.location.href = '/admin.html'; // التحويل للوحة
+                        sessionStorage.setItem('adminToken', data.token);
+                        window.location.href = '/admin.html'; // توجيه للأدمن
                     } else {
-                        window.location.href = '/course.html'; // التحويل للطالب
+                        window.location.href = '/course.html'; // توجيه للطالب
                     }
                 } else {
                     alert(data.message || "بيانات غير صحيحة");
-                    this.innerText = originalText;
-                    this.disabled = false;
+                    loginBtn.innerText = originalText;
+                    loginBtn.disabled = false;
                 }
             } catch (error) {
                 alert("خطأ في الاتصال بالسيرفر");
-                this.innerText = originalText;
-                this.disabled = false;
+                loginBtn.innerText = originalText;
+                loginBtn.disabled = false;
             }
         });
     }
