@@ -1,7 +1,6 @@
-// admin.js
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. التحقق من وجود توكن مسجل مسبقاً
+    // 1. لو المستخدم عنده توكن متسجل من قبل، يفتحله اللوحة على طول
     const savedToken = sessionStorage.getItem('adminToken');
     if (savedToken) {
         document.getElementById('loginModal').style.display = 'none';
@@ -18,10 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
         this.innerHTML = input.type === "password" ? "👁️" : "🙈";
     });
 
-    // 3. تسجيل الدخول
+    // 3. تسجيل الدخول (بياخد الإيميل والباسورد ويبعتهم للسيرفر)
     const loginBtn = document.getElementById('loginBtn');
     if(loginBtn) loginBtn.addEventListener('click', async function() {
-        // لاحظ: غيرنا الحقل ليكون Email بدل باسورد بس
+        // ملاحظة: لازم تكون ضفت حقل إيميل في ملف admin.html بمعرف (id) اسمه adminEmail
         const email = document.getElementById('adminEmail').value; 
         const password = document.getElementById('adminPassword').value;
         
@@ -35,9 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const data = await response.json();
 
+            // لو السيرفر قال إنه أدمن وادانا توكن
             if (response.ok && data.role === 'admin') {
-                // تخزين التوكن
-                sessionStorage.setItem('adminToken', data.token);
+                sessionStorage.setItem('adminToken', data.token); // بنحفظ التوكن في المتصفح
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('adminContent').style.display = 'block';
                 loadAdminStats();
@@ -52,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. إضافة / تعديل كورس
+    // 4. إضافة كورس جديد
     const addCourseBtn = document.getElementById('addCourseBtn');
     if(addCourseBtn) {
         addCourseBtn.addEventListener('click', async function() {
@@ -78,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: method, 
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` // التوكن بيتبعت هنا
+                        'Authorization': `Bearer ${token}` // بنبعت التوكن هنا عشان السيرفر يتأكد
                     }, 
                     body: JSON.stringify(courseData) 
                 });
@@ -99,19 +98,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    // ... (باقي أكواد الـ resetForm والـ event listeners زي ما هي)
+    
+    // ... (باقي كود الـ resetForm والـ delete يفضل زي ما هو)
 });
 
-// 5. جلب الإحصائيات (آمن)
+// 5. جلب الإحصائيات (محمي بالتوكن)
 async function loadAdminStats() {
     const token = sessionStorage.getItem('adminToken');
     if(!token) return;
 
     try {
+        // شيلنا الباسورد من اللينك، وحطينا التوكن في الهيدر
         const res = await fetch('/api/courses?admin_users=true', {
             method: 'GET',
-            headers: { 'Authorization': `Bearer ${token}` } // التوكن هنا
+            headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if(res.ok) {
@@ -122,9 +122,9 @@ async function loadAdminStats() {
             document.getElementById('totalCompletedCount').innerText = data.totalCompleted || 0;
             
             const userListContainer = document.getElementById('userListContainer');
-            userListContainer.innerHTML = ''; // تنظيف
+            userListContainer.innerHTML = ''; // تنظيف المكان
             
-            // حماية من ثغرة XSS باستخدام innerText
+            // إصلاح ثغرة XSS: استخدمنا innerText بدل innerHTML
             (data.users || []).forEach(u => { 
                 const userDiv = document.createElement('div');
                 userDiv.innerText = `👤 ${u.username} (${u.email})`;
@@ -138,8 +138,8 @@ async function loadAdminStats() {
             }
         } else if (res.status === 403) {
             alert("غير مصرح لك برؤية هذه البيانات.");
-            sessionStorage.removeItem('adminToken'); // امسح التوكن الخربان
-            location.reload();
+            sessionStorage.removeItem('adminToken'); // لو التوكن باظ امسحه
+            location.reload(); // واعمل تحديث
         }
     } catch(e) { 
         console.log("Error loading stats", e); 
@@ -160,20 +160,44 @@ async function loadAdminCourses() {
         if(courses.length === 0) return list.innerHTML = '<p>لا توجد كورسات.</p>';
         
         courses.forEach((course) => {
-            // هنا كمان استخدمنا innerHTML بس مع دالة تنظيف (أو الأفضل تبنيها بـ DOM)
-            // للتبسيط هنا، بس أفضل حل إنك تعمل DOMPurify أو تبنيها بـ createElement
-            list.innerHTML += `
-                <div class="course-item">
-                    <div>
-                        <strong style="color:#ff304b;">${course.title}</strong> <br>
-                        <small style="color:#9a9ba8;">${course.level} - ${course.desc}</small>
-                    </div>
-                    <div class="action-btns">
-                        <button class="edit-btn" data-id="${course._id}" data-title="${course.title}" data-desc="${course.desc}" data-level="${course.level}">تعديل</button>
-                        <button class="delete-btn" data-id="${course._id}">حذف</button>
-                    </div>
-                </div>
-            `;
+            // هنا كمان استخدمنا innerHTML بس مع تنظيف بسيط (الأفضل استخدام مكتبة DOMPurify)
+            // بس للتأمين السريع، هنستخدم النص المباشر بدل الـ HTML
+            const courseItem = document.createElement('div');
+            courseItem.className = 'course-item';
+            
+            const titleStrong = document.createElement('strong');
+            titleStrong.style.color = '#ff304b';
+            titleStrong.innerText = course.title;
+            
+            const descSmall = document.createElement('small');
+            descSmall.style.color = '#9a9ba8';
+            descSmall.innerText = `${course.level} - ${course.desc}`;
+            
+            const btnContainer = document.createElement('div');
+            btnContainer.className = 'action-btns';
+            
+            const editBtn = document.createElement('button');
+            editBtn.className = 'edit-btn';
+            editBtn.innerText = 'تعديل';
+            editBtn.setAttribute('data-id', course._id);
+            editBtn.setAttribute('data-title', course.title);
+            editBtn.setAttribute('data-desc', course.desc);
+            editBtn.setAttribute('data-level', course.level);
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerText = 'حذف';
+            deleteBtn.setAttribute('data-id', course._id);
+            
+            btnContainer.appendChild(editBtn);
+            btnContainer.appendChild(deleteBtn);
+            
+            courseItem.appendChild(titleStrong);
+            courseItem.appendChild(document.createElement('br'));
+            courseItem.appendChild(descSmall);
+            courseItem.appendChild(btnContainer);
+            
+            list.appendChild(courseItem);
         });
     } catch (error) { 
         list.innerHTML = '<p style="color:red;">فشل الاتصال.</p>'; 
