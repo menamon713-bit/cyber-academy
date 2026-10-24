@@ -1,138 +1,101 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // التبويبات
-    document.getElementById('loginTab').addEventListener('click', () => switchTab('login'));
-    document.getElementById('registerTab').addEventListener('click', () => switchTab('register'));
+    
+    // ==========================================
+    // 1. تسجيل الدخول (Login)
+    // ==========================================
+    const loginForm = document.getElementById('loginForm'); // تأكد من اسم الفورم في HTML
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const submitBtn = loginForm.querySelector('button[type="submit"]');
+            const errorMsg = document.getElementById('loginError'); // لو فيه مكان للخطأ
 
-    // زراير العين
-    document.getElementById('eyeLogin').addEventListener('click', function() { togglePass('loginPassword', this); });
-    document.getElementById('eyeReg').addEventListener('click', function() { togglePass('regPassword', this); });
-    document.getElementById('eyeReset').addEventListener('click', function() { togglePass('resetNewPassword', this); });
+            if (!email || !password) return alert("يرجى إدخال الإيميل والباسورد");
 
-    // زراير الدخول والتسجيل والاستعادة
-    document.getElementById('loginBtn').addEventListener('click', handleLogin);
-    document.getElementById('registerBtn').addEventListener('click', handleRegister);
-    document.getElementById('resetBtn').addEventListener('click', handleReset);
+            submitBtn.innerText = "جاري الدخول...";
+            submitBtn.disabled = true;
 
-    // التبديل بين فورم الاستعادة والدخول
-    document.getElementById('forgotPassLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('loginForm').classList.add('hidden');
-        document.getElementById('registerForm').classList.add('hidden');
-        document.getElementById('resetForm').classList.remove('hidden');
-        document.getElementById('msgBox').className = 'msg';
-    });
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
 
-    document.getElementById('backToLoginLink').addEventListener('click', (e) => {
-        e.preventDefault();
-        document.getElementById('resetForm').classList.add('hidden');
-        document.getElementById('loginForm').classList.remove('hidden');
-        document.getElementById('msgBox').className = 'msg';
-    });
+                const data = await response.json();
+
+                if (response.ok) {
+                    // حفظ التوكن والصلاحية في المتصفح
+                    sessionStorage.setItem('token', data.token);
+                    sessionStorage.setItem('role', data.role);
+                    
+                    // لو الأدمن، خزنه في الاسم اللي صفحة admin.js بتدور عليه
+                    if (data.role === 'admin') {
+                        sessionStorage.setItem('adminToken', data.token);
+                        window.location.href = '/admin.html'; // وديه للوحة التحكم
+                    } else {
+                        window.location.href = '/course.html'; // وديه للكورسات
+                    }
+                } else {
+                    if (errorMsg) {
+                        errorMsg.innerText = data.message || "بيانات غير صحيحة";
+                        errorMsg.style.display = 'block';
+                    } else {
+                        alert(data.message || "بيانات غير صحيحة");
+                    }
+                }
+            } catch (error) {
+                alert("خطأ في الاتصال بالسيرفر");
+            } finally {
+                submitBtn.innerText = "تسجيل الدخول";
+                submitBtn.disabled = false;
+            }
+        });
+    }
+
+    // ==========================================
+    // 2. إنشاء حساب جديد (Register)
+    // ==========================================
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const submitBtn = registerForm.querySelector('button[type="submit"]');
+
+            if (!username || !email || !password) return alert("يرجى ملء جميع الحقول");
+
+            submitBtn.innerText = "جاري إنشاء الحساب...";
+            submitBtn.disabled = true;
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن.");
+                    // ممكن تحوله لصفحة تسجيل الدخول لو حابب
+                    window.location.href = '/auth.html'; 
+                } else {
+                    alert(data.message || "حدث خطأ أثناء التسجيل");
+                }
+            } catch (error) {
+                alert("خطأ في الاتصال بالسيرفر");
+            } finally {
+                submitBtn.innerText = "إنشاء حساب";
+                submitBtn.disabled = false;
+            }
+        });
+    }
 });
-
-function togglePass(inputId, btn) {
-    const input = document.getElementById(inputId);
-    if (input.type === "password") {
-        input.type = "text";
-        btn.innerHTML = "🙈";
-    } else {
-        input.type = "password";
-        btn.innerHTML = "👁️";
-    }
-}
-
-function switchTab(tab) {
-    document.getElementById('loginTab').classList.remove('active');
-    document.getElementById('registerTab').classList.remove('active');
-    document.getElementById('loginForm').classList.add('hidden');
-    document.getElementById('registerForm').classList.add('hidden');
-    document.getElementById('resetForm').classList.add('hidden');
-    document.getElementById('msgBox').className = 'msg'; 
-
-    if (tab === 'login') {
-        document.getElementById('loginTab').classList.add('active');
-        document.getElementById('loginForm').classList.remove('hidden');
-    } else {
-        document.getElementById('registerTab').classList.add('active');
-        document.getElementById('registerForm').classList.remove('hidden');
-    }
-}
-
-function showMsg(text, type) {
-    const box = document.getElementById('msgBox');
-    box.innerText = text;
-    box.className = `msg ${type}`;
-}
-
-async function handleLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    if (!email || !password) return showMsg("يرجى ملء جميع الحقول", "error");
-
-    try {
-        const res = await fetch('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
-        });
-        const data = await res.json();
-
-        if (res.ok) {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            showMsg("تم الدخول بنجاح! جاري تحويلك...", "success");
-            setTimeout(() => window.location.href = '/', 1500); 
-        } else {
-            showMsg(data.error || "حدث خطأ", "error");
-        }
-    } catch (error) {
-        showMsg("فشل الاتصال بالسيرفر", "error");
-    }
-}
-
-async function handleRegister() {
-    const username = document.getElementById('regUsername').value;
-    const email = document.getElementById('regEmail').value;
-    const password = document.getElementById('regPassword').value;
-    if (!username || !email || !password) return showMsg("يرجى ملء جميع الحقول", "error");
-
-    try {
-        const res = await fetch('/api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, email, password })
-        });
-        const data = await res.json();
-
-        if (res.ok) {
-            showMsg("تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن.", "success");
-            switchTab('login'); 
-            document.getElementById('loginEmail').value = email; 
-        } else {
-            showMsg(data.error || "حدث خطأ", "error");
-        }
-    } catch (error) {
-        showMsg("فشل الاتصال بالسيرفر", "error");
-    }
-}
-
-async function handleReset() {
-    const email = document.getElementById('resetEmail').value;
-    const newPassword = document.getElementById('resetNewPassword').value;
-    if (!email || !newPassword) return showMsg("يرجى ملء الحقول", "error");
-
-    try {
-        const res = await fetch('/api/reset-password', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, newPassword })
-        });
-        const data = await res.json();
-        if(res.ok) {
-            showMsg(data.message, "success");
-            setTimeout(() => { window.location.reload(); }, 2000);
-        } else {
-            showMsg(data.error, "error");
-        }
-    } catch(e) { showMsg("خطأ في الاتصال", "error"); }
-}
