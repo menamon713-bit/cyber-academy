@@ -1,16 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. الحماية: لو مفيش توكن، اطرد المستخدم بره فوراً
+    // 1. الحماية: لو مفيش توكن في المتصفح، اطرد المستخدم لصفحة تسجيل الدخول فوراً
     const token = sessionStorage.getItem('adminToken');
     if (!token) {
-        window.location.href = '/index.html'; // أو صفحة تسجيل الدخول بتاعتك
-        return;
+        window.location.href = '/auth.html'; // طرده لصفحة الدخول
+        return; // وقف تنفيذ أي كود تاني
     }
 
-    // 2. لو فيه توكن، اعرض اللوحة وخبي شاشة الدخول
-    document.getElementById('loginModal').style.display = 'none';
-    document.getElementById('adminContent').style.display = 'block';
-    
+    // 2. لو فيه توكن، ابدأ حمل البيانات
     loadAdminStats();
     loadAdminCourses();
 
@@ -25,9 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (!title || !desc) return alert("يرجى ملء جميع الحقول!");
             
-            const currentToken = sessionStorage.getItem('adminToken');
-            if (!currentToken) return alert("انتهت الجلسة");
-
             this.innerText = "جاري الحفظ..."; 
             this.disabled = true;
 
@@ -40,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: method, 
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${currentToken}`
+                        'Authorization': `Bearer ${token}` // بنبعت التوكن
                     }, 
                     body: JSON.stringify(courseData) 
                 });
@@ -91,37 +85,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target.classList.contains('delete-btn')) {
                 if(confirm("هل أنت متأكد من الحذف؟")) {
                     const courseId = e.target.getAttribute('data-id');
-                    const currentToken = sessionStorage.getItem('adminToken');
-                    if (!currentToken) return alert("غير مصرح");
-
                     try {
                         const response = await fetch(`/api/courses?id=${courseId}`, { 
                             method: 'DELETE',
-                            headers: { 'Authorization': `Bearer ${currentToken}` }
+                            headers: { 'Authorization': `Bearer ${token}` }
                         });
                         if (response.ok) { 
                             alert("تم الحذف!"); 
                             loadAdminCourses(); 
                             loadAdminStats(); 
-                        } else {
-                            alert("فشل الحذف.");
                         }
-                    } catch (error) { 
-                        alert("خطأ في الاتصال."); 
-                    }
+                    } catch (error) { alert("خطأ في الاتصال."); }
                 }
             }
         });
     }
 });
 
+// دوال جلب البيانات
 async function loadAdminStats() {
     const token = sessionStorage.getItem('adminToken');
     if(!token) return;
 
     try {
         const res = await fetch('/api/courses?admin_users=true', {
-            method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -129,11 +116,9 @@ async function loadAdminStats() {
             const data = await res.json();
             document.getElementById('totalUsersCount').innerText = data.totalUsers || 0;
             document.getElementById('totalCoursesCount').innerText = data.totalCourses || 0;
-            document.getElementById('totalCompletedCount').innerText = data.totalCompleted || 0;
             
             const userListContainer = document.getElementById('userListContainer');
             userListContainer.innerHTML = ''; 
-            
             (data.users || []).forEach(u => { 
                 const userDiv = document.createElement('div');
                 userDiv.innerText = `👤 ${u.username} (${u.email})`;
@@ -147,11 +132,9 @@ async function loadAdminCourses() {
     let list = document.getElementById('courseList');
     if(!list) return;
     
-    list.innerHTML = '<p style="color:#777;">جاري التحميل...</p>';
     try {
         const response = await fetch('/api/courses');
         const courses = await response.json();
-        
         list.innerHTML = '';
         if(courses.length === 0) return list.innerHTML = '<p>لا توجد كورسات.</p>';
         
@@ -170,7 +153,5 @@ async function loadAdminCourses() {
             `;
             list.appendChild(courseItem);
         });
-    } catch (error) { 
-        list.innerHTML = '<p style="color:red;">فشل الاتصال.</p>'; 
-    }
+    } catch (error) { list.innerHTML = '<p style="color:red;">فشل الاتصال.</p>'; }
 }
