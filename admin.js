@@ -1,18 +1,31 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. الحماية: لو مفيش توكن، اطرد المستخدم فوراً
-    const token = sessionStorage.getItem('adminToken');
+    let token = null;
+    try { token = sessionStorage.getItem('adminToken'); } catch (e) {}
+
+    // لو مفيش توكن، بنمسح الصفحة كلها وبنحط 404
     if (!token) {
-        window.location.href = '/auth.html'; 
+        document.documentElement.innerHTML = `
+            <!DOCTYPE html>
+            <html lang="en" dir="ltr">
+            <head><title>404 Not Found</title><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+            <body style="background-color: #08090d; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; text-align: center;">
+                <div>
+                    <h1 style="font-size: 120px; color: #ff304b; margin: 0;">404</h1>
+                    <h2 style="font-size: 24px;">Page Not Found</h2>
+                    <a href="/index.html" style="color: #ff304b;">Go to Homepage</a>
+                </div>
+            </body>
+            </html>
+        `;
         return; 
     }
 
-    // 2. لو فيه توكن، اعرض اللوحة
+    // لو فيه توكن، بنعرض اللوحة
     document.getElementById('adminContent').style.display = 'block';
     loadAdminStats();
     loadAdminCourses();
 
-    // 3. إضافة/تعديل كورس
     const addCourseBtn = document.getElementById('addCourseBtn');
     if(addCourseBtn) {
         addCourseBtn.addEventListener('click', async function() {
@@ -23,37 +36,24 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (!title || !desc) return alert("يرجى ملء جميع الحقول!");
             
-            this.innerText = "جاري الحفظ..."; 
-            this.disabled = true;
-
+            this.innerText = "جاري الحفظ..."; this.disabled = true;
             let courseData = { title, desc, level, pathId: "basics" };
+            
             try {
                 let url = idToEdit ? `/api/courses?id=${idToEdit}` : '/api/courses';
                 let method = idToEdit ? 'PUT' : 'POST';
-                
                 const response = await fetch(url, { 
                     method: method, 
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }, 
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }, 
                     body: JSON.stringify(courseData) 
                 });
                 
                 if (response.ok) { 
-                    resetForm(); 
-                    alert(idToEdit ? "تم التعديل!" : "تمت الإضافة!"); 
-                    loadAdminCourses(); 
-                    loadAdminStats(); 
-                } else {
-                    alert("حدث خطأ أو غير مصرح.");
-                }
-            } catch (error) { 
-                alert("خطأ في الاتصال."); 
-            } finally { 
-                this.disabled = false; 
-                this.innerText = idToEdit ? "حفظ التعديلات" : "إضافة الكورس للموقع"; 
-            }
+                    resetForm(); alert(idToEdit ? "تم التعديل!" : "تمت الإضافة!"); 
+                    loadAdminCourses(); loadAdminStats(); 
+                } else alert("حدث خطأ أو غير مصرح.");
+            } catch (error) { alert("خطأ في الاتصال."); } 
+            finally { this.disabled = false; this.innerText = idToEdit ? "حفظ التعديلات" : "إضافة الكورس للموقع"; }
         });
     }
 
@@ -61,15 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if(cancelEditBtn) cancelEditBtn.addEventListener('click', resetForm);
 
     function resetForm() {
-        document.getElementById('courseTitle').value = ''; 
-        document.getElementById('courseDesc').value = '';
-        document.getElementById('editCourseId').value = '';
-        document.getElementById('formTitle').innerText = "إضافة كورس جديد"; 
-        document.getElementById('addCourseBtn').innerText = "إضافة الكورس للموقع"; 
-        document.getElementById('cancelEditBtn').style.display = 'none';
+        document.getElementById('courseTitle').value = ''; document.getElementById('courseDesc').value = '';
+        document.getElementById('editCourseId').value = ''; document.getElementById('formTitle').innerText = "إضافة كورس جديد"; 
+        document.getElementById('addCourseBtn').innerText = "إضافة الكورس للموقع"; document.getElementById('cancelEditBtn').style.display = 'none';
     }
 
-    // 4. أزرار التعديل والحذف
     const courseList = document.getElementById('courseList');
     if(courseList) {
         courseList.addEventListener('click', async (e) => {
@@ -87,15 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(confirm("هل أنت متأكد من الحذف؟")) {
                     const courseId = e.target.getAttribute('data-id');
                     try {
-                        const response = await fetch(`/api/courses?id=${courseId}`, { 
-                            method: 'DELETE',
-                            headers: { 'Authorization': `Bearer ${token}` }
-                        });
-                        if (response.ok) { 
-                            alert("تم الحذف!"); 
-                            loadAdminCourses(); 
-                            loadAdminStats(); 
-                        }
+                        const response = await fetch(`/api/courses?id=${courseId}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+                        if (response.ok) { alert("تم الحذف!"); loadAdminCourses(); loadAdminStats(); }
                     } catch (error) { alert("خطأ في الاتصال."); }
                 }
             }
@@ -104,53 +93,37 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function loadAdminStats() {
-    const token = sessionStorage.getItem('adminToken');
-    if(!token) return;
-
+    const token = sessionStorage.getItem('adminToken'); if(!token) return;
     try {
-        const res = await fetch('/api/courses?admin_users=true', {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
-
+        const res = await fetch('/api/courses?admin_users=true', { headers: { 'Authorization': `Bearer ${token}` } });
         if(res.ok) {
             const data = await res.json();
             document.getElementById('totalUsersCount').innerText = data.totalUsers || 0;
             document.getElementById('totalCoursesCount').innerText = data.totalCourses || 0;
-            
             const userListContainer = document.getElementById('userListContainer');
             userListContainer.innerHTML = ''; 
             (data.users || []).forEach(u => { 
-                const userDiv = document.createElement('div');
-                userDiv.innerText = `👤 ${u.username} (${u.email})`;
-                userListContainer.appendChild(userDiv); 
+                const userDiv = document.createElement('div'); userDiv.innerText = `👤 ${u.username} (${u.email})`; userListContainer.appendChild(userDiv); 
             });
         }
     } catch(e) { console.log(e); }
 }
 
 async function loadAdminCourses() {
-    let list = document.getElementById('courseList');
-    if(!list) return;
-    
+    let list = document.getElementById('courseList'); if(!list) return;
     try {
         const response = await fetch('/api/courses');
         const courses = await response.json();
         list.innerHTML = '';
         if(courses.length === 0) return list.innerHTML = '<p>لا توجد كورسات.</p>';
-        
         courses.forEach((course) => {
-            const courseItem = document.createElement('div');
-            courseItem.className = 'course-item';
+            const courseItem = document.createElement('div'); courseItem.className = 'course-item';
             courseItem.innerHTML = `
-                <div>
-                    <strong style="color:#ff304b;">${course.title}</strong> <br>
-                    <small style="color:#9a9ba8;">${course.level} - ${course.desc}</small>
-                </div>
+                <div><strong style="color:#ff304b;">${course.title}</strong><br><small style="color:#9a9ba8;">${course.level} - ${course.desc}</small></div>
                 <div class="action-btns">
                     <button class="edit-btn" data-id="${course._id}" data-title="${course.title}" data-desc="${course.desc}" data-level="${course.level}">تعديل</button>
                     <button class="delete-btn" data-id="${course._id}">حذف</button>
-                </div>
-            `;
+                </div>`;
             list.appendChild(courseItem);
         });
     } catch (error) { list.innerHTML = '<p style="color:red;">فشل الاتصال.</p>'; }
