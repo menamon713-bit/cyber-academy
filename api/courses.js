@@ -1,4 +1,4 @@
-import connectDB from '../utils/db.js';
+import connectDB from '../db.js';
 import Course from '../models/Course.js';
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
@@ -17,7 +17,12 @@ const verifyAdmin = (req) => {
 };
 
 export default async function handler(req, res) {
-    await connectDB();
+    try {
+        await connectDB();
+    } catch (dbError) {
+        console.error("DB Connection Error:", dbError);
+        return res.status(500).json({ message: 'خطأ في الاتصال بقاعدة البيانات' });
+    }
 
     if (req.method === 'GET') {
         try {
@@ -42,6 +47,7 @@ export default async function handler(req, res) {
             return res.status(200).json(courses);
 
         } catch (error) {
+            console.error("GET Error:", error);
             return res.status(500).json({ message: 'خطأ في جلب البيانات' });
         }
     }
@@ -56,6 +62,7 @@ export default async function handler(req, res) {
             await newCourse.save();
             return res.status(201).json({ message: 'تم إضافة الكورس' });
         } catch (error) {
+            console.error("POST Error:", error);
             return res.status(500).json({ message: 'خطأ في إضافة الكورس' });
         }
     }
@@ -65,6 +72,7 @@ export default async function handler(req, res) {
             await Course.findByIdAndDelete(req.query.id);
             return res.status(200).json({ message: 'تم الحذف' });
         } catch (error) {
+            console.error("DELETE Error:", error);
             return res.status(500).json({ message: 'خطأ في الحذف' });
         }
     }
