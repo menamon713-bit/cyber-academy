@@ -1,24 +1,27 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>لوحة التحكم</title>
-    <style>
-        body { font-family: sans-serif; background: #08090d; color: white; padding: 20px; }
-        .box { background: #15161d; padding: 20px; border-radius: 10px; border: 1px solid #282a34; max-width: 600px; margin: auto; }
-        input, textarea { width: 100%; padding: 10px; margin: 10px 0; background: #101116; border: 1px solid #282a34; color: white; box-sizing: border-box; }
-        button { padding: 10px 20px; background: #ff304b; color: white; border: none; cursor: pointer; }
-    </style>
-</head>
-<body>
-    <div class="box" id="adminContent" style="display:none;">
-        <h2>لوحة تحكم المدير</h2>
-        <h3>إضافة كورس</h3>
-        <input type="text" id="title" placeholder="اسم الكورس">
-        <textarea id="desc" placeholder="الوصف"></textarea>
-        <button id="addBtn">إضافة</button>
-        <button onclick="logout()" style="background: #555; float: left;">خروج</button>
-    </div>
-    <script src="/js/admin.js"></script>
-</body>
-</html>
+const token = sessionStorage.getItem('token');
+const role = sessionStorage.getItem('role');
+
+if (!token || role !== 'admin') {
+    document.documentElement.innerHTML = `<!DOCTYPE html><html><head><title>404</title></head><body style="background:#08090d; color:#ff304b; display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif;"><h1 style="font-size:100px;">404 Not Found</h1></body></html>`;
+} else {
+    document.getElementById('adminContent').style.display = 'block';
+}
+
+document.getElementById('addBtn')?.addEventListener('click', async () => {
+    const title = document.getElementById('title').value;
+    const desc = document.getElementById('desc').value;
+    
+    const res = await fetch('/api/courses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ title, desc, level: 'مبتدئ' })
+    });
+    
+    if (res.ok) alert('تمت إضافة الكورس!');
+    else alert('فشل الإضافة');
+});
+
+function logout() {
+    sessionStorage.clear();
+    window.location.href = '/auth.html';
+}
