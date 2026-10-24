@@ -7,49 +7,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Cairo', sans-serif; background: #08090d; color: white; padding: 20px; margin: 0;}
-        .container { max-width: 800px; margin: auto; background: #15161d; padding: 25px; border-radius: 15px; border: 1px solid #282a34; display: none; }
+        .container { max-width: 800px; margin: auto; background: #15161d; padding: 25px; border-radius: 15px; border: 1px solid #282a34; }
         h1 { color: #ff304b; text-align: center; }
         input, select, textarea { width: 100%; padding: 10px; margin: 10px 0; background: #101116; border: 1px solid #282a34; color: white; border-radius: 8px; font-family: inherit; box-sizing: border-box;}
         .primary-btn { background: #ff304b; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; font-size: 16px; margin-top: 10px;}
-        .primary-btn:hover { background: #b90e2a; }
         .course-item { background: #101116; border: 1px solid #282a34; padding: 15px; margin-bottom: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;}
         .action-btns { display: flex; gap: 5px; }
-        .edit-btn { background: #007bff; color: white; border: none; padding: 5px 15px; font-size: 14px; border-radius: 8px; cursor: pointer; font-weight: bold;}
-        .delete-btn { background: #555; color: white; border: none; padding: 5px 15px; font-size: 14px; border-radius: 8px; cursor: pointer; font-weight: bold;}
-        .delete-btn:hover { background: red; }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 9, 13, 0.95); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .login-box { background: #15161d; padding: 30px; border-radius: 15px; border: 1px solid #ff304b; width: 90%; max-width: 400px; text-align: center; }
-        .pass-wrapper { position: relative; margin-bottom: 10px; }
-        .pass-wrapper input { padding-left: 50px; text-align: center; font-size: 18px; margin: 0; height: 45px;}
-        .eye-btn { position: absolute; left: 5px; top: 5px; bottom: 5px; width: 40px; background: transparent; border: none; color: #9a9ba8; font-size: 20px; cursor: pointer; display: flex; justify-content: center; align-items: center;}
-        .error-msg { background: #ff304b; color: white; font-size: 14px; padding: 10px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold;}
+        .edit-btn { background: #007bff; color: white; border: none; padding: 5px 15px; border-radius: 8px; cursor: pointer;}
+        .delete-btn { background: #555; color: white; border: none; padding: 5px 15px; border-radius: 8px; cursor: pointer;}
         .stats-box { background: #101116; border: 1px solid #282a34; padding: 20px; border-radius: 12px; text-align: center; }
         .stats-box h2 { margin: 0; font-size: 36px; }
-        .stats-box p { color: #9a9ba8; margin: 5px 0 0; font-size: 14px; }
         .user-list { max-height: 200px; overflow-y: auto; text-align: right; margin-top: 15px; background: #101116; border: 1px solid #282a34; border-radius: 12px; padding: 15px;}
         .user-list div { padding: 8px; border-bottom: 1px solid #282a34; font-size: 13px; color: #ccc; }
     </style>
 </head>
 <body>
-
-    <div id="loginModal" class="modal-overlay">
-        <div class="login-box">
-            <h2>👑 لوحة تحكم المدير</h2>
-            <p style="color:#9a9ba8; margin-bottom:15px;">أدخل بيانات حساب الأدمن</p>
-            
-            <input type="email" id="adminEmail" placeholder="أدخل الإيميل" style="margin-bottom: 10px; text-align: center;" autocomplete="off">
-            
-            <div class="pass-wrapper">
-                <input type="password" id="adminPassword" placeholder="أدخل كلمة المرور" autocomplete="off">
-                <button type="button" class="eye-btn" id="eyeToggle">👁️</button>
-            </div>
-            <p id="loginError" class="error-msg">بيانات الدخول غير صحيحة!</p>
-            <button class="primary-btn" id="loginBtn">دخول</button>
-        </div>
-    </div>
-
     <div class="container" id="adminContent">
         <h1>لوحة تحكم المدير</h1>
+        
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px;">
             <div class="stats-box">
                 <h2 id="totalUsersCount" style="color: #45d483;">0</h2>
