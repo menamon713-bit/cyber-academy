@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. حماية الصفحة: لو مفيش توكن، اطرد المستخدم بره
+    // 1. شيلنا الحماية مؤقتاً عشان تقدر تدخل أول مرة
+    /*
     const token = sessionStorage.getItem('adminToken');
     if (!token) {
         window.location.href = '/index.html'; 
         return;
     }
+    */
 
-    // 2. عرض اللوحة
+    // 2. إظهار اللوحة
     document.getElementById('loginModal').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
     loadAdminStats();
@@ -114,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 5. جلب الإحصائيات
 async function loadAdminStats() {
     const token = sessionStorage.getItem('adminToken');
     if(!token) return;
@@ -137,25 +138,12 @@ async function loadAdminStats() {
             (data.users || []).forEach(u => { 
                 const userDiv = document.createElement('div');
                 userDiv.innerText = `👤 ${u.username} (${u.email})`;
-                userDiv.style.color = "#777";
-                userDiv.style.fontSize = "12px";
                 userListContainer.appendChild(userDiv); 
             });
-            
-            if (!data.users || data.users.length === 0) {
-                userListContainer.innerHTML = '<p style="color:#777; font-size:12px;">لا يوجد مستخدمين بعد.</p>';
-            }
-        } else if (res.status === 403) {
-            alert("غير مصرح لك برؤية هذه البيانات.");
-            sessionStorage.removeItem('adminToken');
-            window.location.href = '/index.html';
         }
-    } catch(e) { 
-        console.log("Error loading stats", e); 
-    }
+    } catch(e) { console.log(e); }
 }
 
-// 6. جلب الكورسات
 async function loadAdminCourses() {
     let list = document.getElementById('courseList');
     if(!list) return;
@@ -171,39 +159,16 @@ async function loadAdminCourses() {
         courses.forEach((course) => {
             const courseItem = document.createElement('div');
             courseItem.className = 'course-item';
-            
-            const titleStrong = document.createElement('strong');
-            titleStrong.style.color = '#ff304b';
-            titleStrong.innerText = course.title;
-            
-            const descSmall = document.createElement('small');
-            descSmall.style.color = '#9a9ba8';
-            descSmall.innerText = `${course.level} - ${course.desc}`;
-            
-            const btnContainer = document.createElement('div');
-            btnContainer.className = 'action-btns';
-            
-            const editBtn = document.createElement('button');
-            editBtn.className = 'edit-btn';
-            editBtn.innerText = 'تعديل';
-            editBtn.setAttribute('data-id', course._id);
-            editBtn.setAttribute('data-title', course.title);
-            editBtn.setAttribute('data-desc', course.desc);
-            editBtn.setAttribute('data-level', course.level);
-            
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.innerText = 'حذف';
-            deleteBtn.setAttribute('data-id', course._id);
-            
-            btnContainer.appendChild(editBtn);
-            btnContainer.appendChild(deleteBtn);
-            
-            courseItem.appendChild(titleStrong);
-            courseItem.appendChild(document.createElement('br'));
-            courseItem.appendChild(descSmall);
-            courseItem.appendChild(btnContainer);
-            
+            courseItem.innerHTML = `
+                <div>
+                    <strong style="color:#ff304b;">${course.title}</strong> <br>
+                    <small style="color:#9a9ba8;">${course.level} - ${course.desc}</small>
+                </div>
+                <div class="action-btns">
+                    <button class="edit-btn" data-id="${course._id}" data-title="${course.title}" data-desc="${course.desc}" data-level="${course.level}">تعديل</button>
+                    <button class="delete-btn" data-id="${course._id}">حذف</button>
+                </div>
+            `;
             list.appendChild(courseItem);
         });
     } catch (error) { 
