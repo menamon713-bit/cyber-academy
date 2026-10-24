@@ -4,28 +4,20 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method Not Allowed' });
-    }
+    if (req.method !== 'POST') return res.status(405).json({ message: 'Method Not Allowed' });
 
     const { email, password } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).json({ message: 'يرجى إدخال الإيميل والباسورد' });
-    }
+    if (!email || !password) return res.status(400).json({ message: 'يرجى إدخال الإيميل والباسورد' });
 
     try {
         await connectDB();
 
         const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ message: 'بيانات الدخول غير صحيحة' });
-        }
+        if (!user) return res.status(401).json({ message: 'بيانات الدخول غير صحيحة' });
 
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(401).json({ message: 'بيانات الدخول غير صحيحة' });
-        }
+        if (!isMatch) return res.status(401).json({ message: 'بيانات الدخول غير صحيحة' });
 
         const token = jwt.sign(
             { userId: user._id, role: user.role },
@@ -33,14 +25,8 @@ export default async function handler(req, res) {
             { expiresIn: '1d' }
         );
 
-        res.status(200).json({
-            message: 'تم تسجيل الدخول',
-            token: token,
-            role: user.role
-        });
-
+        res.status(200).json({ token, role: user.role });
     } catch (error) {
-        console.error("Login Error:", error);
         res.status(500).json({ message: 'حدث خطأ في السيرفر' });
     }
 }
