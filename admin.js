@@ -1,17 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. شيلنا الحماية مؤقتاً عشان تقدر تدخل أول مرة
-    /*
+    // 1. الحماية: لو مفيش توكن، اطرد المستخدم بره فوراً
     const token = sessionStorage.getItem('adminToken');
     if (!token) {
-        window.location.href = '/index.html'; 
+        window.location.href = '/index.html'; // أو صفحة تسجيل الدخول بتاعتك
         return;
     }
-    */
 
-    // 2. إظهار اللوحة
+    // 2. لو فيه توكن، اعرض اللوحة وخبي شاشة الدخول
     document.getElementById('loginModal').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
+    
     loadAdminStats();
     loadAdminCourses();
 
