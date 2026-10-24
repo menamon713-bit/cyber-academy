@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.getElementById('adminPassword').value.trim() === "MinaAdmin2026") {
             document.getElementById('loginModal').style.display = 'none';
             document.getElementById('adminContent').style.display = 'block';
-            loadAdminStats(); // جلب إحصائيات المستخدمين
+            loadAdminStats();
             loadAdminCourses();
         } else {
             document.getElementById('loginError').style.display = 'block';
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let url = idToEdit ? `/api/courses?id=${idToEdit}` : '/api/courses';
                 let method = idToEdit ? 'PUT' : 'POST';
                 const response = await fetch(url, { method: method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(courseData) });
-                if (response.ok) { resetForm(); alert(idToEdit ? "تم التعديل!" : "تمت الإضافة!"); loadAdminCourses(); }
+                if (response.ok) { resetForm(); alert(idToEdit ? "تم التعديل!" : "تمت الإضافة!"); loadAdminCourses(); loadAdminStats(); }
                 else alert("حدث خطأ.");
             } catch (error) { alert("خطأ في الاتصال."); } 
             finally { this.disabled = false; this.innerText = idToEdit ? "حفظ التعديلات" : "إضافة الكورس للموقع"; }
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const courseId = e.target.getAttribute('data-id');
                     try {
                         const response = await fetch(`/api/courses?id=${courseId}`, { method: 'DELETE' });
-                        if (response.ok) { alert("تم الحذف!"); loadAdminCourses(); }
+                        if (response.ok) { alert("تم الحذف!"); loadAdminCourses(); loadAdminStats(); }
                     } catch (error) { alert("خطأ في الاتصال."); }
                 }
             }
@@ -105,14 +105,16 @@ async function loadAdminStats() {
         const res = await fetch('/api/courses?admin_users=true&key=MinaAdmin2026');
         if(res.ok) {
             const data = await res.json();
-            const totalUsersEl = document.getElementById('totalUsersCount');
-            if (totalUsersEl) totalUsersEl.innerText = data.totalUsers || 0;
+            
+            document.getElementById('totalUsersCount').innerText = data.totalUsers || 0;
+            document.getElementById('totalCoursesCount').innerText = data.totalCourses || 0;
+            document.getElementById('totalCompletedCount').innerText = data.totalCompleted || 0;
             
             let listHTML = '';
-            const recentUsers = (data.users || []).slice(-10).reverse(); 
-            recentUsers.forEach(u => { listHTML += `<div>👤 ${u.username} <span style="color:#777; font-size:11px;">(${u.email})</span></div>`; });
-            const userListEl = document.getElementById('userListContainer');
-            if (userListEl) userListEl.innerHTML = listHTML || '<p style="color:#777; font-size:12px;">لا يوجد مستخدمين بعد.</p>';
+            (data.users || []).forEach(u => { 
+                listHTML += `<div>👤 ${u.username} <span style="color:#777; font-size:11px;">(${u.email})</span></div>`; 
+            });
+            document.getElementById('userListContainer').innerHTML = listHTML || '<p style="color:#777; font-size:12px;">لا يوجد مستخدمين بعد.</p>';
         }
     } catch(e) { console.log("Error loading stats", e); }
 }
