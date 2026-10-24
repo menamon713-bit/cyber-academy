@@ -1,27 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. حماية الصفحة: لو مفيش توكن، اطرد المستخدم بره الصفحة فوراً
+    // 1. حماية الصفحة: لو مفيش توكن، اطرد المستخدم بره
     const token = sessionStorage.getItem('adminToken');
     if (!token) {
-        window.location.href = '/index.html'; // أو أي صفحة رئيسية عندك
+        window.location.href = '/index.html'; 
         return;
     }
 
-    // 2. لو فيه توكن، اعرض اللوحة وخبي شاشة تسجيل الدخول
+    // 2. عرض اللوحة
     document.getElementById('loginModal').style.display = 'none';
     document.getElementById('adminContent').style.display = 'block';
     loadAdminStats();
     loadAdminCourses();
 
-    // 3. زر العين (لإظهار/إخفاء الباسورد) - (اختياري لو حبيت تسيبه في حاله كان فيه شاشة تسجيل دخول)
-    const eyeBtn = document.getElementById('eyeToggle');
-    if(eyeBtn) eyeBtn.addEventListener('click', function() {
-        let input = document.getElementById('adminPassword');
-        input.type = input.type === "password" ? "text" : "password";
-        this.innerHTML = input.type === "password" ? "👁️" : "🙈";
-    });
-
-    // 4. إضافة كورس جديد أو تعديل
+    // 3. إضافة/تعديل كورس
     const addCourseBtn = document.getElementById('addCourseBtn');
     if(addCourseBtn) {
         addCourseBtn.addEventListener('click', async function() {
@@ -32,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (!title || !desc) return alert("يرجى ملء جميع الحقول!");
             
-            const token = sessionStorage.getItem('adminToken');
-            if (!token) return alert("انتهت الجلسة، يرجى تسجيل الدخول");
+            const currentToken = sessionStorage.getItem('adminToken');
+            if (!currentToken) return alert("انتهت الجلسة");
 
             this.innerText = "جاري الحفظ..."; 
             this.disabled = true;
@@ -47,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: method, 
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` // بنبعت التوكن هنا عشان السيرفر يتأكد
+                        'Authorization': `Bearer ${currentToken}`
                     }, 
                     body: JSON.stringify(courseData) 
                 });
@@ -69,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. إلغاء التعديل
     const cancelEditBtn = document.getElementById('cancelEditBtn');
     if(cancelEditBtn) cancelEditBtn.addEventListener('click', resetForm);
 
@@ -82,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('cancelEditBtn').style.display = 'none';
     }
 
-    // 6. أزرار التعديل والحذف في قائمة الكورسات
+    // 4. أزرار التعديل والحذف
     const courseList = document.getElementById('courseList');
     if(courseList) {
         courseList.addEventListener('click', async (e) => {
@@ -99,20 +90,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target.classList.contains('delete-btn')) {
                 if(confirm("هل أنت متأكد من الحذف؟")) {
                     const courseId = e.target.getAttribute('data-id');
-                    const token = sessionStorage.getItem('adminToken');
-                    if (!token) return alert("غير مصرح");
+                    const currentToken = sessionStorage.getItem('adminToken');
+                    if (!currentToken) return alert("غير مصرح");
 
                     try {
                         const response = await fetch(`/api/courses?id=${courseId}`, { 
                             method: 'DELETE',
-                            headers: { 'Authorization': `Bearer ${token}` } // بنبعت التوكن عشان الحذف
+                            headers: { 'Authorization': `Bearer ${currentToken}` }
                         });
                         if (response.ok) { 
                             alert("تم الحذف!"); 
                             loadAdminCourses(); 
                             loadAdminStats(); 
                         } else {
-                            alert("فشل الحذف، قد لا تملك صلاحية.");
+                            alert("فشل الحذف.");
                         }
                     } catch (error) { 
                         alert("خطأ في الاتصال."); 
@@ -123,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 7. جلب الإحصائيات (محمي بالتوكن)
+// 5. جلب الإحصائيات
 async function loadAdminStats() {
     const token = sessionStorage.getItem('adminToken');
     if(!token) return;
@@ -136,7 +127,6 @@ async function loadAdminStats() {
 
         if(res.ok) {
             const data = await res.json();
-            
             document.getElementById('totalUsersCount').innerText = data.totalUsers || 0;
             document.getElementById('totalCoursesCount').innerText = data.totalCourses || 0;
             document.getElementById('totalCompletedCount').innerText = data.totalCompleted || 0;
@@ -144,7 +134,6 @@ async function loadAdminStats() {
             const userListContainer = document.getElementById('userListContainer');
             userListContainer.innerHTML = ''; 
             
-            // حماية من XSS باستخدام innerText
             (data.users || []).forEach(u => { 
                 const userDiv = document.createElement('div');
                 userDiv.innerText = `👤 ${u.username} (${u.email})`;
@@ -159,14 +148,14 @@ async function loadAdminStats() {
         } else if (res.status === 403) {
             alert("غير مصرح لك برؤية هذه البيانات.");
             sessionStorage.removeItem('adminToken');
-            window.location.href = '/index.html'; // اطرده بره لو التوكن باظ
+            window.location.href = '/index.html';
         }
     } catch(e) { 
         console.log("Error loading stats", e); 
     }
 }
 
-// 8. جلب الكورسات للعرض في لوحة التحكم
+// 6. جلب الكورسات
 async function loadAdminCourses() {
     let list = document.getElementById('courseList');
     if(!list) return;
