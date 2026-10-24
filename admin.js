@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. تسجيل الدخول (بياخد الإيميل والباسورد ويبعتهم للسيرفر)
     const loginBtn = document.getElementById('loginBtn');
     if(loginBtn) loginBtn.addEventListener('click', async function() {
-        // ملاحظة: لازم تكون ضفت حقل إيميل في ملف admin.html بمعرف (id) اسمه adminEmail
         const email = document.getElementById('adminEmail').value; 
         const password = document.getElementById('adminPassword').value;
         
@@ -36,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // لو السيرفر قال إنه أدمن وادانا توكن
             if (response.ok && data.role === 'admin') {
-                sessionStorage.setItem('adminToken', data.token); // بنحفظ التوكن في المتصفح
+                sessionStorage.setItem('adminToken', data.token); // بنحفظ التوكن
                 document.getElementById('loginModal').style.display = 'none';
                 document.getElementById('adminContent').style.display = 'block';
                 loadAdminStats();
@@ -51,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 4. إضافة كورس جديد
+    // 4. إضافة كورس جديد أو تعديل
     const addCourseBtn = document.getElementById('addCourseBtn');
     if(addCourseBtn) {
         addCourseBtn.addEventListener('click', async function() {
@@ -77,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: method, 
                     headers: { 
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}` // بنبعت التوكن هنا عشان السيرفر يتأكد
+                        'Authorization': `Bearer ${token}` // بنبعت التوكن هنا
                     }, 
                     body: JSON.stringify(courseData) 
                 });
@@ -98,17 +97,67 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
-    // ... (باقي كود الـ resetForm والـ delete يفضل زي ما هو)
+
+    // 5. إلغاء التعديل
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    if(cancelEditBtn) cancelEditBtn.addEventListener('click', resetForm);
+
+    function resetForm() {
+        document.getElementById('courseTitle').value = ''; 
+        document.getElementById('courseDesc').value = '';
+        document.getElementById('editCourseId').value = '';
+        document.getElementById('formTitle').innerText = "إضافة كورس جديد"; 
+        document.getElementById('addCourseBtn').innerText = "إضافة الكورس للموقع"; 
+        document.getElementById('cancelEditBtn').style.display = 'none';
+    }
+
+    // 6. أزرار التعديل والحذف في قائمة الكورسات
+    const courseList = document.getElementById('courseList');
+    if(courseList) {
+        courseList.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('edit-btn')) {
+                document.getElementById('courseTitle').value = e.target.getAttribute('data-title');
+                document.getElementById('courseDesc').value = e.target.getAttribute('data-desc');
+                document.getElementById('courseLevel').value = e.target.getAttribute('data-level');
+                document.getElementById('editCourseId').value = e.target.getAttribute('data-id');
+                document.getElementById('formTitle').innerText = "تعديل الكورس"; 
+                document.getElementById('addCourseBtn').innerText = "حفظ التعديلات"; 
+                document.getElementById('cancelEditBtn').style.display = 'block';
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+            if (e.target.classList.contains('delete-btn')) {
+                if(confirm("هل أنت متأكد من الحذف؟")) {
+                    const courseId = e.target.getAttribute('data-id');
+                    const token = sessionStorage.getItem('adminToken');
+                    if (!token) return alert("غير مصرح");
+
+                    try {
+                        const response = await fetch(`/api/courses?id=${courseId}`, { 
+                            method: 'DELETE',
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (response.ok) { 
+                            alert("تم الحذف!"); 
+                            loadAdminCourses(); 
+                            loadAdminStats(); 
+                        } else {
+                            alert("فشل الحذف، قد لا تملك صلاحية.");
+                        }
+                    } catch (error) { 
+                        alert("خطأ في الاتصال."); 
+                    }
+                }
+            }
+        });
+    }
 });
 
-// 5. جلب الإحصائيات (محمي بالتوكن)
+// 7. جلب الإحصائيات (محمي بالتوكن)
 async function loadAdminStats() {
     const token = sessionStorage.getItem('adminToken');
     if(!token) return;
 
     try {
-        // شيلنا الباسورد من اللينك، وحطينا التوكن في الهيدر
         const res = await fetch('/api/courses?admin_users=true', {
             method: 'GET',
             headers: { 'Authorization': `Bearer ${token}` }
@@ -122,9 +171,9 @@ async function loadAdminStats() {
             document.getElementById('totalCompletedCount').innerText = data.totalCompleted || 0;
             
             const userListContainer = document.getElementById('userListContainer');
-            userListContainer.innerHTML = ''; // تنظيف المكان
+            userListContainer.innerHTML = ''; 
             
-            // إصلاح ثغرة XSS: استخدمنا innerText بدل innerHTML
+            // حماية من XSS باستخدام innerText
             (data.users || []).forEach(u => { 
                 const userDiv = document.createElement('div');
                 userDiv.innerText = `👤 ${u.username} (${u.email})`;
@@ -138,15 +187,15 @@ async function loadAdminStats() {
             }
         } else if (res.status === 403) {
             alert("غير مصرح لك برؤية هذه البيانات.");
-            sessionStorage.removeItem('adminToken'); // لو التوكن باظ امسحه
-            location.reload(); // واعمل تحديث
+            sessionStorage.removeItem('adminToken');
+            location.reload();
         }
     } catch(e) { 
         console.log("Error loading stats", e); 
     }
 }
 
-// 6. جلب الكورسات للعرض في لوحة التحكم
+// 8. جلب الكورسات للعرض في لوحة التحكم
 async function loadAdminCourses() {
     let list = document.getElementById('courseList');
     if(!list) return;
@@ -160,8 +209,6 @@ async function loadAdminCourses() {
         if(courses.length === 0) return list.innerHTML = '<p>لا توجد كورسات.</p>';
         
         courses.forEach((course) => {
-            // هنا كمان استخدمنا innerHTML بس مع تنظيف بسيط (الأفضل استخدام مكتبة DOMPurify)
-            // بس للتأمين السريع، هنستخدم النص المباشر بدل الـ HTML
             const courseItem = document.createElement('div');
             courseItem.className = 'course-item';
             
