@@ -22,23 +22,16 @@
     </style>
 </head>
 <body>
+    <!-- لاحظ إننا حطينا display: none هنا -->
     <div class="container" id="adminContent" style="display: none;">
         <h1>لوحة تحكم المدير</h1>
         
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px;">
-            <div class="stats-box">
-                <h2 id="totalUsersCount" style="color: #45d483;">0</h2>
-                <p>إجمالي الطلاب</p>
-            </div>
-            <div class="stats-box">
-                <h2 id="totalCoursesCount" style="color: #3b82f6;">0</h2>
-                <p>إجمالي الكورسات</p>
-            </div>
-            <div class="stats-box">
-                <h2 id="totalCompletedCount" style="color: #a855f7;">0</h2>
-                <p>دروس مكتملة</p>
-            </div>
+            <div class="stats-box"><h2 id="totalUsersCount" style="color: #45d483;">0</h2><p>إجمالي الطلاب</p></div>
+            <div class="stats-box"><h2 id="totalCoursesCount" style="color: #3b82f6;">0</h2><p>إجمالي الكورسات</p></div>
+            <div class="stats-box"><h2 id="totalCompletedCount" style="color: #a855f7;">0</h2><p>دروس مكتملة</p></div>
         </div>
+        
         <div class="user-list" id="userListContainer"></div>
         
         <h3 id="formTitle" style="margin-top: 30px;">إضافة كورس جديد</h3>
