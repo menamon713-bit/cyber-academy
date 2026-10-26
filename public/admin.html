@@ -5,45 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Academy - Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // حماية صفحة الأدمن
+        if (!localStorage.getItem('token')) {
+            window.location.href = '/login.html';
+        } else if (localStorage.getItem('role') !== 'admin') {
+            alert('Access Denied. Admins only.');
+            window.location.href = '/dashboard.html';
+        }
+    </script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen p-8 font-sans">
-    
     <header class="max-w-4xl mx-auto mb-10 border-b border-gray-700 pb-4 flex justify-between items-center">
         <div>
             <h1 class="text-3xl font-bold text-green-400 font-mono">> Admin Control_</h1>
             <p class="text-gray-400">Add new courses to the platform</p>
         </div>
-        <a href="/dashboard.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 px-4 py-2 rounded-lg border border-gray-600 transition">
-            Back to Dashboard
-        </a>
+        <a href="/dashboard.html" class="bg-gray-800 hover:bg-gray-700 text-green-400 px-4 py-2 rounded-lg border border-gray-600 transition">Back to Dashboard</a>
     </header>
 
     <main class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-2xl">
-        <!-- رسالة النجاح أو الخطأ -->
         <div id="message-box" class="hidden mb-6 p-4 rounded-lg text-sm font-semibold"></div>
 
         <form id="add-course-form" class="space-y-6">
-            <!-- Title -->
             <div>
                 <label class="block text-sm font-medium text-gray-300 mb-2">Course Title</label>
-                <input type="text" id="title" required
-                    class="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 transition"
-                    placeholder="e.g. Ethical Hacking Basics">
+                <input type="text" id="title" required class="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-400">
             </div>
-
-            <!-- Description -->
             <div>
                 <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
-                <textarea id="description" required rows="4"
-                    class="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 transition"
-                    placeholder="What will the student learn in this course?"></textarea>
+                <textarea id="description" required rows="4" class="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-400"></textarea>
             </div>
-
-            <!-- Level & Price -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Level</label>
-                    <select id="level" class="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 transition">
+                    <select id="level" class="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-400">
                         <option value="Beginner">Beginner</option>
                         <option value="Intermediate">Intermediate</option>
                         <option value="Advanced">Advanced</option>
@@ -51,17 +47,10 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Price ($)</label>
-                    <input type="number" id="price" required min="0" step="0.01"
-                        class="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 transition"
-                        placeholder="0 for Free">
+                    <input type="number" id="price" required min="0" step="0.01" class="w-full bg-gray-900 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-400">
                 </div>
             </div>
-
-            <!-- Submit Button -->
-            <button type="submit" id="submit-btn"
-                class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition-colors flex justify-center items-center">
-                Add Course
-            </button>
+            <button type="submit" id="submit-btn" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition-colors">Add Course</button>
         </form>
     </main>
 
