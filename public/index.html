@@ -17,13 +17,12 @@
         }
     </style>
 </head>
-<body class="bg-gray-950 text-white min-h-screen flex flex-col items-center justify-center p-4 bg-grid relative overflow-hidden">
+<!-- تم تعديل الـ body عشان يسمح بالسكرول (overflow-x-hidden و py-12) -->
+<body class="bg-gray-950 text-white min-h-screen flex flex-col items-center justify-center p-4 py-12 bg-grid relative overflow-x-hidden">
     
-    <!-- توهج خلفي أصغر شوية عشان ميبقاش مزعج -->
-    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-red-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20"></div>
+    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-red-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20 pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20 pointer-events-none"></div>
 
-    <!-- الهيدر -->
     <div class="text-center z-10 mb-8 md:mb-12">
         <h1 class="text-4xl md:text-6xl font-black font-mono tracking-tighter mb-3">
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-purple-500 to-blue-500">
@@ -36,7 +35,6 @@
         </p>
     </div>
 
-    <!-- الكروت -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl w-full z-10 px-2 md:px-4">
         
         <!-- Red Team Card -->
@@ -79,7 +77,6 @@
 
     </div>
 
-    <!-- الفوتر -->
     <div class="mt-8 text-gray-600 font-mono text-xs z-10">
         <p>System Status: <span class="text-green-500">Online</span> | Security Level: <span class="text-red-500">Maximum</span></p>
     </div>
