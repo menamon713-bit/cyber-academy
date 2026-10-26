@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         const courseData = {
             title: document.getElementById('title').value,
             description: document.getElementById('description').value,
@@ -14,13 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         submitBtn.disabled = true;
-        submitBtn.innerHTML = 'Adding...';
-        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        submitBtn.innerHTML = 'جاري الإضافة...';
 
         try {
             const token = localStorage.getItem('token');
-            // تم تغيير اللينك هنا
-            const response = await fetch('https://trailers-suzuki-mean-aug.trycloudflare.com/api/courses', {
+            // اللينك الطبيعي بتاع Vercel
+            const response = await fetch('/api/courses', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,31 +28,23 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
+            messageBox.classList.remove('hidden');
 
             if (response.ok) {
-                showMessage('Course added successfully! 🎉', 'success');
+                messageBox.textContent = 'تم إضافة الكورس بنجاح! 🎉';
+                messageBox.className = 'mb-6 p-4 rounded-lg text-sm font-semibold text-center bg-green-900/50 text-green-400 border border-green-700';
                 form.reset();
             } else {
-                showMessage(data.error || 'Failed to add course.', 'error');
+                messageBox.textContent = data.error || 'فشل الإضافة';
+                messageBox.className = 'mb-6 p-4 rounded-lg text-sm font-semibold text-center bg-red-900/50 text-red-400 border border-red-700';
             }
         } catch (error) {
-            console.error('Error:', error);
-            showMessage('Network error. Check Termux connection.', 'error');
+            messageBox.textContent = 'السيرفر مش شغال!';
+            messageBox.className = 'mb-6 p-4 rounded-lg text-sm font-semibold text-center bg-red-900/50 text-red-400 border border-red-700';
+            messageBox.classList.remove('hidden');
         } finally {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Add Course';
-            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            submitBtn.innerHTML = 'إضافة الكورس';
         }
     });
-
-    function showMessage(text, type) {
-        messageBox.textContent = text;
-        messageBox.classList.remove('hidden', 'bg-green-900/50', 'text-green-400', 'border-green-700', 'bg-red-900/50', 'text-red-400', 'border-red-700');
-        
-        if (type === 'success') {
-            messageBox.classList.add('bg-green-900/50', 'text-green-400', 'border', 'border-green-700');
-        } else {
-            messageBox.classList.add('bg-red-900/50', 'text-red-400', 'border', 'border-red-700');
-        }
-    }
 });
