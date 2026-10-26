@@ -19,7 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const token = localStorage.getItem('token');
-            const response = await fetch('/api/courses', {
+            // تم تغيير اللينك هنا
+            const response = await fetch('https://trailers-suzuki-mean-aug.trycloudflare.com/api/courses', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (error) {
             console.error('Error:', error);
-            showMessage('Network error. Please try again.', 'error');
+            showMessage('Network error. Check Termux connection.', 'error');
         } finally {
             submitBtn.disabled = false;
             submitBtn.innerHTML = 'Add Course';
