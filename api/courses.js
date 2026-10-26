@@ -3,30 +3,63 @@ const Course = require('../models/Course');
 const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res) => {
-  await dbConnect();
+  try {
+    await dbConnect();
 
-  if (req.method === 'GET') {
-    try {
-      const courses = await Course.find({});
-      res.status(200).json(courses);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+    // -----------------------------------------
+    // GET: جلب الكورسات (متاح للكل)
+    // -----------------------------------------
+    if (req.method === 'GET') {
+      const courses = await Course.find({}).sort({ createdAt: -1 }); // الأحدث الأول
+      return res.status(200).json(courses);
     }
-  } else if (req.method === 'POST') {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ error: 'No token provided' });
 
-    try {
+    // -----------------------------------------
+    // POST: إضافة كورس (للأدمن فقط)
+    // -----------------------------------------
+    if (req.method === 'POST') {
+      // 1. التأكد إن فيه توكن
+      const authHeader = req.headers.authorization;
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Unauthorized: No token provided' });
+      }
+
       const token = authHeader.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      if (decoded.role !== 'admin') return res.status(403).json({ error: 'Admins only' });
 
-      const newCourse = await Course.create(req.body);
-      res.status(201).json(newCourse);
-    } catch (error) {
-      res.status(401).json({ error: 'Invalid token or Server error' });
+      // 2. فك تشفير التوكن والتأكد من صلاحية الأدمن
+      let decoded;
+      try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
+      } catch (err) {
+        return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+      }
+
+      if (decoded.role !== 'admin') {
+        return res.status(403).json({ error: 'Forbidden: Admins only' });
+      }
+
+      // 3. التأكد من بيانات الكورس
+      const { title, description, level, price } = req.body;
+      if (!title || !description) {
+        return res.status(400).json({ error: 'Title and description are required' });
+      }
+
+      // 4. إنشاء الكورس
+      const newCourse = await Course.create({
+        title,
+        description,
+        level: level || 'Beginner',
+        price: price || 0
+      });
+
+      return res.status(201).json(newCourse);
     }
-  } else {
-    res.status(405).json({ error: 'Method not allowed' });
+
+    // أي ميثود تانية مرفوضة
+    return res.status(405).json({ error: 'Method Not Allowed' });
+
+  } catch (err) {
+    console.error('Courses API Error:', err);
+    res.status(500).json({ error: 'Server error' });
   }
 };
