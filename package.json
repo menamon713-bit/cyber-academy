@@ -1,8 +1,6 @@
 {
-  "name": "cyber-academy-backend",
+  "name": "cyber-academy",
   "version": "1.0.0",
-  "description": "Cyber Academy Backend API",
-  "main": "api/courses.js",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
