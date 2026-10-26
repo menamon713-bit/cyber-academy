@@ -1,39 +1,42 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const token = sessionStorage.getItem('token');
-    if (!token) {
-        window.location.href = '/auth.html';
-        return;
+// عشان نجيب الكورسات من الـ API بتاعنا
+async function fetchCourses() {
+  try {
+    // بنكتب /api/courses علطول لأننا على نفس الدومين
+    const response = await fetch('/api/courses');
+    
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
     }
+    
+    const courses = await response.json();
+    displayCourses(courses);
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    document.getElementById('courses-container').innerHTML = 
+      '<p class="text-red-500">Failed to load courses.</p>';
+  }
+}
 
-    const container = document.getElementById('courses');
-    if (!container) return;
+// الدالة اللي بترسم الكروت في الـ HTML
+function displayCourses(courses) {
+  const container = document.getElementById('courses-container');
+  
+  if (courses.length === 0) {
+    container.innerHTML = '<p class="text-gray-400">No courses available yet.</p>';
+    return;
+  }
 
-    try {
-        const res = await fetch('/api/courses');
-        const courses = await res.json();
+  container.innerHTML = courses.map(course => `
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 hover:border-green-500 transition">
+      <h3 class="text-xl font-bold text-green-400 mb-2">${course.title}</h3>
+      <p class="text-gray-300 mb-4 text-sm">${course.description}</p>
+      <div class="flex justify-between items-center mt-4">
+        <span class="text-xs bg-gray-700 px-2 py-1 rounded text-gray-200">${course.level}</span>
+        <span class="text-lg font-bold text-white">${course.price === 0 ? 'Free' : '$' + course.price}</span>
+      </div>
+    </div>
+  `).join('');
+}
 
-        container.innerHTML = ''; 
-
-        if (courses.length === 0) {
-            container.innerHTML = '<p style="color: #9a9ba8;">لا توجد كورسات متاحة حالياً.</p>';
-            return;
-        }
-
-        courses.forEach(course => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.style.cssText = 'background: #15161d; padding: 20px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #282a34;';
-            
-            card.innerHTML = `
-                <h3 style="color: #ff304b; margin-top: 0; margin-bottom: 10px;">${course.title}</h3>
-                <p style="color: #9a9ba8; margin: 0; line-height: 1.6;">${course.desc}</p>
-                <span style="display: inline-block; background: #282a34; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; margin-top: 15px;">${course.level}</span>
-            `;
-            container.appendChild(card);
-        });
-
-    } catch (error) {
-        console.error(error);
-        container.innerHTML = '<p style="color: #ff304b;">حدث خطأ أثناء تحميل الكورسات.</p>';
-    }
-});
+// تشغيل الدالة لما الصفحة تحمل
+document.addEventListener('DOMContentLoaded', fetchCourses);
