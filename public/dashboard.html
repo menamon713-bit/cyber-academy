@@ -1,16 +1,27 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>لوحة الطالب</title>
-    <style>
-        body { font-family: sans-serif; background: #08090d; color: white; padding: 20px; }
-        .card { background: #15161d; padding: 15px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #282a34; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Academy - Dashboard</title>
+    <!-- لو بتستخدم Tailwind من CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h2>الكورسات المتاحة</h2>
-    <div id="courses"></div>
+<body class="bg-gray-900 text-white min-h-screen p-8">
+    <header class="mb-8 border-b border-gray-700 pb-4">
+        <h1 class="text-3xl font-bold text-green-400 font-mono">> Cyber Academy_</h1>
+        <p class="text-gray-400">Welcome to your dashboard</p>
+    </header>
+
+    <main>
+        <h2 class="text-2xl font-semibold mb-6">Available Courses</h2>
+        <!-- ده المكان اللي الـ JS هيرسم فيه الكروت -->
+        <div id="courses-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Loading state -->
+            <p class="text-gray-400 animate-pulse">Loading courses...</p>
+        </div>
+    </main>
+
     <script src="/js/dashboard.js"></script>
 </body>
 </html>
