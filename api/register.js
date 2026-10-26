@@ -3,7 +3,13 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
 module.exports = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  
   await dbConnect();
 
   const { email, password } = req.body;
@@ -15,7 +21,7 @@ module.exports = async (req, res) => {
     // تشفير الباسورد
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // أول واحد هيسجل هنخليه أدمن، والباقي يوزرز عاديين (أو تقدر تغيرها من الداتابيز)
+    // أول مستخدم في الداتابيز هيكون أدمن أوتوماتيك
     const isFirstUser = (await User.countDocuments({})) === 0;
     const role = isFirstUser ? 'admin' : 'user';
 
