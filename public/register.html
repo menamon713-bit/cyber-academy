@@ -7,31 +7,53 @@
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex items-center justify-center font-sans">
     <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 w-full max-w-md shadow-2xl">
-        <h2 class="text-3xl font-bold text-red-500 text-center mb-6 font-mono">> حساب جديد_</h2>
         
-        <div id="error-msg" class="hidden text-red-400 bg-red-900/30 p-3 rounded mb-4 text-sm text-center"></div>
-        
-        <form id="register-form" class="space-y-4">
-            <div>
-                <label class="block text-sm mb-1 text-gray-300">البريد الإلكتروني</label>
-                <input type="email" id="email" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 focus:border-red-400 outline-none">
-            </div>
-            <div>
-                <label class="block text-sm mb-1 text-gray-300">كلمة المرور</label>
-                <div class="relative">
-                    <input type="password" id="password" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 pl-10 focus:border-red-400 outline-none">
-                    <!-- زرار العين -->
-                    <button type="button" onclick="togglePassword('password', 'eye-icon-register')" class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 hover:text-white">
-                        <svg id="eye-icon-register" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                        </svg>
-                    </button>
+        <!-- فورم التسجيل الأساسي -->
+        <div id="register-section">
+            <h2 class="text-3xl font-bold text-red-500 text-center mb-6 font-mono">> حساب جديد_</h2>
+            <div id="error-msg" class="hidden text-red-400 bg-red-900/30 p-3 rounded mb-4 text-sm text-center"></div>
+            
+            <form id="register-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm mb-1 text-gray-300">البريد الإلكتروني</label>
+                    <input type="email" id="email" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 focus:border-red-400 outline-none text-white">
                 </div>
-            </div>
-            <button type="submit" class="w-full bg-red-600 hover:bg-red-500 font-bold py-2 rounded transition text-white">إنشاء الحساب</button>
-        </form>
-        <p class="text-center text-sm text-gray-400 mt-4">عندك حساب؟ <a href="/login.html" class="text-red-400 hover:underline">دخول</a></p>
+                <div>
+                    <label class="block text-sm mb-1 text-gray-300">كلمة المرور</label>
+                    <div class="relative">
+                        <input type="password" id="password" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 pl-10 focus:border-red-400 outline-none text-white">
+                        <button type="button" onclick="togglePassword('password', 'eye-icon-pass')" class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 hover:text-white">
+                            <svg id="eye-icon-pass" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm mb-1 text-gray-300">تأكيد كلمة المرور</label>
+                    <div class="relative">
+                        <input type="password" id="confirmPassword" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 pl-10 focus:border-red-400 outline-none text-white">
+                        <button type="button" onclick="togglePassword('confirmPassword', 'eye-icon-confirm')" class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 hover:text-white">
+                            <svg id="eye-icon-confirm" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-red-600 hover:bg-red-500 font-bold py-2 rounded transition text-white">إنشاء الحساب</button>
+            </form>
+        </div>
+
+        <!-- فورم كود التفعيل (مخفي في الأول) -->
+        <div id="verify-section" class="hidden">
+            <h2 class="text-3xl font-bold text-green-500 text-center mb-6 font-mono">> تفعيل الحساب_</h2>
+            <p class="text-gray-300 text-sm text-center mb-4">تم إرسال كود مكون من 6 أرقام إلى إيميلك، يرجى إدخاله هنا:</p>
+            <div id="verify-error-msg" class="hidden text-red-400 bg-red-900/30 p-3 rounded mb-4 text-sm text-center"></div>
+            
+            <form id="verify-form" class="space-y-4">
+                <div>
+                    <input type="text" id="verificationCode" required maxlength="6" placeholder="000000" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-3 text-center text-2xl tracking-widest focus:border-green-400 outline-none text-white">
+                </div>
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-500 font-bold py-2 rounded transition text-white">تأكيد الكود</button>
+            </form>
+        </div>
+
     </div>
     
     <script src="/js/auth.js"></script>
