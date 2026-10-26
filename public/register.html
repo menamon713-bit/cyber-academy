@@ -1,56 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Cyber Academy - Register</title>
+    <title>حساب جديد - Cyber Academy</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center font-sans">
     <div class="bg-gray-800 p-8 rounded-xl border border-gray-700 w-full max-w-md shadow-2xl">
-        <h2 class="text-3xl font-bold text-green-400 text-center mb-6 font-mono">> Register_</h2>
-        <div id="error-msg" class="hidden text-red-400 bg-red-900/30 p-3 rounded mb-4 text-sm"></div>
+        <h2 class="text-3xl font-bold text-red-500 text-center mb-6 font-mono">> حساب جديد_</h2>
+        <div id="error-msg" class="hidden text-red-400 bg-red-900/30 p-3 rounded mb-4 text-sm text-center"></div>
         <form id="register-form" class="space-y-4">
             <div>
-                <label class="block text-sm mb-1 text-gray-300">Email</label>
-                <input type="email" id="email" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 focus:border-green-400 outline-none">
+                <label class="block text-sm mb-1 text-gray-300">البريد الإلكتروني</label>
+                <input type="email" id="email" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 focus:border-red-400 outline-none">
             </div>
             <div>
-                <label class="block text-sm mb-1 text-gray-300">Password</label>
-                <input type="password" id="password" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 focus:border-green-400 outline-none">
+                <label class="block text-sm mb-1 text-gray-300">كلمة المرور</label>
+                <div class="relative">
+                    <input type="password" id="password" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 pl-10 focus:border-red-400 outline-none">
+                    <button type="button" onclick="togglePassword('password', 'eye-icon')" class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 hover:text-white">
+                        <svg id="eye-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </button>
+                </div>
             </div>
-            <button type="submit" class="w-full bg-green-600 hover:bg-green-500 font-bold py-2 rounded transition">Sign Up</button>
+            <button type="submit" class="w-full bg-red-600 hover:bg-red-500 font-bold py-2 rounded transition text-white">إنشاء الحساب</button>
         </form>
-        <p class="text-center text-sm text-gray-400 mt-4">Already have an account? <a href="/login.html" class="text-green-400 hover:underline">Login</a></p>
+        <p class="text-center text-sm text-gray-400 mt-4">عندك حساب؟ <a href="/login.html" class="text-red-400 hover:underline">دخول</a></p>
     </div>
+    
+    <script src="/js/auth.js"></script>
     <script>
-        document.getElementById('register-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const errorMsg = document.getElementById('error-msg');
-
-            try {
-                // تم تغيير اللينك هنا
-                const res = await fetch('https://trailers-suzuki-mean-aug.trycloudflare.com/api/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
-                });
-                const data = await res.json();
-                
-                if (res.ok) {
-                    alert('Registered successfully! Please login.');
-                    window.location.href = '/login.html';
-                } else {
-                    errorMsg.textContent = data.error;
-                    errorMsg.classList.remove('hidden');
-                }
-            } catch (err) {
-                console.error(err);
-                errorMsg.textContent = "Network error. Make sure Termux is running.";
-                errorMsg.classList.remove('hidden');
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>';
+            } else {
+                input.type = 'password';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>';
             }
-        });
+        }
     </script>
 </body>
 </html>
