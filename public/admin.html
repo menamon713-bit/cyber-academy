@@ -2,23 +2,45 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>لوحة التحكم</title>
-    <style>
-        body { font-family: sans-serif; background: #08090d; color: white; padding: 20px; }
-        .box { background: #15161d; padding: 20px; border-radius: 10px; border: 1px solid #282a34; max-width: 600px; margin: auto; }
-        input, textarea { width: 100%; padding: 10px; margin: 10px 0; background: #101116; border: 1px solid #282a34; color: white; box-sizing: border-box; }
-        button { padding: 10px 20px; background: #ff304b; color: white; border: none; cursor: pointer; }
-    </style>
+    <title>لوحة الأدمن</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="box" id="adminContent" style="display:none;">
-        <h2>لوحة تحكم المدير</h2>
-        <h3>إضافة كورس</h3>
-        <input type="text" id="title" placeholder="اسم الكورس">
-        <textarea id="desc" placeholder="الوصف"></textarea>
-        <button id="addBtn">إضافة</button>
-        <button onclick="logout()" style="background: #555; float: left;">خروج</button>
-    </div>
+<body class="bg-gray-900 text-white min-h-screen p-8 font-sans">
+    <header class="max-w-4xl mx-auto mb-10 border-b border-gray-700 pb-4 flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-red-500 font-mono">> إضافة كورس_</h1>
+        <a href="/dashboard.html" class="bg-gray-800 hover:bg-gray-700 text-red-400 px-4 py-2 rounded-lg border border-gray-600 transition">رجوع</a>
+    </header>
+    <main class="max-w-2xl mx-auto bg-gray-800 p-8 rounded-xl border border-gray-700 shadow-2xl">
+        <form id="add-course-form" class="space-y-4">
+            <div>
+                <label class="block text-sm mb-1">اسم الكورس</label>
+                <input type="text" id="title" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-sm mb-1">وصف قصير</label>
+                <input type="text" id="description" required class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-sm mb-1">الشرح الكامل (Content)</label>
+                <textarea id="content" required rows="5" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm mb-1">المستوى</label>
+                    <select id="level" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2">
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm mb-1">السعر</label>
+                    <input type="number" id="price" required min="0" class="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2">
+                </div>
+            </div>
+            <button type="submit" id="submit-btn" class="w-full bg-red-600 hover:bg-red-500 py-3 rounded font-bold transition">إضافة الكورس</button>
+        </form>
+    </main>
     <script src="/js/admin.js"></script>
 </body>
 </html>

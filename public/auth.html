@@ -1,24 +1,122 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>تسجيل الدخول</title>
-    <style>
-        body { font-family: sans-serif; background: #08090d; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: #15161d; padding: 30px; border-radius: 15px; border: 1px solid #282a34; width: 300px; }
-        input { width: 100%; padding: 10px; margin: 10px 0; background: #101116; border: 1px solid #282a34; color: white; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background: #ff304b; color: white; border: none; cursor: pointer; font-weight: bold; }
-    </style>
-</head>
-<body>
-    <div class="box">
-        <h2 style="color: #ff304b; text-align: center;">تسجيل الدخول</h2>
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-            <input type="password" id="password" placeholder="كلمة المرور" required>
-            <button type="submit">دخول</button>
-        </form>
-    </div>
-    <script src="/js/auth.js"></script>
-</body>
-</html>
+// ==========================================
+// 1. تسجيل الدخول (Login Logic)
+// ==========================================
+const loginForm = document.getElementById('login-form');
+
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('error-msg');
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+
+        // تصفير رسالة الخطأ وتغيير شكل الزرار
+        errorMsg.classList.add('hidden');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'جاري الدخول...';
+
+        try {
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            
+            const data = await res.json();
+
+            if (res.ok) {
+                // حفظ التوكن والصلاحية
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('role', data.role);
+                // التوجه للوحة التحكم
+                window.location.href = '/dashboard.html';
+            } else {
+                // إظهار رسالة الخطأ من السيرفر (زي "بيانات غير صحيحة")
+                errorMsg.textContent = data.error || 'حدث خطأ غير متوقع';
+                errorMsg.classList.remove('hidden');
+            }
+        } catch (err) {
+            console.error('Login Error:', err);
+            errorMsg.textContent = 'السيرفر مش شغال، جرب تاني بعد شوية.';
+            errorMsg.classList.remove('hidden');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'دخول';
+        }
+    });
+}
+
+// ==========================================
+// 2. إنشاء حساب جديد (Register Logic)
+// ==========================================
+const registerForm = document.getElementById('register-form');
+
+if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('error-msg');
+        const submitBtn = registerForm.querySelector('button[type="submit"]');
+
+        errorMsg.classList.add('hidden');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'جاري التسجيل...';
+
+        try {
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            
+            const data = await res.json();
+
+            if (res.ok) {
+                // لو نجح، نبلغه ونروح لصفحة الدخول
+                alert('تم إنشاء الحساب بنجاح! يلا نسجل دخول.');
+                window.location.href = '/login.html';
+            } else {
+                errorMsg.textContent = data.error || 'فشل إنشاء الحساب';
+                errorMsg.classList.remove('hidden');
+            }
+        } catch (err) {
+            console.error('Register Error:', err);
+            errorMsg.textContent = 'السيرفر مش شغال، جرب تاني بعد شوية.';
+            errorMsg.classList.remove('hidden');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'إنشاء الحساب';
+        }
+    });
+}
+
+// ==========================================
+// 3. تسجيل الخروج (Logout)
+// ==========================================
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/login.html';
+}
+
+// ==========================================
+// 4. حماية الصفحات (Page Protection)
+// ==========================================
+function protectPage(requireAdmin = false) {
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
+
+    // لو مفيش توكن، يروح يسجل دخول
+    if (!token) {
+        window.location.href = '/login.html';
+        return;
+    }
+
+    // لو محتاج أدمن وهو مش أدمن، يترفض
+    if (requireAdmin && role !== 'admin') {
+        alert('ممنوع الدخول! هذه الصفحة للأدمن فقط.');
+        window.location.href = '/dashboard.html';
+    }
+}
