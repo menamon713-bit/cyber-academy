@@ -5,17 +5,26 @@
     <title>تفاصيل الكورس</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-900 text-white min-h-screen p-8 font-sans">
+<body class="bg-gray-900 text-white min-h-screen p-4 md:p-8 font-sans">
     <header class="max-w-4xl mx-auto mb-8 border-b border-gray-700 pb-4 flex justify-between items-center">
         <h1 class="text-2xl font-bold text-red-500 font-mono">> تفاصيل الكورس_</h1>
         <a href="/dashboard.html" class="bg-gray-800 hover:bg-gray-700 text-red-400 px-4 py-2 rounded-lg border border-gray-600 transition">رجوع</a>
     </header>
+    
     <main class="max-w-4xl mx-auto">
-        <h2 id="course-title" class="text-3xl font-bold text-red-400 mb-4"></h2>
-        <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 mb-8 leading-relaxed text-gray-300">
-            <p id="course-content"></p>
+        <h2 id="course-title" class="text-3xl font-bold text-red-400 mb-6"></h2>
+        
+        <!-- مكان فيديو اليوتيوب -->
+        <div id="video-container" class="mb-8 rounded-xl overflow-hidden shadow-2xl border border-gray-700 hidden aspect-video">
+            <iframe id="course-video" class="w-full h-full" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-        <h3 class="text-2xl font-bold text-white mb-4">اختبار الكورس</h3>
+
+        <div class="bg-gray-800 p-6 md:p-8 rounded-xl border border-gray-700 mb-10 leading-relaxed text-gray-300 shadow-lg">
+            <h3 class="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">الشرح المكتوب</h3>
+            <p id="course-content" class="whitespace-pre-wrap"></p>
+        </div>
+
+        <h3 class="text-2xl font-bold text-white mb-6 border-r-4 border-red-500 pr-3">اختبار الكورس</h3>
         <div id="quiz-container"></div>
     </main>
     <script src="/js/course.js"></script>
