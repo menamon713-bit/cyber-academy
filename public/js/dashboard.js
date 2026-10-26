@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('courses-container');
     
     try {
-        const response = await fetch('/api/courses');
+        // تم تغيير اللينك هنا
+        const response = await fetch('https://trailers-suzuki-mean-aug.trycloudflare.com/api/courses');
         const courses = await response.json();
 
         if (courses.length === 0) {
@@ -25,6 +26,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         `).join('');
     } catch (error) {
         console.error('Error fetching courses:', error);
-        container.innerHTML = '<p class="text-red-500">Failed to load courses.</p>';
+        container.innerHTML = '<p class="text-red-500">Failed to load courses. Check if Termux is running.</p>';
     }
 });
