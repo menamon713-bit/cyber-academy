@@ -1,3 +1,4 @@
+// دالة إظهار وإخفاء الباسورد
 function togglePassword(inputId, iconId) {
     const input = document.getElementById(inputId);
     const icon = document.getElementById(iconId);
@@ -13,7 +14,9 @@ function togglePassword(inputId, iconId) {
 document.addEventListener('DOMContentLoaded', () => {
     let userEmail = '';
 
-    // تسجيل الدخول
+    // ==========================================
+    // 1. تسجيل الدخول
+    // ==========================================
     const loginForm = document.getElementById('login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -49,7 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // إنشاء حساب
+    // ==========================================
+    // 2. إنشاء حساب جديد
+    // ==========================================
     const registerForm = document.getElementById('register-form');
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
@@ -60,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const pass = document.getElementById('password').value;
             const confirmPass = document.getElementById('confirmPassword').value;
 
+            // التأكد من تطابق الباسورد
             if (pass !== confirmPass) {
                 errorMsg.textContent = 'كلمة المرور وتأكيدها غير متطابقين!';
                 errorMsg.classList.remove('hidden');
@@ -82,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await res.json();
                 
                 if (res.ok) {
+                    // إخفاء فورم التسجيل وإظهار فورم الكود
                     document.getElementById('register-section').classList.add('hidden');
                     document.getElementById('verify-section').classList.remove('hidden');
                 } else {
@@ -95,7 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // تأكيد الكود
+    // ==========================================
+    // 3. تأكيد كود التفعيل
+    // ==========================================
     const verifyForm = document.getElementById('verify-form');
     if (verifyForm) {
         verifyForm.addEventListener('submit', async (e) => {
@@ -127,6 +136,42 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (err) {
                 errorMsg.textContent = 'خطأ في الاتصال بالسيرفر'; errorMsg.classList.remove('hidden');
                 btn.textContent = 'تأكيد الكود'; btn.disabled = false;
+            }
+        });
+    }
+
+    // ==========================================
+    // 4. إعادة إرسال الكود
+    // ==========================================
+    const resendBtn = document.getElementById('resend-btn');
+    if (resendBtn) {
+        resendBtn.addEventListener('click', async () => {
+            if (!userEmail) {
+                alert('حدث خطأ، يرجى العودة لصفحة التسجيل.');
+                return;
+            }
+            
+            resendBtn.textContent = 'جاري الإرسال...';
+            resendBtn.disabled = true;
+
+            try {
+                const res = await fetch('/api/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'resendCode', email: userEmail })
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert('تم إعادة إرسال الكود إلى إيميلك!');
+                } else {
+                    alert(data.error || 'فشل إعادة الإرسال');
+                }
+            } catch (err) {
+                alert('خطأ في الاتصال بالسيرفر');
+            } finally {
+                resendBtn.textContent = 'إعادة إرسال الكود';
+                resendBtn.disabled = false;
             }
         });
     }
