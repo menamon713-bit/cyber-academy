@@ -1,1 +1,5 @@
 node_modules/
+seed.cjs
+seed.js
+server.py
+test.js
