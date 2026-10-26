@@ -1,23 +1,27 @@
-import connectDB from '../db.js';
-import User from '../models/User.js';
-import bcrypt from 'bcryptjs';
+const dbConnect = require('../db');
+const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
-export default async function handler(req, res) {
-    if (req.method !== 'POST') return res.status(405).json({ message: 'Method Not Allowed' });
-    const { username, email, password } = req.body;
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  await dbConnect();
 
-    try {
-        await connectDB();
-        const existingUser = await User.findOne({ email });
-        if (existingUser) return res.status(400).json({ message: 'الإيميل مسجل بالفعل' });
+  const { email, password } = req.body;
 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) return res.status(400).json({ error: 'User already exists' });
 
-        const newUser = new User({ username, email, password: hashedPassword, role: 'student' });
-        await newUser.save();
-        res.status(201).json({ message: 'تم إنشاء الحساب' });
-    } catch (error) {
-        res.status(500).json({ message: 'خطأ في السيرفر' });
-    }
-}
+    // تشفير الباسورد
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // أول واحد هيسجل هنخليه أدمن، والباقي يوزرز عاديين (أو تقدر تغيرها من الداتابيز)
+    const isFirstUser = (await User.countDocuments({})) === 0;
+    const role = isFirstUser ? 'admin' : 'user';
+
+    const user = await User.create({ email, password: hashedPassword, role });
+    res.status(201).json({ message: 'User registered successfully', role: user.role });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
