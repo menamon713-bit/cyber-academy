@@ -30,7 +30,8 @@
             const errorMsg = document.getElementById('error-msg');
 
             try {
-                const res = await fetch('/api/register', {
+                // تم تغيير اللينك هنا
+                const res = await fetch('https://trailers-suzuki-mean-aug.trycloudflare.com/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -46,6 +47,8 @@
                 }
             } catch (err) {
                 console.error(err);
+                errorMsg.textContent = "Network error. Make sure Termux is running.";
+                errorMsg.classList.remove('hidden');
             }
         });
     </script>
